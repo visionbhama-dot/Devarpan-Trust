@@ -1,0 +1,104 @@
+// English (switchable) — UI and page content
+const en = {
+  nav: {
+    home: 'Home',
+    objectives: 'Our Objectives',
+    members: 'Our Members',
+    gallery: 'Gallery',
+    contact: 'Contact',
+    donate: 'Donate',
+  },
+  brand: {
+    name: 'Devarpan Trust',
+    registered: '(Registered)',
+    sanskrit: 'Shraddhaya Agnih Samidhyate',
+    welcome: 'welcomes you',
+    tagline:
+      'An organisation dedicated to Yajna, Yoga, culture, values, women empowerment and social causes',
+  },
+  home: {
+    heroKicker: 'Om • Vedas • Sanskar',
+    heroTitle: 'Devarpan Trust',
+    heroSubtitle: 'Holistic upliftment of society through Yajna, Yoga and cultural values',
+    heroCtaPrimary: 'Explore Our Objectives',
+    heroCtaSecondary: 'Support Us',
+    aboutKicker: 'About Us',
+    aboutTitle: 'A Resolve Kindled by Devotion',
+    aboutText:
+      'Devarpan Trust is a registered organisation dedicated to Yajna, Yoga, culture, values, women empowerment and social causes. Our mission is to carry Vedic values to every household and to work tirelessly for the upliftment of every section of society.',
+    vedasTitle: 'The Four Vedas — Our Inspiration',
+    focusTitle: 'Our Focus Areas',
+    focus: {
+      yajna: { title: 'Yajna & Vedic Sanskar', desc: 'Establishing the science of Yajna before society.' },
+      yoga: { title: 'Yoga & Health', desc: 'Organising International Yoga Day and yoga camps.' },
+      education: { title: 'Education & Child Welfare', desc: 'Supporting education of poor and meritorious children.' },
+      women: { title: 'Women Empowerment', desc: 'Setting up stitching, embroidery and knitting service centres.' },
+    },
+    statsTitle: 'Our Impact',
+    stats: {
+      years: 'Years of Service',
+      trustees: 'Trustee Members',
+      programs: 'Programs Held',
+      lives: 'Lives Touched',
+    },
+    ctaTitle: 'Join Us in This Noble Cause',
+    ctaText: 'Your support will further strengthen this journey of social upliftment.',
+    ctaButton: 'Donate & Support',
+  },
+  objectives: {
+    kicker: 'Objectives',
+    title: 'Our Objectives',
+    intro:
+      'Devarpan Trust is dedicated to fulfilling the following objectives, rooted in Vedic values and social welfare.',
+  },
+  members: {
+    kicker: 'Board of Trustees',
+    title: 'Our Members',
+    intro: 'The running of Devarpan Trust rests in the hands of its dedicated trustee members.',
+    photoNote: 'Photos will be uploaded soon',
+  },
+  gallery: {
+    kicker: 'Moments',
+    title: 'Gallery',
+    intro: 'Glimpses of our Yajnas, yoga camps, ceremonies and social programs.',
+    note: 'More photos will be added soon.',
+    all: 'All',
+  },
+  contact: {
+    kicker: 'Contact',
+    title: 'Contact Us',
+    intro: 'Reach out to us for any information, support or participation.',
+    officeTitle: 'Office',
+    address: 'D-2 / 128, Jeevan Park, Uttam Nagar, New Delhi',
+    phoneTitle: 'Phone',
+    emailTitle: 'Email',
+    presidentTitle: 'President',
+    presidentName: 'Shri Ompal Singh Arya',
+    bankTitle: 'Bank Details (for donations)',
+    pan: 'PAN Number',
+    account: 'Account Number',
+    ifsc: 'IFSC Code',
+    formTitle: 'Send Us a Message',
+    formName: 'Your Name',
+    formEmail: 'Email',
+    formPhone: 'Phone',
+    formMessage: 'Message',
+    formSubmit: 'Send Message',
+    formThanks: 'Thank you! Your message has been received. We will contact you soon.',
+  },
+  footer: {
+    about: 'Holistic upliftment of society through Yajna, Yoga, culture and values.',
+    quickLinks: 'Quick Links',
+    contactTitle: 'Contact',
+    donateTitle: 'Donation Details',
+    rights: 'All rights reserved.',
+    made: 'Built with devotion and dedication',
+  },
+  donate: {
+    title: 'Donate & Support',
+    intro:
+      'Your donation strengthens our efforts for the upliftment of society. You can contribute through the bank details below.',
+  },
+} as const
+
+export default en
