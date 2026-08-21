@@ -1,9 +1,22 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
-import { Flame, Activity, GraduationCap, HandHeart, ArrowRight, Sparkles } from 'lucide-react'
+import {
+  Flame,
+  Activity,
+  GraduationCap,
+  HandHeart,
+  ArrowRight,
+  MapPin,
+  Phone,
+  Mail,
+  Landmark,
+  User,
+} from 'lucide-react'
+import { WhatsAppIcon } from '../components/icons'
 import { useLang } from '../lib/useLang'
-import { vedas } from '../data/trust'
+import { vedas, trustInfo } from '../data/trust'
+import { galleryItems } from '../data/gallery'
 
 const focusIcons = {
   yajna: Flame,
@@ -19,131 +32,119 @@ const stats = [
   { key: 'lives', value: '5000+' },
 ] as const
 
+// Build a 12-cell collage from the real gallery photos
+const collage = [...galleryItems.map((g) => g.src!), galleryItems[0].src!]
+
 export default function Home() {
   const { t } = useTranslation()
   const { pick } = useLang()
+  const previewItems = galleryItems.slice(0, 6)
+  const waHref = `https://wa.me/91${trustInfo.phones[0]}?text=${encodeURIComponent(
+    t('whatsapp.prefill'),
+  )}`
 
   return (
     <>
-      {/* HERO */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-saffron-600 via-saffron-500 to-leaf-600 text-white">
-        <div className="absolute inset-0 bg-pattern opacity-25" aria-hidden />
-        <div className="absolute -right-16 -top-16 size-72 rounded-full bg-white/10 blur-3xl" aria-hidden />
-        <div className="absolute -bottom-24 -left-16 size-80 rounded-full bg-leaf-300/20 blur-3xl" aria-hidden />
-
-        <div className="relative mx-auto max-w-7xl px-6 py-20 md:py-28">
-          <div className="grid items-center gap-12 lg:grid-cols-2">
-            <div>
-              <motion.p
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-1.5 text-sm font-semibold ring-1 ring-white/30"
-              >
-                <Sparkles className="size-4" /> {t('home.heroKicker')}
-              </motion.p>
-              <motion.p
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.05 }}
-                className="font-display text-lg font-semibold text-white/90"
-              >
-                {t('brand.sanskrit')}
-              </motion.p>
-              <motion.h1
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="mt-2 font-display text-5xl font-black leading-tight drop-shadow-md md:text-6xl"
-              >
-                {t('home.heroTitle')}
-                <span className="ml-2 align-middle text-2xl font-semibold text-saffron-100">
-                  {t('brand.registered')}
-                </span>
-              </motion.h1>
-              <motion.p
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.15 }}
-                className="mt-5 max-w-xl text-lg leading-relaxed text-white/90"
-              >
-                {t('home.heroSubtitle')}
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="mt-8 flex flex-wrap gap-4"
-              >
-                <Link
-                  to="/objectives"
-                  className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 font-bold text-saffron-700 shadow-lg transition-transform hover:scale-105"
-                >
-                  {t('home.heroCtaPrimary')} <ArrowRight className="size-5" />
-                </Link>
-                <Link
-                  to="/contact"
-                  className="inline-flex items-center gap-2 rounded-full bg-ink-900/30 px-6 py-3 font-bold text-white ring-2 ring-white/50 backdrop-blur transition-colors hover:bg-ink-900/50"
-                >
-                  {t('home.heroCtaSecondary')}
-                </Link>
-              </motion.div>
-            </div>
-
-            {/* Decorative Om medallion */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.85 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.15, type: 'spring' }}
-              className="relative mx-auto hidden aspect-square w-full max-w-md place-items-center lg:grid"
-            >
-              <div className="absolute inset-0 animate-pulse rounded-full bg-white/10 blur-2xl" aria-hidden />
-              <div className="relative grid size-72 place-items-center rounded-full bg-white/15 ring-4 ring-white/30 backdrop-blur md:size-80">
-                <div className="grid size-56 place-items-center rounded-full bg-gradient-to-br from-white to-saffron-100 shadow-2xl md:size-64">
-                  <span className="font-display text-[8rem] font-black text-saffron-600 md:text-[9rem]">ॐ</span>
-                </div>
-                {vedas.map((v, i) => {
-                  const angle = (i / vedas.length) * 2 * Math.PI - Math.PI / 2
-                  const r = 46
-                  const x = 50 + r * Math.cos(angle)
-                  const y = 50 + r * Math.sin(angle)
-                  return (
-                    <span
-                      key={v.en}
-                      style={{ left: `${x}%`, top: `${y}%` }}
-                      className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-leaf-600 px-3 py-1 text-xs font-bold text-white shadow-lg"
-                    >
-                      {pick(v)}
-                    </span>
-                  )
-                })}
+      {/* ============ HERO — full photo collage with bold text ============ */}
+      <section className="relative isolate flex min-h-[88vh] items-center overflow-hidden text-white">
+        {/* collage background */}
+        <div className="absolute inset-0 -z-20 overflow-hidden">
+          <div className="grid h-full w-full grid-cols-3 grid-rows-4 lg:grid-cols-4 lg:grid-rows-3">
+            {collage.map((src, i) => (
+              <div key={i} className="overflow-hidden">
+                <img
+                  src={src}
+                  alt=""
+                  loading={i > 3 ? 'lazy' : 'eager'}
+                  className="size-full object-cover"
+                />
               </div>
-            </motion.div>
+            ))}
           </div>
         </div>
-        <div className="h-3 w-full bg-gradient-to-r from-saffron-700 via-white/40 to-leaf-700" />
+        {/* bold color overlay for readability */}
+        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-saffron-700/90 via-saffron-800/85 to-leaf-800/90" />
+        <div className="absolute inset-0 -z-10 bg-black/35" />
+
+        <div className="relative mx-auto w-full max-w-5xl px-6 py-20 text-center">
+          <motion.span
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="mx-auto mb-6 grid size-20 place-items-center rounded-full bg-white text-4xl font-black text-saffron-600 shadow-2xl ring-4 ring-white/40"
+          >
+            ॐ
+          </motion.span>
+
+          <motion.p
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 }}
+            className="font-display text-xl font-bold tracking-wide text-saffron-100 drop-shadow-lg md:text-2xl"
+          >
+            {t('brand.sanskrit')}
+          </motion.p>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="mt-3 font-display text-5xl font-black leading-none drop-shadow-2xl sm:text-6xl md:text-7xl lg:text-8xl"
+          >
+            {t('home.heroTitle')}
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="mx-auto mt-6 max-w-3xl text-lg font-semibold leading-relaxed text-white drop-shadow-lg md:text-2xl"
+          >
+            {t('brand.tagline')}
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="mt-9 flex flex-wrap justify-center gap-4"
+          >
+            <Link
+              to="/objectives"
+              className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-base font-black text-saffron-700 shadow-2xl transition-transform hover:scale-105"
+            >
+              {t('home.heroCtaPrimary')} <ArrowRight className="size-5" />
+            </Link>
+            <a
+              href={waHref}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-8 py-4 text-base font-black text-white shadow-2xl ring-2 ring-white/40 transition-transform hover:scale-105"
+            >
+              <WhatsAppIcon className="size-5" /> {t('whatsapp.label')}
+            </a>
+          </motion.div>
+        </div>
+
+        <div className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-saffron-500 via-white/60 to-leaf-500" />
       </section>
 
-      {/* ABOUT */}
+      {/* ============ ABOUT ============ */}
       <section className="mx-auto max-w-5xl px-6 py-16 text-center md:py-20">
-        <p className="mb-2 font-semibold uppercase tracking-widest text-saffron-600">
+        <p className="mb-2 font-bold uppercase tracking-[0.2em] text-saffron-600">
           {t('home.aboutKicker')}
         </p>
-        <h2 className="font-display text-3xl font-extrabold text-ink-900 md:text-4xl">
+        <h2 className="font-display text-3xl font-black text-ink-900 md:text-5xl">
           {t('home.aboutTitle')}
         </h2>
-        <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-ink-700">
+        <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-ink-700 md:text-xl">
           {t('home.aboutText')}
-        </p>
-        <p className="mt-6 rounded-2xl bg-white p-5 text-base font-medium text-leaf-700 shadow-sm ring-1 ring-leaf-100">
-          {t('brand.tagline')}
         </p>
       </section>
 
-      {/* FOCUS AREAS */}
+      {/* ============ FOCUS AREAS ============ */}
       <section className="bg-white py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-6">
-          <h2 className="text-center font-display text-3xl font-extrabold text-ink-900 md:text-4xl">
+          <h2 className="text-center font-display text-3xl font-black text-ink-900 md:text-5xl">
             {t('home.focusTitle')}
           </h2>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -156,12 +157,12 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.08 }}
-                  className="group rounded-3xl border border-saffron-100 bg-saffron-50 p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl"
+                  className="group rounded-3xl border-2 border-saffron-100 bg-saffron-50 p-6 shadow-sm transition-all hover:-translate-y-1.5 hover:border-saffron-300 hover:shadow-xl"
                 >
-                  <div className="grid size-14 place-items-center rounded-2xl bg-gradient-to-br from-saffron-500 to-leaf-600 text-white shadow-md transition-transform group-hover:scale-110">
-                    <Icon className="size-7" />
+                  <div className="grid size-16 place-items-center rounded-2xl bg-gradient-to-br from-saffron-500 to-leaf-600 text-white shadow-lg transition-transform group-hover:scale-110">
+                    <Icon className="size-8" />
                   </div>
-                  <h3 className="mt-5 font-display text-xl font-bold text-ink-900">
+                  <h3 className="mt-5 font-display text-xl font-extrabold text-ink-900">
                     {t(`home.focus.${k}.title`)}
                   </h3>
                   <p className="mt-2 text-sm leading-relaxed text-ink-700">
@@ -174,10 +175,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* STATS */}
-      <section className="bg-gradient-to-r from-leaf-700 to-saffron-700 py-16 text-white">
-        <div className="mx-auto max-w-7xl px-6">
-          <h2 className="text-center font-display text-3xl font-extrabold md:text-4xl">
+      {/* ============ STATS ============ */}
+      <section className="relative overflow-hidden bg-gradient-to-r from-leaf-700 to-saffron-700 py-16 text-white">
+        <div className="absolute inset-0 bg-pattern opacity-20" aria-hidden />
+        <div className="relative mx-auto max-w-7xl px-6">
+          <h2 className="text-center font-display text-3xl font-black md:text-5xl">
             {t('home.statsTitle')}
           </h2>
           <div className="mt-10 grid grid-cols-2 gap-6 lg:grid-cols-4">
@@ -188,34 +190,183 @@ export default function Home() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
-                className="rounded-3xl bg-white/10 p-6 text-center ring-1 ring-white/20 backdrop-blur"
+                className="rounded-3xl bg-white/15 p-6 text-center ring-1 ring-white/25 backdrop-blur"
               >
-                <p className="font-display text-4xl font-black md:text-5xl">{s.value}</p>
-                <p className="mt-2 text-sm font-medium text-white/85">
-                  {t(`home.stats.${s.key}`)}
-                </p>
+                <p className="font-display text-4xl font-black md:text-6xl">{s.value}</p>
+                <p className="mt-2 text-sm font-semibold text-white/90">{t(`home.stats.${s.key}`)}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="mx-auto max-w-5xl px-6 py-16 md:py-20">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-saffron-600 to-leaf-600 p-10 text-center text-white shadow-2xl md:p-14">
-          <div className="absolute inset-0 bg-pattern opacity-20" aria-hidden />
-          <div className="relative">
-            <h2 className="font-display text-3xl font-extrabold md:text-4xl">{t('home.ctaTitle')}</h2>
-            <p className="mx-auto mt-4 max-w-2xl text-lg text-white/90">{t('home.ctaText')}</p>
+      {/* ============ GALLERY PREVIEW ============ */}
+      <section className="bg-saffron-50 py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="mb-10 text-center">
+            <p className="mb-2 font-bold uppercase tracking-[0.2em] text-saffron-600">
+              {t('home.galleryKicker')}
+            </p>
+            <h2 className="font-display text-3xl font-black text-ink-900 md:text-5xl">
+              {t('home.galleryTitle')}
+            </h2>
+            <p className="mx-auto mt-3 max-w-2xl text-ink-700">{t('home.galleryText')}</p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+            {previewItems.map((item, i) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05 }}
+                className="group relative aspect-[4/3] overflow-hidden rounded-2xl shadow-md ring-1 ring-black/5"
+              >
+                <img
+                  src={item.src}
+                  alt={pick(item.caption)}
+                  loading="lazy"
+                  className="size-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-black/0" />
+                <p className="absolute inset-x-0 bottom-0 p-3 text-sm font-bold text-white drop-shadow md:p-4 md:text-base">
+                  {pick(item.caption)}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="mt-10 text-center">
             <Link
-              to="/contact"
-              className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-8 py-3.5 font-bold text-saffron-700 shadow-lg transition-transform hover:scale-105"
+              to="/gallery"
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-saffron-600 to-leaf-600 px-8 py-3.5 font-black text-white shadow-lg transition-transform hover:scale-105"
             >
-              <HandHeart className="size-5" /> {t('home.ctaButton')}
+              {t('home.viewMore')} <ArrowRight className="size-5" />
             </Link>
           </div>
         </div>
       </section>
+
+      {/* ============ BOLD TRUST DETAILS ============ */}
+      <section className="relative isolate overflow-hidden text-white">
+        {/* textured photo background */}
+        <img
+          src="/gallery/g04-yajna.jpg"
+          alt=""
+          className="absolute inset-0 -z-20 size-full object-cover"
+        />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-ink-900/95 via-ink-900/90 to-saffron-900/90" />
+        <div className="absolute inset-0 -z-10 bg-pattern opacity-30" aria-hidden />
+
+        <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
+          <div className="text-center">
+            <p className="mb-2 font-bold uppercase tracking-[0.2em] text-saffron-300">
+              {t('home.detailsKicker')}
+            </p>
+            <h2 className="font-display text-3xl font-black md:text-5xl">{t('home.detailsTitle')}</h2>
+            <p className="mx-auto mt-4 max-w-2xl text-lg text-white/85">{t('home.detailsText')}</p>
+          </div>
+
+          {/* detail cards */}
+          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <DetailCard icon={MapPin} title={t('contact.officeTitle')}>
+              {pick(trustInfo.address)}
+            </DetailCard>
+            <DetailCard icon={Phone} title={t('contact.phoneTitle')}>
+              <div className="flex flex-col gap-0.5">
+                {trustInfo.phones.map((p) => (
+                  <a key={p} href={`tel:+91${p}`} className="hover:text-saffron-300">
+                    +91 {p}
+                  </a>
+                ))}
+              </div>
+            </DetailCard>
+            <DetailCard icon={Mail} title={t('contact.emailTitle')}>
+              <a href={`mailto:${trustInfo.email}`} className="break-all hover:text-saffron-300">
+                {trustInfo.email}
+              </a>
+            </DetailCard>
+            <DetailCard icon={User} title={t('contact.presidentTitle')}>
+              {t('contact.presidentName')}
+            </DetailCard>
+          </div>
+
+          {/* bank / donate strip */}
+          <div className="mt-6 grid gap-6 rounded-3xl bg-white/10 p-6 ring-1 ring-white/20 backdrop-blur md:p-8 lg:grid-cols-[1.2fr_1fr] lg:items-center">
+            <div>
+              <div className="mb-4 flex items-center gap-3">
+                <span className="grid size-11 place-items-center rounded-2xl bg-gradient-to-br from-saffron-500 to-leaf-600">
+                  <Landmark className="size-6" />
+                </span>
+                <h3 className="font-display text-xl font-extrabold">{t('contact.bankTitle')}</h3>
+              </div>
+              <dl className="grid gap-3 sm:grid-cols-3">
+                <BankItem label={t('contact.pan')} value={trustInfo.bank.pan} />
+                <BankItem label={t('contact.account')} value={trustInfo.bank.account} />
+                <BankItem label={t('contact.ifsc')} value={trustInfo.bank.ifsc} />
+              </dl>
+            </div>
+            <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
+              <Link
+                to="/contact"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 font-black text-saffron-700 shadow-lg transition-transform hover:scale-105"
+              >
+                <HandHeart className="size-5" /> {t('home.ctaButton')}
+              </Link>
+              <a
+                href={waHref}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-7 py-3.5 font-black text-white shadow-lg transition-transform hover:scale-105"
+              >
+                <WhatsAppIcon className="size-5" /> {t('whatsapp.label')}
+              </a>
+            </div>
+          </div>
+
+          {/* vedas strip */}
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+            {vedas.map((v) => (
+              <span
+                key={v.en}
+                className="rounded-full bg-white/10 px-5 py-2 text-sm font-bold text-saffron-100 ring-1 ring-white/20"
+              >
+                {pick(v)}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
     </>
+  )
+}
+
+function DetailCard({
+  icon: Icon,
+  title,
+  children,
+}: {
+  icon: typeof MapPin
+  title: string
+  children: React.ReactNode
+}) {
+  return (
+    <div className="rounded-3xl bg-white/10 p-5 ring-1 ring-white/20 backdrop-blur">
+      <span className="grid size-12 place-items-center rounded-2xl bg-gradient-to-br from-saffron-500 to-leaf-600 shadow">
+        <Icon className="size-6" />
+      </span>
+      <h3 className="mt-4 font-display text-base font-extrabold text-saffron-200">{title}</h3>
+      <div className="mt-1 text-sm font-medium leading-relaxed text-white/90">{children}</div>
+    </div>
+  )
+}
+
+function BankItem({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-xl bg-white/10 p-3">
+      <dt className="text-xs font-semibold text-white/70">{label}</dt>
+      <dd className="mt-0.5 break-all font-mono text-sm font-bold">{value}</dd>
+    </div>
   )
 }

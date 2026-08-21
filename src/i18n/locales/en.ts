@@ -44,6 +44,13 @@ const en = {
     ctaTitle: 'Join Us in This Noble Cause',
     ctaText: 'Your support will further strengthen this journey of social upliftment.',
     ctaButton: 'Donate & Support',
+    galleryKicker: 'Gallery',
+    galleryTitle: 'Glimpses of Our Programs',
+    galleryText: 'A few moments from our Yajnas, yoga camps, education drives and felicitation ceremonies.',
+    viewMore: 'View All Photos',
+    detailsKicker: 'Contact & Details',
+    detailsTitle: 'Connect With Devarpan Trust',
+    detailsText: 'Your support and participation in this mission of Yajna, Yoga and service is warmly invited.',
   },
   objectives: {
     kicker: 'Objectives',
@@ -98,6 +105,10 @@ const en = {
     title: 'Donate & Support',
     intro:
       'Your donation strengthens our efforts for the upliftment of society. You can contribute through the bank details below.',
+  },
+  whatsapp: {
+    label: 'Message us on WhatsApp',
+    prefill: 'Hello! I would like to know more about Devarpan Trust.',
   },
 } as const
 
