@@ -18,16 +18,70 @@ export const galleryCategories: { key: GalleryCategory; hi: string; en: string }
 ]
 
 export const galleryItems: GalleryItem[] = [
-  { id: 1, category: 'yajna', caption: { hi: 'सामूहिक यज्ञ', en: 'Community Yajna' } },
-  { id: 2, category: 'yajna', caption: { hi: 'हवन एवं संस्कार', en: 'Havan & Sanskar' } },
-  { id: 3, category: 'yoga', caption: { hi: 'अन्तर्राष्ट्रीय योग दिवस', en: 'International Yoga Day' } },
-  { id: 4, category: 'yoga', caption: { hi: 'योग शिविर', en: 'Yoga Camp' } },
-  { id: 5, category: 'education', caption: { hi: 'बाल शिक्षा सहयोग', en: 'Child Education Support' } },
-  { id: 6, category: 'education', caption: { hi: 'संस्कार कक्षा', en: 'Sanskar Class' } },
-  { id: 7, category: 'women', caption: { hi: 'सिलाई सेवा केन्द्र', en: 'Stitching Service Centre' } },
-  { id: 8, category: 'women', caption: { hi: 'महिला कार्यशाला', en: 'Women Workshop' } },
-  { id: 9, category: 'events', caption: { hi: 'सामूहिक विवाह सहायता', en: 'Community Marriage Support' } },
-  { id: 10, category: 'events', caption: { hi: 'अभिनन्दन समारोह', en: 'Felicitation Ceremony' } },
-  { id: 11, category: 'events', caption: { hi: 'वार्षिक उत्सव', en: 'Annual Celebration' } },
-  { id: 12, category: 'yajna', caption: { hi: 'दीप प्रज्वलन', en: 'Lamp Lighting' } },
+  {
+    id: 1,
+    category: 'yajna',
+    caption: { hi: 'सामूहिक यज्ञ (हवन)', en: 'Community Yajna (Havan)' },
+    src: '/gallery/g04-yajna.jpg',
+  },
+  {
+    id: 2,
+    category: 'yajna',
+    caption: { hi: 'यज्ञ एवं बाल अभिनन्दन', en: 'Yajna & Children\u2019s Felicitation' },
+    src: '/gallery/g06-yajna-bal.jpg',
+  },
+  {
+    id: 3,
+    category: 'yajna',
+    caption: { hi: 'सत्संग एवं यज्ञ सभा', en: 'Satsang & Yajna Gathering' },
+    src: '/gallery/g08-satsang-yajna.jpg',
+  },
+  {
+    id: 4,
+    category: 'yoga',
+    caption: { hi: 'बाल योग एवं ध्यान शिविर', en: 'Children\u2019s Yoga & Meditation Camp' },
+    src: '/gallery/g01-bal-yoga.jpg',
+  },
+  {
+    id: 5,
+    category: 'yoga',
+    caption: { hi: 'योग एवं संस्कार प्रतिभागी', en: 'Yoga & Sanskar Participants' },
+    src: '/gallery/g03-yoga-sanskar.jpg',
+  },
+  {
+    id: 6,
+    category: 'education',
+    caption: { hi: 'बच्चों को शिक्षण सामग्री वितरण', en: 'Distribution of Study Material to Children' },
+    src: '/gallery/g02-shiksha-vitran.jpg',
+  },
+  {
+    id: 7,
+    category: 'events',
+    caption: { hi: 'विद्यार्थी अभिनन्दन समारोह', en: 'Student Felicitation Ceremony' },
+    src: '/gallery/g05-vidyarthi-abhinandan.jpg',
+  },
+  {
+    id: 8,
+    category: 'events',
+    caption: { hi: 'मेधावी छात्रा सम्मान', en: 'Meritorious Student Honour' },
+    src: '/gallery/g07-medhavi-chatra.jpg',
+  },
+  {
+    id: 9,
+    category: 'events',
+    caption: { hi: 'वरिष्ठजन सम्मान', en: 'Honouring of Elders' },
+    src: '/gallery/g09-varishthjan-samman.jpg',
+  },
+  {
+    id: 10,
+    category: 'events',
+    caption: { hi: 'सम्मान एवं सहयोग समारोह', en: 'Felicitation & Support Ceremony' },
+    src: '/gallery/g10-samman-samaroh.jpg',
+  },
+  {
+    id: 11,
+    category: 'women',
+    caption: { hi: 'महिला सम्मान समारोह', en: 'Women\u2019s Felicitation Ceremony' },
+    src: '/gallery/g11-mahila-samman.jpg',
+  },
 ]
