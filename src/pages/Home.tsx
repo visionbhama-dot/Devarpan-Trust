@@ -12,11 +12,13 @@ import {
   Mail,
   Landmark,
   User,
+  Crown,
 } from 'lucide-react'
 import { WhatsAppIcon } from '../components/icons'
 import { useLang } from '../lib/useLang'
 import { vedas, trustInfo } from '../data/trust'
 import { galleryItems } from '../data/gallery'
+import { members } from '../data/members'
 
 const focusIcons = {
   yajna: Flame,
@@ -39,6 +41,12 @@ export default function Home() {
   const { t } = useTranslation()
   const { pick } = useLang()
   const previewItems = galleryItems.slice(0, 6)
+  const previewMembers = members.slice(0, 3)
+  const memberGradients = [
+    'from-vermilion-500 to-vermilion-700',
+    'from-marigold-400 to-marigold-600',
+    'from-vermilion-600 to-marigold-500',
+  ]
   const waHref = `https://wa.me/91${trustInfo.phones[0]}?text=${encodeURIComponent(
     t('whatsapp.prefill'),
   )}`
@@ -128,30 +136,55 @@ export default function Home() {
         <div className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-vermilion-600 via-marigold-400 to-vermilion-600" />
       </section>
 
-      {/* ============ ABOUT ============ */}
+      {/* ============ ABOUT — text left, image right ============ */}
       <section className="bg-mandana py-16 md:py-20">
-        <div className="mx-auto max-w-5xl px-6 text-center">
-          <p className="mb-2 font-bold uppercase tracking-[0.2em] text-vermilion-600">
-            {t('home.aboutKicker')}
-          </p>
-          <h2 className="font-display text-4xl font-normal text-ink-900 md:text-5xl">
-            {t('home.aboutTitle')}
-          </h2>
-          <div className="mx-auto mt-4 flex items-center justify-center gap-2">
-            <span className="h-1 w-10 rounded-full bg-vermilion-500" />
-            <span className="size-2.5 rotate-45 bg-marigold-400" />
-            <span className="h-1 w-10 rounded-full bg-vermilion-500" />
+        <div className="mx-auto grid max-w-7xl items-center gap-10 px-6 lg:grid-cols-2">
+          {/* text */}
+          <div>
+            <p className="mb-2 font-bold uppercase tracking-[0.2em] text-vermilion-600">
+              {t('home.aboutKicker')}
+            </p>
+            <h2 className="font-display text-4xl font-normal text-ink-900 md:text-5xl">
+              {t('home.aboutTitle')}
+            </h2>
+            <div className="mt-4 flex items-center gap-2">
+              <span className="h-1 w-12 rounded-full bg-vermilion-500" />
+              <span className="size-2.5 rotate-45 bg-marigold-400" />
+              <span className="h-1 w-12 rounded-full bg-vermilion-500" />
+            </div>
+            <p className="mt-5 text-lg leading-relaxed text-ink-700">{t('home.aboutText')}</p>
+            <Link
+              to="/about"
+              className="mt-7 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-vermilion-600 to-marigold-500 px-7 py-3.5 font-bold text-white shadow-lg transition-transform hover:scale-105"
+            >
+              {t('home.aboutButton')} <ArrowRight className="size-5" />
+            </Link>
           </div>
-          <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-ink-700 md:text-xl">
-            {t('home.aboutText')}
-          </p>
+
+          {/* image */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="relative"
+          >
+            <div className="overflow-hidden rounded-3xl border-4 border-white shadow-2xl ring-1 ring-black/5">
+              <img
+                src="/gallery/g04-yajna.jpg"
+                alt={t('home.aboutTitle')}
+                className="aspect-[4/3] w-full object-cover"
+              />
+            </div>
+            <span className="absolute -bottom-4 -left-4 -z-10 hidden size-28 rounded-3xl bg-marigold-400 lg:block" />
+            <span className="absolute -right-4 -top-4 -z-10 hidden size-28 rounded-3xl bg-vermilion-500 lg:block" />
+          </motion.div>
         </div>
       </section>
 
       {/* ============ FOCUS AREAS ============ */}
       <section className="bg-white py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-6">
-          <h2 className="text-center font-display text-3xl font-black text-ink-900 md:text-5xl">
+          <h2 className="text-center font-display text-4xl font-normal text-ink-900 md:text-5xl">
             {t('home.focusTitle')}
           </h2>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -186,7 +219,7 @@ export default function Home() {
       <section className="relative overflow-hidden bg-gradient-to-r from-leaf-700 to-saffron-700 py-16 text-white">
         <div className="absolute inset-0 bg-pattern opacity-20" aria-hidden />
         <div className="relative mx-auto max-w-7xl px-6">
-          <h2 className="text-center font-display text-3xl font-black md:text-5xl">
+          <h2 className="text-center font-display text-4xl font-normal md:text-5xl">
             {t('home.statsTitle')}
           </h2>
           <div className="mt-10 grid grid-cols-2 gap-6 lg:grid-cols-4">
@@ -207,6 +240,80 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ============ MEMBERS PREVIEW ============ */}
+      <section className="bg-white py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="mb-10 text-center">
+            <p className="mb-2 font-bold uppercase tracking-[0.2em] text-vermilion-600">
+              {t('home.membersKicker')}
+            </p>
+            <h2 className="font-display text-4xl font-normal text-ink-900 md:text-5xl">
+              {t('home.membersTitle')}
+            </h2>
+            <div className="mx-auto mt-4 flex items-center justify-center gap-2">
+              <span className="h-1 w-12 rounded-full bg-vermilion-500" />
+              <span className="size-2.5 rotate-45 bg-marigold-400" />
+              <span className="h-1 w-12 rounded-full bg-vermilion-500" />
+            </div>
+            <p className="mx-auto mt-4 max-w-2xl text-ink-700">{t('home.membersText')}</p>
+          </div>
+
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {previewMembers.map((m, i) => {
+              const isPresident = i === 0
+              return (
+                <motion.article
+                  key={m.id}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
+                  className={`group relative overflow-hidden rounded-3xl bg-white shadow-md ring-1 transition-all hover:-translate-y-1.5 hover:shadow-2xl ${
+                    isPresident ? 'ring-2 ring-vermilion-400' : 'ring-marigold-200'
+                  }`}
+                >
+                  {isPresident && (
+                    <span className="absolute right-4 top-4 z-10 inline-flex items-center gap-1 rounded-full bg-vermilion-600 px-3 py-1 text-xs font-bold text-white shadow">
+                      <Crown className="size-3.5" /> {t('contact.presidentTitle')}
+                    </span>
+                  )}
+                  <div className="relative h-52 w-full overflow-hidden">
+                    {m.photo ? (
+                      <img src={m.photo} alt={pick(m.name)} className="size-full object-cover" />
+                    ) : (
+                      <div
+                        className={`grid size-full place-items-center bg-gradient-to-br ${
+                          memberGradients[i % memberGradients.length]
+                        }`}
+                      >
+                        <div className="grid size-24 place-items-center rounded-full bg-white/25 ring-4 ring-white/40 backdrop-blur">
+                          <User className="size-12 text-white" />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-6 text-center">
+                    <h3 className="font-display text-xl font-normal text-ink-900">{pick(m.name)}</h3>
+                    <p className="mt-1.5 inline-block rounded-full bg-marigold-100 px-3 py-1 text-sm font-semibold text-vermilion-700">
+                      {pick(m.role)}
+                    </p>
+                  </div>
+                </motion.article>
+              )
+            })}
+          </div>
+
+          <div className="mt-10 text-center">
+            <Link
+              to="/members"
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-vermilion-600 to-marigold-500 px-8 py-3.5 font-bold text-white shadow-lg transition-transform hover:scale-105"
+            >
+              {t('home.membersViewAll')} <ArrowRight className="size-5" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ============ GALLERY PREVIEW ============ */}
       <section className="bg-mandana py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-6">
@@ -214,7 +321,7 @@ export default function Home() {
             <p className="mb-2 font-bold uppercase tracking-[0.2em] text-vermilion-600">
               {t('home.galleryKicker')}
             </p>
-            <h2 className="font-display text-3xl font-black text-ink-900 md:text-5xl">
+            <h2 className="font-display text-4xl font-normal text-ink-900 md:text-5xl">
               {t('home.galleryTitle')}
             </h2>
             <p className="mx-auto mt-3 max-w-2xl text-ink-700">{t('home.galleryText')}</p>
@@ -271,7 +378,7 @@ export default function Home() {
             <p className="mb-2 font-bold uppercase tracking-[0.2em] text-saffron-300">
               {t('home.detailsKicker')}
             </p>
-            <h2 className="font-display text-3xl font-black md:text-5xl">{t('home.detailsTitle')}</h2>
+            <h2 className="font-display text-4xl font-normal md:text-5xl">{t('home.detailsTitle')}</h2>
             <p className="mx-auto mt-4 max-w-2xl text-lg text-white/85">{t('home.detailsText')}</p>
           </div>
 

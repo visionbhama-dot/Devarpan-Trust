@@ -2,6 +2,7 @@
 const en = {
   nav: {
     home: 'Home',
+    about: 'About Us',
     objectives: 'Our Objectives',
     members: 'Our Members',
     gallery: 'Gallery',
@@ -26,6 +27,11 @@ const en = {
     aboutTitle: 'A Resolve Kindled by Devotion',
     aboutText:
       'Devarpan Trust is a registered organisation dedicated to Yajna, Yoga, culture, values, women empowerment and social causes. Our mission is to carry Vedic values to every household and to work tirelessly for the upliftment of every section of society.',
+    aboutButton: 'Learn About Us',
+    membersKicker: 'Board of Trustees',
+    membersTitle: 'Our Members',
+    membersText: 'The running of Devarpan Trust rests in the hands of its dedicated trustee members.',
+    membersViewAll: 'View All Members',
     vedasTitle: 'The Four Vedas — Our Inspiration',
     focusTitle: 'Our Focus Areas',
     focus: {
@@ -51,6 +57,31 @@ const en = {
     detailsKicker: 'Contact & Details',
     detailsTitle: 'Connect With Devarpan Trust',
     detailsText: 'Your support and participation in this mission of Yajna, Yoga and service is warmly invited.',
+  },
+  about: {
+    kicker: 'Introduction',
+    title: 'About Us',
+    intro:
+      'A registered organisation dedicated to the holistic upliftment of society through Yajna, Yoga, culture and values.',
+    storyTitle: 'Our Story',
+    story1:
+      'Devarpan Trust is a registered organisation, founded to promote Vedic values and Indian culture. We work continuously in the fields of Yajna, Yoga, culture, values, women empowerment and social welfare.',
+    story2:
+      'The Trust is devoted to freeing humankind from the stress and depression of a material lifestyle, making children and the youth aware of the importance of values, and selflessly serving the poor, helpless and needy sections of society.',
+    visionTitle: 'Our Vision',
+    vision:
+      'To build a society where Vedic knowledge, Yoga and values form the foundation of every individual\u2019s life.',
+    missionTitle: 'Our Mission',
+    mission:
+      'To establish the science of Yajna and the importance of Yoga, while striving continuously for education, health and women empowerment.',
+    mottoTitle: 'Our Motto',
+    mottoText:
+      '\u201CThrough devotion (shraddha) the sacred fire is kindled.\u201D This spirit is at the heart of everything we do \u2014 only work done with devotion and dedication spreads true light in society.',
+    focusTitle: 'Our Pillars',
+    founderTitle: 'Founder President',
+    founderName: 'Shri Ompal Singh Arya',
+    founderText:
+      'Under the leadership of the Trust\u2019s President, Shri Ompal Singh Arya, the organisation continues to advance on the path of service and values.',
   },
   objectives: {
     kicker: 'Objectives',
