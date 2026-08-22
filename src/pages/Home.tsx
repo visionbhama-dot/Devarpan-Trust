@@ -167,13 +167,9 @@ export default function Home() {
               <span className="size-2.5 rotate-45 bg-marigold-400" />
               <span className="h-1 w-12 rounded-full bg-vermilion-500" />
             </div>
-            <p className="mt-5 text-lg leading-relaxed text-ink-700">{t('home.aboutText')}</p>
-            <Link
-              to="/about"
-              className="mt-7 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-vermilion-600 to-marigold-500 px-7 py-3.5 font-bold text-white shadow-lg transition-transform hover:scale-105"
-            >
-              {t('home.aboutButton')} <ArrowRight className="size-5" />
-            </Link>
+            <p className="mt-5 text-lg font-semibold leading-relaxed text-ink-800 md:text-xl">
+              {t('home.aboutText')}
+            </p>
           </div>
 
           {/* image */}
@@ -314,8 +310,8 @@ export default function Home() {
                     )}
                   </div>
                   <div className="p-6 text-center">
-                    <h3 className="font-display text-xl font-normal text-ink-900">{pick(m.name)}</h3>
-                    <p className="mt-1.5 inline-block rounded-full bg-marigold-100 px-3 py-1 text-sm font-semibold text-vermilion-700">
+                    <h3 className="font-sans text-xl font-bold text-ink-900">{pick(m.name)}</h3>
+                    <p className="mt-1.5 inline-block rounded-full bg-marigold-100 px-3 py-1 text-sm font-bold text-vermilion-700">
                       {pick(m.role)}
                     </p>
                   </div>

@@ -16,7 +16,7 @@ const en = {
     sanskrit: 'Shraddhaya Agnih Samidhyate',
     welcome: 'welcomes you',
     tagline:
-      'An organisation dedicated to Yajna, Yoga, culture, values, women empowerment and social causes',
+      'An organisation dedicated to Yajna, Yoga, values, culture, women empowerment and social causes',
   },
   home: {
     heroKicker: 'Om • Vedas • Sanskar',
@@ -27,7 +27,7 @@ const en = {
     aboutKicker: 'About Us',
     aboutTitle: 'A Resolve Kindled by Devotion',
     aboutText:
-      'Devarpan Trust is a registered organisation dedicated to Yajna, Yoga, culture, values, women empowerment and social causes. Our mission is to carry Vedic values to every household and to work tirelessly for the upliftment of every section of society.',
+      'Devarpan Trust is a registered organisation dedicated to Yajna, Yoga, values, culture, women empowerment and social causes. Our mission is to carry Vedic values to every household and to work tirelessly for the upliftment of every section of society.',
     aboutButton: 'Learn About Us',
     membersKicker: 'Board of Trustees',
     membersTitle: 'Our Members',
@@ -117,7 +117,7 @@ const en = {
     title: 'Contact Us',
     intro: 'Reach out to us for any information, support or participation.',
     officeTitle: 'Office',
-    address: 'D-2 / 128, Jeevan Park, Uttam Nagar, New Delhi',
+    address: 'D-2 / 128, Jeevan Park, Uttam Nagar, New Delhi - 110059',
     phoneTitle: 'Phone',
     emailTitle: 'Email',
     presidentTitle: 'President',
@@ -135,7 +135,7 @@ const en = {
     formThanks: 'Thank you! Your message has been received. We will contact you soon.',
   },
   footer: {
-    about: 'Holistic upliftment of society through Yajna, Yoga, culture and values.',
+    about: 'Holistic upliftment of society through Yajna, Yoga, values and culture.',
     quickLinks: 'Quick Links',
     contactTitle: 'Contact',
     donateTitle: 'Donation Details',

@@ -3,8 +3,8 @@ export const trustInfo = {
   phones: ['9312270686', '8920208536', '9718485590'],
   email: 'devarpan.trust@gmail.com',
   address: {
-    hi: 'D-2 / 128, जीवन पार्क, उत्तम नगर, नई दिल्ली',
-    en: 'D-2 / 128, Jeevan Park, Uttam Nagar, New Delhi',
+    hi: 'D-2 / 128, जीवन पार्क, उत्तम नगर, नई दिल्ली - 110059',
+    en: 'D-2 / 128, Jeevan Park, Uttam Nagar, New Delhi - 110059',
   },
   bank: {
     pan: 'AAETD8306C',

@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { SettingsProvider } from './lib/SettingsContext'
 import Layout from './components/Layout'
 import Home from './pages/Home'
-import About from './pages/About'
 import Objectives from './pages/Objectives'
 import Members from './pages/Members'
 import Gallery from './pages/Gallery'
@@ -30,7 +29,6 @@ export default function App() {
           />
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
             <Route path="/objectives" element={<Objectives />} />
             <Route path="/members" element={<Members />} />
             <Route path="/gallery" element={<Gallery />} />

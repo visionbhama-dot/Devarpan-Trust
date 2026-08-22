@@ -128,8 +128,8 @@ values (
   'site',
   '["9312270686","8920208536","9718485590"]'::jsonb,
   'devarpan.trust@gmail.com',
-  'D-2 / 128, जीवन पार्क, उत्तम नगर, नई दिल्ली',
-  'D-2 / 128, Jeevan Park, Uttam Nagar, New Delhi',
+  'D-2 / 128, जीवन पार्क, उत्तम नगर, नई दिल्ली - 110059',
+  'D-2 / 128, Jeevan Park, Uttam Nagar, New Delhi - 110059',
   '{"pan":"AAETD8306C","account":"052222010003814","ifsc":"UBIN0905224"}'::jsonb,
   '{"facebook":"https://www.facebook.com/share/1DVVYobnxn/","instagram":"","youtube":"","twitter":"","whatsapp":"9312270686"}'::jsonb
 )
@@ -152,13 +152,13 @@ on conflict do nothing;
 
 -- Members
 insert into public.members (name_hi, name_en, role_hi, role_en, photo_url, sort) values
-('श्री ओम पाल सिंह','Shri Om Pal Singh','फर्स्ट ट्रस्टी और अध्यक्ष','First Trustee & President','/members/ompal.jpg',1),
-('श्री रमेश चंद्र','Shri Ramesh Chandra','फर्स्ट ट्रस्टी और महासचिव','First Trustee & General Secretary','/members/ramesh.jpg',2),
-('श्रीमती नीरज कुमारी','Smt. Neeraj Kumari','फर्स्ट ट्रस्टी और कोषाध्यक्ष','First Trustee & Treasurer','/members/neeraj.jpg',3),
-('श्री धनंजय','Shri Dhananjay','फर्स्ट ट्रस्टी और प्रस्तोता','First Trustee & Proposer','/members/dhananjay.jpg',4),
-('श्री देवेन्द्र कुमार','Shri Devendra Kumar','फर्स्ट ट्रस्टी','First Trustee','/members/devendra.jpg',5),
-('श्री रामेश्वर दयाल गुप्ता','Shri Rameshwar Dayal Gupta','फर्स्ट ट्रस्टी','First Trustee','/members/rameshwar.jpg',6),
-('श्री अर्जुन कुमार','Shri Arjun Kumar','फर्स्ट ट्रस्टी','First Trustee','/members/arjun.jpg',7)
+('श्री ओमपाल सिंह आर्य','Shri Ompal Singh Arya','अध्यक्ष','President','/members/ompal.jpg',1),
+('श्री रमेशचंद्र आर्य','Shri Rameshchandra Arya','महासचिव','General Secretary','/members/ramesh.jpg',2),
+('श्रीमती नीरज कुमारी','Smt. Neeraj Kumari','कोषाध्यक्ष','Treasurer','/members/neeraj.jpg',3),
+('आचार्य डॉ. धनंजय आर्य','Acharya Dr. Dhananjay Arya','प्रस्तोता','Proposer','/members/dhananjay.jpg',4),
+('श्री देवेन्द्र कुमार','Shri Devendra Kumar','ट्रस्टी','Trustee','/members/devendra.jpg',5),
+('श्री रामेश्वर दयाल गुप्ता','Shri Rameshwar Dayal Gupta','ट्रस्टी','Trustee','/members/rameshwar.jpg',6),
+('श्री अर्जुन कुमार','Shri Arjun Kumar','ट्रस्टी','Trustee','/members/arjun.jpg',7)
 on conflict do nothing;
 
 -- Gallery (existing photos served from the site’s /gallery folder)

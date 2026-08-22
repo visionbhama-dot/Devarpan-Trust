@@ -83,8 +83,8 @@ export default function Members() {
                   </div>
 
                   <div className="p-6 text-center">
-                    <h3 className="font-display text-xl font-normal text-ink-900">{pick(m.name)}</h3>
-                    <p className="mt-1.5 inline-block rounded-full bg-marigold-100 px-3 py-1 text-sm font-semibold text-vermilion-700">
+                    <h3 className="font-sans text-xl font-bold text-ink-900">{pick(m.name)}</h3>
+                    <p className="mt-1.5 inline-block rounded-full bg-marigold-100 px-3 py-1 text-sm font-bold text-vermilion-700">
                       {pick(m.role)}
                     </p>
                     {!m.photo_url && (

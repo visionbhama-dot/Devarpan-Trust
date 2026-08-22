@@ -8,7 +8,6 @@ import { useSettings } from '../lib/SettingsContext'
 
 const links = [
   { to: '/', key: 'nav.home' },
-  { to: '/about', key: 'nav.about' },
   { to: '/objectives', key: 'nav.objectives' },
   { to: '/members', key: 'nav.members' },
   { to: '/gallery', key: 'nav.gallery' },
