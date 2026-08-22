@@ -5,9 +5,14 @@
   --font-sans: 'Mukta', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Rozha One', 'Mukta', serif;
 
-  /* Warm handmade-paper backgrounds */
-  --color-paper: #fbf3e1;
-  --color-paper-dark: #f3e5c6;
+  /* Soft off-white & neutral backgrounds */
+  --color-paper: #f6eee3;
+  --color-paper-dark: #e7e0d3;
+  --color-cloud: #f5f5f4;
+  --color-linen: #f4f0e0;
+  --color-stone: #ebe8e2;
+  --color-sand: #e7e0d3;
+  --color-taupe: #e8dacc;
 
   /* Vermilion — primary RED */
   --color-vermilion-50: #fdeeec;
