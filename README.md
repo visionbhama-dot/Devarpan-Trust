@@ -46,4 +46,4 @@ All content lives in easy-to-edit files under `src/`:
 
 - **कार्यालय:** D-2 / 128, जीवन पार्क, उत्तम नगर, नई दिल्ली
 - **फ़ोन:** 9312270686, 8920208536, 9718485590
-- **ईमेल:** devarpan.trust@gmail.com 
+- **ईमेल:** devarpan.trust@gmail.com
