@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { MapPin, Phone, Mail, Heart } from 'lucide-react'
 import { FacebookIcon } from './icons'
+import OmLogo from './OmLogo'
 import { useLang } from '../lib/useLang'
 import { trustInfo } from '../data/trust'
 
@@ -28,9 +29,7 @@ export default function Footer() {
         {/* Brand */}
         <div>
           <div className="flex items-center gap-3">
-            <span className="grid size-12 place-items-center rounded-full bg-gradient-to-br from-marigold-400 to-vermilion-500 text-2xl font-bold text-white shadow ring-2 ring-marigold-300/40">
-              ॐ
-            </span>
+            <OmLogo size="md" />
             <div>
               <p className="font-display text-2xl font-normal text-white">{t('brand.name')}</p>
               <p className="text-xs font-semibold text-marigold-300">{t('brand.sanskrit')}</p>

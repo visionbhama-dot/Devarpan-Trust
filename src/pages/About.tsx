@@ -83,8 +83,8 @@ export default function About() {
         <div className="absolute inset-0 -z-20 bg-gradient-to-br from-vermilion-800 to-vermilion-900" />
         <div className="absolute inset-0 -z-10 bg-mandana-overlay opacity-25" aria-hidden />
         <div className="mx-auto max-w-4xl px-6 py-16 text-center md:py-20">
-          <span className="mx-auto mb-5 grid size-16 place-items-center rounded-full bg-white/15 text-3xl ring-2 ring-marigold-300/40">
-            ॐ
+          <span className="mx-auto mb-5 grid size-20 place-items-center rounded-full bg-gradient-to-br from-white to-marigold-50 shadow-xl ring-2 ring-marigold-300">
+            <img src="/om-color.svg" alt="ॐ" className="size-12 object-contain" />
           </span>
           <p className="font-bold uppercase tracking-[0.2em] text-marigold-300">{t('about.mottoTitle')}</p>
           <p className="mt-3 font-display text-4xl font-normal text-marigold-200 md:text-5xl">

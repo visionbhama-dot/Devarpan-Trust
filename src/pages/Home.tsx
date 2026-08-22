@@ -75,13 +75,13 @@ export default function Home() {
         <div className="absolute inset-0 -z-10 bg-mandana-overlay opacity-40" aria-hidden />
 
         <div className="relative mx-auto w-full max-w-5xl px-6 py-20 text-center">
-          <motion.span
+          <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="mx-auto mb-6 grid size-20 place-items-center rounded-full bg-white text-4xl font-black text-vermilion-600 shadow-2xl ring-4 ring-marigold-400/60"
+            className="mx-auto mb-6 grid size-24 place-items-center rounded-full bg-gradient-to-br from-white to-marigold-50 shadow-2xl ring-4 ring-marigold-400/70"
           >
-            ॐ
-          </motion.span>
+            <img src="/om-color.svg" alt="ॐ" className="size-14 object-contain" />
+          </motion.div>
 
           <motion.p
             initial={{ opacity: 0, y: 14 }}

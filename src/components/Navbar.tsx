@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Menu, X, Heart } from 'lucide-react'
 import LanguageToggle from './LanguageToggle'
+import OmLogo from './OmLogo'
 
 const links = [
   { to: '/', key: 'nav.home' },
@@ -25,9 +26,7 @@ export default function Navbar() {
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 md:px-6">
         {/* Brand */}
         <Link to="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
-          <span className="grid size-12 place-items-center rounded-full bg-gradient-to-br from-vermilion-600 to-marigold-500 text-2xl font-bold text-white shadow-md ring-2 ring-marigold-300">
-            ॐ
-          </span>
+          <OmLogo size="md" />
           <span className="leading-tight">
             <span className="block font-display text-2xl font-normal tracking-tight text-ink-900 md:text-3xl">
               {t('brand.name')}
