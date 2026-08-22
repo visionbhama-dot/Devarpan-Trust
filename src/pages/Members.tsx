@@ -61,7 +61,7 @@ export default function Members() {
                   )}
 
                   {/* photo / placeholder */}
-                  <div className="relative h-56 w-full overflow-hidden">
+                  <div className="relative aspect-[3/4] w-full overflow-hidden">
                     {m.photo_url ? (
                       <img
                         src={m.photo_url}

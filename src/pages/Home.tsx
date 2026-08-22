@@ -84,9 +84,9 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="mx-auto mb-6 grid size-24 place-items-center rounded-full bg-gradient-to-br from-white to-marigold-50 shadow-2xl ring-4 ring-marigold-400/70"
+            className="mx-auto mb-6 grid size-32 place-items-center overflow-hidden rounded-full bg-white p-2.5 shadow-2xl ring-4 ring-marigold-400/70 md:size-40"
           >
-            <img src="/om-color.svg" alt="ॐ" className="size-14 object-contain" />
+            <img src="/devarpan-logo.png" alt="देवार्पण ट्रस्ट" className="size-full object-contain" />
           </motion.div>
 
           <motion.p
@@ -283,7 +283,7 @@ export default function Home() {
                       <Crown className="size-3.5" /> {t('contact.presidentTitle')}
                     </span>
                   )}
-                  <div className="relative h-52 w-full overflow-hidden">
+                  <div className="relative aspect-[3/4] w-full overflow-hidden">
                     {m.photo_url ? (
                       <img
                         src={m.photo_url}
