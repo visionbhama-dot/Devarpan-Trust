@@ -10,13 +10,12 @@ export default function PageHeader({
   intro?: string
 }) {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-saffron-600 via-saffron-500 to-leaf-600 text-white">
-      <div className="absolute inset-0 bg-pattern opacity-30" aria-hidden />
+    <section className="relative overflow-hidden border-b-4 border-marigold-400 bg-mandana">
       <div className="relative mx-auto max-w-4xl px-6 py-16 text-center md:py-20">
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-3 inline-block rounded-full bg-white/20 px-4 py-1 text-sm font-semibold tracking-wide ring-1 ring-white/30"
+          className="mb-4 inline-block rounded-full bg-vermilion-600 px-5 py-1.5 text-sm font-bold uppercase tracking-widest text-white shadow-sm"
         >
           {kicker}
         </motion.p>
@@ -24,22 +23,27 @@ export default function PageHeader({
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.05 }}
-          className="font-display text-4xl font-extrabold drop-shadow-sm md:text-5xl"
+          className="font-display text-5xl font-normal text-ink-900 md:text-6xl"
         >
           {title}
         </motion.h1>
+        {/* decorative divider */}
+        <div className="mx-auto mt-4 flex items-center justify-center gap-2">
+          <span className="h-1 w-10 rounded-full bg-vermilion-500" />
+          <span className="size-2.5 rotate-45 bg-marigold-400" />
+          <span className="h-1 w-10 rounded-full bg-vermilion-500" />
+        </div>
         {intro && (
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-white/90 md:text-lg"
+            className="mx-auto mt-4 max-w-2xl text-base font-medium leading-relaxed text-ink-700 md:text-lg"
           >
             {intro}
           </motion.p>
         )}
       </div>
-      <div className="h-3 w-full bg-gradient-to-r from-saffron-700 via-white/40 to-leaf-700" />
     </section>
   )
 }

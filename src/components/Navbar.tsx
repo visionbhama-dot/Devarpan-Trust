@@ -17,18 +17,21 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-50 bg-gradient-to-r from-saffron-600 via-saffron-500 to-leaf-600 shadow-lg">
+    <header className="sticky top-0 z-50 border-b-4 border-vermilion-600 bg-white shadow-md">
+      {/* thin festive top accent */}
+      <div className="h-1.5 w-full bg-gradient-to-r from-vermilion-600 via-marigold-400 to-vermilion-600" />
+
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 md:px-6">
         {/* Brand */}
         <Link to="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
-          <span className="grid size-11 place-items-center rounded-full bg-white text-2xl font-bold text-saffron-600 shadow-md ring-2 ring-white/60">
+          <span className="grid size-12 place-items-center rounded-full bg-gradient-to-br from-vermilion-600 to-marigold-500 text-2xl font-bold text-white shadow-md ring-2 ring-marigold-300">
             ॐ
           </span>
-          <span className="leading-tight text-white">
-            <span className="block font-display text-lg font-extrabold tracking-tight md:text-xl">
+          <span className="leading-tight">
+            <span className="block font-display text-2xl font-normal tracking-tight text-ink-900 md:text-3xl">
               {t('brand.name')}
             </span>
-            <span className="block text-[11px] font-medium text-white/85 md:text-xs">
+            <span className="block text-[11px] font-semibold text-vermilion-700 md:text-xs">
               {t('brand.sanskrit')}
             </span>
           </span>
@@ -42,8 +45,10 @@ export default function Navbar() {
                 to={l.to}
                 end={l.to === '/'}
                 className={({ isActive }) =>
-                  `rounded-full px-4 py-2 text-sm font-semibold text-white transition-colors ${
-                    isActive ? 'bg-white/25' : 'hover:bg-white/15'
+                  `rounded-full px-4 py-2 text-[15px] font-bold transition-colors ${
+                    isActive
+                      ? 'bg-vermilion-600 text-white shadow-sm'
+                      : 'text-ink-900 hover:bg-marigold-100 hover:text-vermilion-700'
                   }`
                 }
               >
@@ -56,19 +61,19 @@ export default function Navbar() {
         {/* Right actions */}
         <div className="flex items-center gap-2">
           <div className="hidden sm:block">
-            <LanguageToggle />
+            <LanguageToggle variant="light" />
           </div>
           <Link
             to="/contact"
-            className="hidden items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-bold text-saffron-700 shadow-md transition-transform hover:scale-105 md:inline-flex"
+            className="hidden items-center gap-1.5 rounded-full bg-vermilion-600 px-4 py-2 text-sm font-bold text-white shadow-md transition-transform hover:scale-105 hover:bg-vermilion-700 md:inline-flex"
           >
-            <Heart className="size-4 fill-saffron-600 text-saffron-600" />
+            <Heart className="size-4 fill-white" />
             {t('nav.donate')}
           </Link>
 
           <button
             type="button"
-            className="grid size-10 place-items-center rounded-full bg-white/20 text-white lg:hidden"
+            className="grid size-10 place-items-center rounded-full bg-marigold-100 text-vermilion-700 ring-1 ring-vermilion-200 lg:hidden"
             onClick={() => setOpen((o) => !o)}
             aria-label="Menu"
             aria-expanded={open}
@@ -80,7 +85,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="border-t border-white/20 bg-saffron-600/95 backdrop-blur lg:hidden">
+        <div className="border-t border-marigold-200 bg-white lg:hidden">
           <ul className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-4">
             {links.map((l) => (
               <li key={l.to}>
@@ -89,8 +94,10 @@ export default function Navbar() {
                   end={l.to === '/'}
                   onClick={() => setOpen(false)}
                   className={({ isActive }) =>
-                    `block rounded-xl px-4 py-3 text-base font-semibold text-white ${
-                      isActive ? 'bg-white/25' : 'hover:bg-white/15'
+                    `block rounded-xl px-4 py-3 text-base font-bold ${
+                      isActive
+                        ? 'bg-vermilion-600 text-white'
+                        : 'text-ink-900 hover:bg-marigold-100'
                     }`
                   }
                 >
@@ -99,13 +106,13 @@ export default function Navbar() {
               </li>
             ))}
             <li className="mt-2 flex items-center justify-between gap-3">
-              <LanguageToggle />
+              <LanguageToggle variant="light" />
               <Link
                 to="/contact"
                 onClick={() => setOpen(false)}
-                className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-bold text-saffron-700"
+                className="inline-flex items-center gap-1.5 rounded-full bg-vermilion-600 px-4 py-2 text-sm font-bold text-white"
               >
-                <Heart className="size-4 fill-saffron-600 text-saffron-600" />
+                <Heart className="size-4 fill-white" />
                 {t('nav.donate')}
               </Link>
             </li>

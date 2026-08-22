@@ -5,15 +5,15 @@ import PageHeader from '../components/PageHeader'
 import { useLang } from '../lib/useLang'
 import { members } from '../data/members'
 
-// placeholder gradients for members without a photo
+// placeholder gradients (warm red/gold theme) for members without a photo
 const gradients = [
-  'from-saffron-500 to-saffron-700',
-  'from-leaf-500 to-leaf-700',
-  'from-rose-500 to-rose-700',
-  'from-amber-500 to-orange-700',
-  'from-emerald-500 to-teal-700',
-  'from-orange-500 to-red-600',
-  'from-lime-500 to-green-700',
+  'from-vermilion-500 to-vermilion-700',
+  'from-marigold-400 to-marigold-600',
+  'from-vermilion-600 to-marigold-500',
+  'from-marigold-500 to-vermilion-600',
+  'from-vermilion-400 to-vermilion-600',
+  'from-marigold-500 to-vermilion-700',
+  'from-vermilion-500 to-marigold-500',
 ]
 
 export default function Members() {

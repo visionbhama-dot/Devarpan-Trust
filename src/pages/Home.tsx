@@ -62,15 +62,15 @@ export default function Home() {
             ))}
           </div>
         </div>
-        {/* bold color overlay for readability */}
-        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-saffron-700/90 via-saffron-800/85 to-leaf-800/90" />
-        <div className="absolute inset-0 -z-10 bg-black/35" />
+        {/* deep maroon overlay for readability */}
+        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-vermilion-900/92 via-ink-900/88 to-vermilion-900/92" />
+        <div className="absolute inset-0 -z-10 bg-mandana-overlay opacity-40" aria-hidden />
 
         <div className="relative mx-auto w-full max-w-5xl px-6 py-20 text-center">
           <motion.span
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="mx-auto mb-6 grid size-20 place-items-center rounded-full bg-white text-4xl font-black text-saffron-600 shadow-2xl ring-4 ring-white/40"
+            className="mx-auto mb-6 grid size-20 place-items-center rounded-full bg-white text-4xl font-black text-vermilion-600 shadow-2xl ring-4 ring-marigold-400/60"
           >
             ॐ
           </motion.span>
@@ -79,7 +79,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 }}
-            className="font-display text-xl font-bold tracking-wide text-saffron-100 drop-shadow-lg md:text-2xl"
+            className="font-display text-2xl font-normal tracking-wide text-marigold-300 drop-shadow-lg md:text-3xl"
           >
             {t('brand.sanskrit')}
           </motion.p>
@@ -110,7 +110,7 @@ export default function Home() {
           >
             <Link
               to="/objectives"
-              className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-base font-black text-saffron-700 shadow-2xl transition-transform hover:scale-105"
+              className="inline-flex items-center gap-2 rounded-full bg-marigold-400 px-8 py-4 text-base font-bold text-ink-900 shadow-2xl transition-transform hover:scale-105 hover:bg-marigold-300"
             >
               {t('home.heroCtaPrimary')} <ArrowRight className="size-5" />
             </Link>
@@ -125,20 +125,27 @@ export default function Home() {
           </motion.div>
         </div>
 
-        <div className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-saffron-500 via-white/60 to-leaf-500" />
+        <div className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-vermilion-600 via-marigold-400 to-vermilion-600" />
       </section>
 
       {/* ============ ABOUT ============ */}
-      <section className="mx-auto max-w-5xl px-6 py-16 text-center md:py-20">
-        <p className="mb-2 font-bold uppercase tracking-[0.2em] text-saffron-600">
-          {t('home.aboutKicker')}
-        </p>
-        <h2 className="font-display text-3xl font-black text-ink-900 md:text-5xl">
-          {t('home.aboutTitle')}
-        </h2>
-        <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-ink-700 md:text-xl">
-          {t('home.aboutText')}
-        </p>
+      <section className="bg-mandana py-16 md:py-20">
+        <div className="mx-auto max-w-5xl px-6 text-center">
+          <p className="mb-2 font-bold uppercase tracking-[0.2em] text-vermilion-600">
+            {t('home.aboutKicker')}
+          </p>
+          <h2 className="font-display text-4xl font-normal text-ink-900 md:text-5xl">
+            {t('home.aboutTitle')}
+          </h2>
+          <div className="mx-auto mt-4 flex items-center justify-center gap-2">
+            <span className="h-1 w-10 rounded-full bg-vermilion-500" />
+            <span className="size-2.5 rotate-45 bg-marigold-400" />
+            <span className="h-1 w-10 rounded-full bg-vermilion-500" />
+          </div>
+          <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-ink-700 md:text-xl">
+            {t('home.aboutText')}
+          </p>
+        </div>
       </section>
 
       {/* ============ FOCUS AREAS ============ */}
@@ -201,10 +208,10 @@ export default function Home() {
       </section>
 
       {/* ============ GALLERY PREVIEW ============ */}
-      <section className="bg-saffron-50 py-16 md:py-20">
+      <section className="bg-mandana py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mb-10 text-center">
-            <p className="mb-2 font-bold uppercase tracking-[0.2em] text-saffron-600">
+            <p className="mb-2 font-bold uppercase tracking-[0.2em] text-vermilion-600">
               {t('home.galleryKicker')}
             </p>
             <h2 className="font-display text-3xl font-black text-ink-900 md:text-5xl">
@@ -256,8 +263,8 @@ export default function Home() {
           alt=""
           className="absolute inset-0 -z-20 size-full object-cover"
         />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-ink-900/95 via-ink-900/90 to-saffron-900/90" />
-        <div className="absolute inset-0 -z-10 bg-pattern opacity-30" aria-hidden />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-ink-900/95 via-vermilion-900/92 to-ink-900/95" />
+        <div className="absolute inset-0 -z-10 bg-mandana-overlay opacity-30" aria-hidden />
 
         <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
           <div className="text-center">

@@ -1,38 +1,67 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&family=Rozha+One&display=swap');
 @import 'tailwindcss';
 
 @theme {
-  --font-sans: 'Noto Sans Devanagari', 'Poppins', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Poppins', 'Noto Sans Devanagari', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Mukta', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Rozha One', 'Mukta', serif;
 
-  /* Brand palette — bold Indian NGO theme */
-  --color-saffron-50: #fff7ed;
-  --color-saffron-100: #ffedd5;
-  --color-saffron-200: #fed7aa;
-  --color-saffron-300: #fdba74;
-  --color-saffron-400: #fb923c;
-  --color-saffron-500: #f97316;
-  --color-saffron-600: #ea580c;
-  --color-saffron-700: #c2410c;
-  --color-saffron-800: #9a3412;
-  --color-saffron-900: #7c2d12;
+  /* Warm handmade-paper backgrounds */
+  --color-paper: #fbf3e1;
+  --color-paper-dark: #f3e5c6;
 
-  --color-leaf-50: #f0fdf4;
-  --color-leaf-100: #dcfce7;
-  --color-leaf-200: #bbf7d0;
-  --color-leaf-300: #86efac;
-  --color-leaf-400: #4ade80;
-  --color-leaf-500: #22c55e;
-  --color-leaf-600: #16a34a;
-  --color-leaf-700: #15803d;
-  --color-leaf-800: #166534;
-  --color-leaf-900: #14532d;
+  /* Vermilion — primary RED */
+  --color-vermilion-50: #fdeeec;
+  --color-vermilion-100: #fbd6d1;
+  --color-vermilion-200: #f4aaa2;
+  --color-vermilion-300: #ea7b70;
+  --color-vermilion-400: #dd5044;
+  --color-vermilion-500: #c62828;
+  --color-vermilion-600: #ad1f21;
+  --color-vermilion-700: #8f1a1c;
+  --color-vermilion-800: #6f1416;
+  --color-vermilion-900: #4d0f10;
 
-  --color-ink-50: #f8fafc;
-  --color-ink-100: #f1f5f9;
-  --color-ink-700: #334155;
-  --color-ink-800: #1e293b;
-  --color-ink-900: #0f172a;
+  /* Marigold — YELLOW / gold */
+  --color-marigold-50: #fff8e1;
+  --color-marigold-100: #feefbf;
+  --color-marigold-200: #fbdd85;
+  --color-marigold-300: #f8ca4d;
+  --color-marigold-400: #f4b823;
+  --color-marigold-500: #e9a40f;
+  --color-marigold-600: #ca8408;
+  --color-marigold-700: #a2660a;
+  --color-marigold-800: #7d4f0c;
+  --color-marigold-900: #5c3a0a;
+
+  /* Warm near-black ink */
+  --color-ink-50: #faf7f2;
+  --color-ink-100: #f2ece1;
+  --color-ink-700: #4a4133;
+  --color-ink-800: #2e2820;
+  --color-ink-900: #211b12;
+
+  /* --- Legacy tokens repointed to the new palette (safety net) --- */
+  --color-saffron-50: #fff8e1;
+  --color-saffron-100: #feefbf;
+  --color-saffron-200: #fbdd85;
+  --color-saffron-300: #f8ca4d;
+  --color-saffron-400: #f4b823;
+  --color-saffron-500: #e9a40f;
+  --color-saffron-600: #ca8408;
+  --color-saffron-700: #a2660a;
+  --color-saffron-800: #7d4f0c;
+  --color-saffron-900: #5c3a0a;
+
+  --color-leaf-50: #fdeeec;
+  --color-leaf-100: #fbd6d1;
+  --color-leaf-200: #f4aaa2;
+  --color-leaf-300: #ea7b70;
+  --color-leaf-400: #dd5044;
+  --color-leaf-500: #c62828;
+  --color-leaf-600: #ad1f21;
+  --color-leaf-700: #8f1a1c;
+  --color-leaf-800: #6f1416;
+  --color-leaf-900: #4d0f10;
 }
 
 html {
@@ -40,21 +69,44 @@ html {
 }
 
 body {
-  @apply bg-saffron-50 text-ink-900 font-sans antialiased;
+  @apply text-ink-900 font-sans antialiased;
+  background-color: var(--color-paper);
+  background-image: url('/mandana.svg');
+  background-size: 120px 120px;
 }
 
-/* Utility: brand gradient text */
+/* Bold display headings look best with a touch more spacing in Devanagari */
+h1,
+h2,
+h3 {
+  letter-spacing: 0.01em;
+}
+
+/* Brand gradient text — red to marigold */
 .text-gradient {
-  background: linear-gradient(90deg, var(--color-saffron-600), var(--color-leaf-600));
+  background: linear-gradient(90deg, var(--color-vermilion-600), var(--color-marigold-500));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-/* Decorative pattern for hero sections */
+/* Subtle dotted texture (used on colored bands) */
 .bg-pattern {
-  background-image: radial-gradient(circle at 1px 1px, rgba(234, 88, 12, 0.12) 1px, transparent 0);
+  background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.25) 1px, transparent 0);
   background-size: 22px 22px;
+}
+
+/* Mandana folk-art motif for light sections */
+.bg-mandana {
+  background-color: var(--color-paper);
+  background-image: url('/mandana.svg');
+  background-size: 120px 120px;
+}
+
+/* Same motif but transparent (over an existing background) */
+.bg-mandana-overlay {
+  background-image: url('/mandana.svg');
+  background-size: 120px 120px;
 }
 
 /* Custom scrollbar */
@@ -62,9 +114,9 @@ body {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-saffron-50);
+  background: var(--color-paper-dark);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-saffron-400);
+  background: var(--color-vermilion-500);
   border-radius: 9999px;
 }
