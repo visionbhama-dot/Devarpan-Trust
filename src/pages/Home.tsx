@@ -59,87 +59,96 @@ export default function Home() {
 
   return (
     <>
-      {/* ============ HERO — full photo collage with bold text ============ */}
-      <section className="relative isolate flex min-h-[88vh] items-center overflow-hidden text-white">
-        {/* collage background */}
-        <div className="absolute inset-0 -z-20 overflow-hidden">
-          <div className="grid h-full w-full grid-cols-3 grid-rows-4 lg:grid-cols-4 lg:grid-rows-3">
-            {collage.map((src, i) => (
-              <div key={i} className="overflow-hidden">
-                <img
-                  src={src}
-                  alt=""
-                  loading={i > 3 ? 'lazy' : 'eager'}
-                  className="size-full object-cover"
-                />
+      {/* ============ HERO — light & airy ============ */}
+      <section className="relative isolate overflow-hidden bg-paper">
+        <div className="absolute inset-0 -z-20 bg-mandana-overlay opacity-70" aria-hidden />
+        <div className="absolute -right-28 -top-28 -z-10 size-96 rounded-full bg-marigold-200/50 blur-3xl" aria-hidden />
+        <div className="absolute -bottom-28 -left-28 -z-10 size-96 rounded-full bg-vermilion-100/60 blur-3xl" aria-hidden />
+
+        <div className="mx-auto grid max-w-7xl items-center gap-10 px-6 py-16 lg:grid-cols-2 lg:py-24">
+          {/* text */}
+          <div className="text-center lg:text-left">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="mx-auto mb-6 grid size-28 place-items-center overflow-hidden rounded-full bg-white p-2 shadow-xl ring-2 ring-marigold-300 md:size-32 lg:mx-0"
+            >
+              <img src="/devarpan-logo.png" alt="देवार्पण ट्रस्ट" className="size-full object-contain" />
+            </motion.div>
+
+            <motion.p
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.05 }}
+              className="font-display text-2xl font-normal tracking-wide text-vermilion-600 md:text-3xl"
+            >
+              {t('brand.sanskrit')}
+            </motion.p>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="mt-2 font-display text-5xl font-normal leading-tight text-ink-900 md:text-6xl lg:text-7xl"
+            >
+              {t('home.heroTitle')}
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 }}
+              className="mx-auto mt-5 max-w-xl text-lg font-medium leading-relaxed text-ink-700 md:text-xl lg:mx-0"
+            >
+              {t('brand.tagline')}
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="mt-8 flex flex-wrap justify-center gap-4 lg:justify-start"
+            >
+              <Link
+                to="/objectives"
+                className="inline-flex items-center gap-2 rounded-full bg-vermilion-600 px-8 py-4 text-base font-bold text-white shadow-lg transition-transform hover:scale-105 hover:bg-vermilion-700"
+              >
+                {t('home.heroCtaPrimary')} <ArrowRight className="size-5" />
+              </Link>
+              <a
+                href={waHref}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-8 py-4 text-base font-bold text-white shadow-lg transition-transform hover:scale-105"
+              >
+                <WhatsAppIcon className="size-5" /> {t('whatsapp.label')}
+              </a>
+            </motion.div>
+          </div>
+
+          {/* bright photo mosaic */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.15 }}
+            className="relative grid grid-cols-2 gap-3 sm:gap-4"
+          >
+            <span className="absolute -left-5 top-8 -z-10 hidden size-20 rotate-12 rounded-2xl bg-marigold-300/60 lg:block" aria-hidden />
+            <span className="absolute -right-5 bottom-8 -z-10 hidden size-20 -rotate-12 rounded-2xl bg-vermilion-200/60 lg:block" aria-hidden />
+            {collage.slice(0, 4).map((src, i) => (
+              <div
+                key={i}
+                className={`overflow-hidden rounded-3xl border-4 border-white shadow-xl ring-1 ring-black/5 ${
+                  i % 2 === 1 ? 'translate-y-6 sm:translate-y-8' : ''
+                }`}
+              >
+                <img src={src} alt="" loading="eager" className="aspect-[4/5] w-full object-cover" />
               </div>
             ))}
-          </div>
-        </div>
-        {/* deep maroon overlay for readability */}
-        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-vermilion-900/92 via-ink-900/88 to-vermilion-900/92" />
-        <div className="absolute inset-0 -z-10 bg-mandana-overlay opacity-40" aria-hidden />
-
-        <div className="relative mx-auto w-full max-w-5xl px-6 py-20 text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="mx-auto mb-6 grid size-32 place-items-center overflow-hidden rounded-full bg-white p-2.5 shadow-2xl ring-4 ring-marigold-400/70 md:size-40"
-          >
-            <img src="/devarpan-logo.png" alt="देवार्पण ट्रस्ट" className="size-full object-contain" />
-          </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.05 }}
-            className="font-display text-2xl font-normal tracking-wide text-marigold-300 drop-shadow-lg md:text-3xl"
-          >
-            {t('brand.sanskrit')}
-          </motion.p>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="mt-3 font-display text-5xl font-black leading-none drop-shadow-2xl sm:text-6xl md:text-7xl lg:text-8xl"
-          >
-            {t('home.heroTitle')}
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15 }}
-            className="mx-auto mt-6 max-w-3xl text-lg font-semibold leading-relaxed text-white drop-shadow-lg md:text-2xl"
-          >
-            {t('brand.tagline')}
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="mt-9 flex flex-wrap justify-center gap-4"
-          >
-            <Link
-              to="/objectives"
-              className="inline-flex items-center gap-2 rounded-full bg-marigold-400 px-8 py-4 text-base font-bold text-ink-900 shadow-2xl transition-transform hover:scale-105 hover:bg-marigold-300"
-            >
-              {t('home.heroCtaPrimary')} <ArrowRight className="size-5" />
-            </Link>
-            <a
-              href={waHref}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-8 py-4 text-base font-black text-white shadow-2xl ring-2 ring-white/40 transition-transform hover:scale-105"
-            >
-              <WhatsAppIcon className="size-5" /> {t('whatsapp.label')}
-            </a>
           </motion.div>
         </div>
 
-        <div className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-vermilion-600 via-marigold-400 to-vermilion-600" />
+        <div className="h-2 w-full bg-gradient-to-r from-vermilion-600 via-marigold-400 to-vermilion-600" />
       </section>
 
       {/* ============ ABOUT — text left, image right ============ */}
@@ -372,24 +381,24 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ============ BOLD TRUST DETAILS ============ */}
-      <section className="relative isolate overflow-hidden text-white">
-        {/* textured photo background */}
-        <img
-          src="/gallery/g04-yajna.jpg"
-          alt=""
-          className="absolute inset-0 -z-20 size-full object-cover"
-        />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-ink-900/95 via-vermilion-900/92 to-ink-900/95" />
-        <div className="absolute inset-0 -z-10 bg-mandana-overlay opacity-30" aria-hidden />
+      {/* ============ TRUST DETAILS — light ============ */}
+      <section className="relative isolate overflow-hidden bg-stone py-16 md:py-24">
+        <div className="absolute inset-0 -z-10 bg-mandana-overlay opacity-60" aria-hidden />
 
-        <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
+        <div className="mx-auto max-w-7xl px-6">
           <div className="text-center">
-            <p className="mb-2 font-bold uppercase tracking-[0.2em] text-saffron-300">
+            <p className="mb-2 font-bold uppercase tracking-[0.2em] text-vermilion-600">
               {t('home.detailsKicker')}
             </p>
-            <h2 className="font-display text-4xl font-normal md:text-5xl">{t('home.detailsTitle')}</h2>
-            <p className="mx-auto mt-4 max-w-2xl text-lg text-white/85">{t('home.detailsText')}</p>
+            <h2 className="font-display text-4xl font-normal text-ink-900 md:text-5xl">
+              {t('home.detailsTitle')}
+            </h2>
+            <div className="mx-auto mt-4 flex items-center justify-center gap-2">
+              <span className="h-1 w-12 rounded-full bg-vermilion-500" />
+              <span className="size-2.5 rotate-45 bg-marigold-400" />
+              <span className="h-1 w-12 rounded-full bg-vermilion-500" />
+            </div>
+            <p className="mx-auto mt-4 max-w-2xl text-lg text-ink-700">{t('home.detailsText')}</p>
           </div>
 
           {/* detail cards */}
@@ -400,14 +409,14 @@ export default function Home() {
             <DetailCard icon={Phone} title={t('contact.phoneTitle')}>
               <div className="flex flex-col gap-0.5">
                 {settings.phones.map((p) => (
-                  <a key={p} href={`tel:+91${p}`} className="hover:text-marigold-300">
+                  <a key={p} href={`tel:+91${p}`} className="hover:text-vermilion-600">
                     +91 {p}
                   </a>
                 ))}
               </div>
             </DetailCard>
             <DetailCard icon={Mail} title={t('contact.emailTitle')}>
-              <a href={`mailto:${settings.email}`} className="break-all hover:text-marigold-300">
+              <a href={`mailto:${settings.email}`} className="break-all hover:text-vermilion-600">
                 {settings.email}
               </a>
             </DetailCard>
@@ -417,13 +426,13 @@ export default function Home() {
           </div>
 
           {/* bank / donate strip */}
-          <div className="mt-6 grid gap-6 rounded-3xl bg-white/10 p-6 ring-1 ring-white/20 backdrop-blur md:p-8 lg:grid-cols-[1.2fr_1fr] lg:items-center">
+          <div className="mt-6 grid gap-6 rounded-3xl border border-marigold-200 bg-white p-6 shadow-sm md:p-8 lg:grid-cols-[1.2fr_1fr] lg:items-center">
             <div>
               <div className="mb-4 flex items-center gap-3">
-                <span className="grid size-11 place-items-center rounded-2xl bg-gradient-to-br from-saffron-500 to-leaf-600">
+                <span className="grid size-11 place-items-center rounded-2xl bg-gradient-to-br from-vermilion-600 to-marigold-500 text-white">
                   <Landmark className="size-6" />
                 </span>
-                <h3 className="font-display text-xl font-extrabold">{t('contact.bankTitle')}</h3>
+                <h3 className="font-display text-xl font-normal text-ink-900">{t('contact.bankTitle')}</h3>
               </div>
               <dl className="grid gap-3 sm:grid-cols-3">
                 <BankItem label={t('contact.pan')} value={settings.bank.pan} />
@@ -434,7 +443,7 @@ export default function Home() {
             <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
               <Link
                 to="/contact"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 font-black text-saffron-700 shadow-lg transition-transform hover:scale-105"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-vermilion-600 px-7 py-3.5 font-bold text-white shadow-lg transition-transform hover:scale-105 hover:bg-vermilion-700"
               >
                 <HandHeart className="size-5" /> {t('home.ctaButton')}
               </Link>
@@ -442,7 +451,7 @@ export default function Home() {
                 href={waHref}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-7 py-3.5 font-black text-white shadow-lg transition-transform hover:scale-105"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-7 py-3.5 font-bold text-white shadow-lg transition-transform hover:scale-105"
               >
                 <WhatsAppIcon className="size-5" /> {t('whatsapp.label')}
               </a>
@@ -454,7 +463,7 @@ export default function Home() {
             {vedas.map((v) => (
               <span
                 key={v.en}
-                className="rounded-full bg-white/10 px-5 py-2 text-sm font-bold text-saffron-100 ring-1 ring-white/20"
+                className="rounded-full bg-vermilion-600 px-5 py-2 text-sm font-bold text-white shadow"
               >
                 {pick(v)}
               </span>
@@ -476,21 +485,21 @@ function DetailCard({
   children: React.ReactNode
 }) {
   return (
-    <div className="rounded-3xl bg-white/10 p-5 ring-1 ring-white/20 backdrop-blur">
-      <span className="grid size-12 place-items-center rounded-2xl bg-gradient-to-br from-saffron-500 to-leaf-600 shadow">
+    <div className="rounded-3xl border border-marigold-200 bg-white p-5 shadow-sm">
+      <span className="grid size-12 place-items-center rounded-2xl bg-gradient-to-br from-vermilion-600 to-marigold-500 text-white shadow">
         <Icon className="size-6" />
       </span>
-      <h3 className="mt-4 font-display text-base font-extrabold text-saffron-200">{title}</h3>
-      <div className="mt-1 text-sm font-medium leading-relaxed text-white/90">{children}</div>
+      <h3 className="mt-4 font-display text-lg font-normal text-vermilion-700">{title}</h3>
+      <div className="mt-1 text-sm font-medium leading-relaxed text-ink-800">{children}</div>
     </div>
   )
 }
 
 function BankItem({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl bg-white/10 p-3">
-      <dt className="text-xs font-semibold text-white/70">{label}</dt>
-      <dd className="mt-0.5 break-all font-mono text-sm font-bold">{value}</dd>
+    <div className="rounded-xl bg-marigold-50 p-3 ring-1 ring-marigold-100">
+      <dt className="text-xs font-semibold text-ink-700">{label}</dt>
+      <dd className="mt-0.5 break-all font-mono text-sm font-bold text-ink-900">{value}</dd>
     </div>
   )
 }
