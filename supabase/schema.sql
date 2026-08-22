@@ -151,14 +151,14 @@ insert into public.objectives (num, text_hi, text_en, sort) values
 on conflict do nothing;
 
 -- Members
-insert into public.members (name_hi, name_en, role_hi, role_en, sort) values
-('श्री ओम पाल सिंह','Shri Om Pal Singh','फर्स्ट ट्रस्टी और अध्यक्ष','First Trustee & President',1),
-('श्री रमेश चंद्र','Shri Ramesh Chandra','फर्स्ट ट्रस्टी और महासचिव','First Trustee & General Secretary',2),
-('श्रीमती नीरज कुमारी','Smt. Neeraj Kumari','फर्स्ट ट्रस्टी और कोषाध्यक्ष','First Trustee & Treasurer',3),
-('श्री धनंजय','Shri Dhananjay','फर्स्ट ट्रस्टी और प्रस्तोता','First Trustee & Proposer',4),
-('श्री देवेन्द्र कुमार','Shri Devendra Kumar','फर्स्ट ट्रस्टी','First Trustee',5),
-('श्री रामेश्वर दयाल गुप्ता','Shri Rameshwar Dayal Gupta','फर्स्ट ट्रस्टी','First Trustee',6),
-('श्री अर्जुन कुमार','Shri Arjun Kumar','फर्स्ट ट्रस्टी','First Trustee',7)
+insert into public.members (name_hi, name_en, role_hi, role_en, photo_url, sort) values
+('श्री ओम पाल सिंह','Shri Om Pal Singh','फर्स्ट ट्रस्टी और अध्यक्ष','First Trustee & President','/members/ompal.jpg',1),
+('श्री रमेश चंद्र','Shri Ramesh Chandra','फर्स्ट ट्रस्टी और महासचिव','First Trustee & General Secretary','/members/ramesh.jpg',2),
+('श्रीमती नीरज कुमारी','Smt. Neeraj Kumari','फर्स्ट ट्रस्टी और कोषाध्यक्ष','First Trustee & Treasurer','/members/neeraj.jpg',3),
+('श्री धनंजय','Shri Dhananjay','फर्स्ट ट्रस्टी और प्रस्तोता','First Trustee & Proposer','/members/dhananjay.jpg',4),
+('श्री देवेन्द्र कुमार','Shri Devendra Kumar','फर्स्ट ट्रस्टी','First Trustee','/members/devendra.jpg',5),
+('श्री रामेश्वर दयाल गुप्ता','Shri Rameshwar Dayal Gupta','फर्स्ट ट्रस्टी','First Trustee','/members/rameshwar.jpg',6),
+('श्री अर्जुन कुमार','Shri Arjun Kumar','फर्स्ट ट्रस्टी','First Trustee',null,7)
 on conflict do nothing;
 
 -- Gallery (existing photos served from the site’s /gallery folder)

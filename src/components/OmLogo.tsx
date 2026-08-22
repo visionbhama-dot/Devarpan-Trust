@@ -1,9 +1,9 @@
-// Colorful Om mark on a bright circular background — used across the site.
+// Official Devarpan Trust logo on a bright circular background — used across the site.
 const sizes = {
-  sm: { ring: 'size-10', img: 'size-6' },
-  md: { ring: 'size-12', img: 'size-7' },
-  lg: { ring: 'size-16', img: 'size-10' },
-  xl: { ring: 'size-20', img: 'size-12' },
+  sm: { ring: 'size-10', pad: 'p-1' },
+  md: { ring: 'size-12', pad: 'p-1' },
+  lg: { ring: 'size-16', pad: 'p-1.5' },
+  xl: { ring: 'size-20', pad: 'p-2' },
 } as const
 
 export default function OmLogo({
@@ -16,9 +16,13 @@ export default function OmLogo({
   const s = sizes[size]
   return (
     <span
-      className={`grid ${s.ring} place-items-center rounded-full bg-gradient-to-br from-white to-marigold-50 shadow-md ring-2 ring-marigold-300 ${className}`}
+      className={`grid ${s.ring} ${s.pad} place-items-center overflow-hidden rounded-full bg-white shadow-md ring-2 ring-marigold-300 ${className}`}
     >
-      <img src="/om-color.svg" alt="ॐ" className={`${s.img} object-contain`} />
+      <img
+        src="/devarpan-logo.png"
+        alt="देवार्पण ट्रस्ट"
+        className="size-full object-contain"
+      />
     </span>
   )
 }

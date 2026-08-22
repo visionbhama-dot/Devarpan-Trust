@@ -63,7 +63,11 @@ export default function Members() {
                   {/* photo / placeholder */}
                   <div className="relative h-56 w-full overflow-hidden">
                     {m.photo_url ? (
-                      <img src={m.photo_url} alt={pick(m.name)} className="size-full object-cover" />
+                      <img
+                        src={m.photo_url}
+                        alt={pick(m.name)}
+                        className="size-full object-cover object-top"
+                      />
                     ) : (
                       <div
                         className={`grid size-full place-items-center bg-gradient-to-br ${

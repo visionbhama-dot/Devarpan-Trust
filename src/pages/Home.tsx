@@ -285,7 +285,11 @@ export default function Home() {
                   )}
                   <div className="relative h-52 w-full overflow-hidden">
                     {m.photo_url ? (
-                      <img src={m.photo_url} alt={pick(m.name)} className="size-full object-cover" />
+                      <img
+                        src={m.photo_url}
+                        alt={pick(m.name)}
+                        className="size-full object-cover object-top"
+                      />
                     ) : (
                       <div
                         className={`grid size-full place-items-center bg-gradient-to-br ${
