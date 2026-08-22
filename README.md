@@ -51,7 +51,7 @@ All content lives in easy-to-edit files under `src/`:
 
 1. अपनी तस्वीरें `public/` फ़ोल्डर में रखें (उदा. `public/members/ompal.jpg`, `public/gallery/yajna-1.jpg`).
 2. संबंधित डेटा फ़ाइल में `photo` या `src` फ़ील्ड में पथ डालें, जैसे `photo: '/members/ompal.jpg'`.
-3. जब तक असली फ़ोटो नहीं जुड़ती, सुंदर placeholder अपने-आप दिखेंगे।
+3. जब तक असली फ़ोटो नहीं जुड़ती, सुंदर placeholder अपने-आप दिखेंगे। 
 
 ## 📞 संपर्क
 
