@@ -14,29 +14,29 @@
   --color-sand: #e7e0d3;
   --color-taupe: #e8dacc;
 
-  /* Vermilion — primary RED */
-  --color-vermilion-50: #fdeeec;
-  --color-vermilion-100: #fbd6d1;
-  --color-vermilion-200: #f4aaa2;
-  --color-vermilion-300: #ea7b70;
-  --color-vermilion-400: #dd5044;
-  --color-vermilion-500: #c62828;
-  --color-vermilion-600: #ad1f21;
-  --color-vermilion-700: #8f1a1c;
-  --color-vermilion-800: #6f1416;
-  --color-vermilion-900: #4d0f10;
+  /* Terracotta — soft, muted primary accent (warm clay, not bright red) */
+  --color-vermilion-50: #f6efeb;
+  --color-vermilion-100: #ecdad2;
+  --color-vermilion-200: #ddb9aa;
+  --color-vermilion-300: #cb9580;
+  --color-vermilion-400: #bd7a61;
+  --color-vermilion-500: #a86249;
+  --color-vermilion-600: #8f4f39;
+  --color-vermilion-700: #723f2e;
+  --color-vermilion-800: #573026;
+  --color-vermilion-900: #3d231c;
 
-  /* Marigold — YELLOW / gold */
-  --color-marigold-50: #fff8e1;
-  --color-marigold-100: #feefbf;
-  --color-marigold-200: #fbdd85;
-  --color-marigold-300: #f8ca4d;
-  --color-marigold-400: #f4b823;
-  --color-marigold-500: #e9a40f;
-  --color-marigold-600: #ca8408;
-  --color-marigold-700: #a2660a;
-  --color-marigold-800: #7d4f0c;
-  --color-marigold-900: #5c3a0a;
+  /* Soft ochre — muted secondary accent (honey gold, not bright orange) */
+  --color-marigold-50: #f9f5ea;
+  --color-marigold-100: #f1e8cf;
+  --color-marigold-200: #e5d3a2;
+  --color-marigold-300: #d7bd76;
+  --color-marigold-400: #cba956;
+  --color-marigold-500: #b8933f;
+  --color-marigold-600: #9b7832;
+  --color-marigold-700: #7c5f29;
+  --color-marigold-800: #5e4922;
+  --color-marigold-900: #43341a;
 
   /* Warm near-black ink */
   --color-ink-50: #faf7f2;
@@ -45,28 +45,28 @@
   --color-ink-800: #2e2820;
   --color-ink-900: #211b12;
 
-  /* --- Legacy tokens repointed to the new palette (safety net) --- */
-  --color-saffron-50: #fff8e1;
-  --color-saffron-100: #feefbf;
-  --color-saffron-200: #fbdd85;
-  --color-saffron-300: #f8ca4d;
-  --color-saffron-400: #f4b823;
-  --color-saffron-500: #e9a40f;
-  --color-saffron-600: #ca8408;
-  --color-saffron-700: #a2660a;
-  --color-saffron-800: #7d4f0c;
-  --color-saffron-900: #5c3a0a;
+  /* --- Legacy tokens repointed to the muted palette (safety net) --- */
+  --color-saffron-50: #f9f5ea;
+  --color-saffron-100: #f1e8cf;
+  --color-saffron-200: #e5d3a2;
+  --color-saffron-300: #d7bd76;
+  --color-saffron-400: #cba956;
+  --color-saffron-500: #b8933f;
+  --color-saffron-600: #9b7832;
+  --color-saffron-700: #7c5f29;
+  --color-saffron-800: #5e4922;
+  --color-saffron-900: #43341a;
 
-  --color-leaf-50: #fdeeec;
-  --color-leaf-100: #fbd6d1;
-  --color-leaf-200: #f4aaa2;
-  --color-leaf-300: #ea7b70;
-  --color-leaf-400: #dd5044;
-  --color-leaf-500: #c62828;
-  --color-leaf-600: #ad1f21;
-  --color-leaf-700: #8f1a1c;
-  --color-leaf-800: #6f1416;
-  --color-leaf-900: #4d0f10;
+  --color-leaf-50: #f6efeb;
+  --color-leaf-100: #ecdad2;
+  --color-leaf-200: #ddb9aa;
+  --color-leaf-300: #cb9580;
+  --color-leaf-400: #bd7a61;
+  --color-leaf-500: #a86249;
+  --color-leaf-600: #8f4f39;
+  --color-leaf-700: #723f2e;
+  --color-leaf-800: #573026;
+  --color-leaf-900: #3d231c;
 }
 
 html {

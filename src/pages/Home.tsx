@@ -231,10 +231,10 @@ export default function Home() {
       </section>
 
       {/* ============ STATS ============ */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-leaf-700 to-saffron-700 py-16 text-white">
-        <div className="absolute inset-0 bg-pattern opacity-20" aria-hidden />
+      <section className="relative overflow-hidden bg-taupe py-16">
+        <div className="absolute inset-0 -z-10 bg-mandana-overlay opacity-50" aria-hidden />
         <div className="relative mx-auto max-w-7xl px-6">
-          <h2 className="text-center font-display text-4xl font-normal md:text-5xl">
+          <h2 className="text-center font-display text-4xl font-normal text-ink-900 md:text-5xl">
             {t('home.statsTitle')}
           </h2>
           <div className="mt-10 grid grid-cols-2 gap-6 lg:grid-cols-4">
@@ -245,10 +245,12 @@ export default function Home() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
-                className="rounded-3xl bg-white/15 p-6 text-center ring-1 ring-white/25 backdrop-blur"
+                className="rounded-3xl border border-marigold-200 bg-white p-6 text-center shadow-sm"
               >
-                <p className="font-display text-4xl font-black md:text-6xl">{s.value}</p>
-                <p className="mt-2 text-sm font-semibold text-white/90">{t(`home.stats.${s.key}`)}</p>
+                <p className="font-display text-4xl font-normal text-vermilion-600 md:text-6xl">
+                  {s.value}
+                </p>
+                <p className="mt-2 text-sm font-semibold text-ink-700">{t(`home.stats.${s.key}`)}</p>
               </motion.div>
             ))}
           </div>
