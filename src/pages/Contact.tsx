@@ -5,11 +5,12 @@ import { MapPin, Phone, Mail, User, Landmark, CheckCircle2, Send } from 'lucide-
 import { FacebookIcon } from '../components/icons'
 import PageHeader from '../components/PageHeader'
 import { useLang } from '../lib/useLang'
-import { trustInfo } from '../data/trust'
+import { useSettings } from '../lib/SettingsContext'
 
 export default function Contact() {
   const { t } = useTranslation()
   const { pick } = useLang()
+  const settings = useSettings()
   const [sent, setSent] = useState(false)
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -33,14 +34,14 @@ export default function Contact() {
           {/* LEFT: info */}
           <div className="space-y-5">
             <InfoCard icon={MapPin} title={t('contact.officeTitle')}>
-              <p className="text-ink-800">{pick(trustInfo.address)}</p>
+              <p className="text-ink-800">{pick(settings.address)}</p>
             </InfoCard>
 
             <InfoCard icon={Phone} title={t('contact.phoneTitle')}>
               <ul className="space-y-1">
-                {trustInfo.phones.map((p) => (
+                {settings.phones.map((p) => (
                   <li key={p}>
-                    <a href={`tel:+91${p}`} className="font-medium text-ink-800 hover:text-saffron-600">
+                    <a href={`tel:+91${p}`} className="font-medium text-ink-800 hover:text-vermilion-600">
                       +91 {p}
                     </a>
                   </li>
@@ -50,19 +51,21 @@ export default function Contact() {
 
             <InfoCard icon={Mail} title={t('contact.emailTitle')}>
               <a
-                href={`mailto:${trustInfo.email}`}
-                className="break-all font-medium text-ink-800 hover:text-saffron-600"
+                href={`mailto:${settings.email}`}
+                className="break-all font-medium text-ink-800 hover:text-vermilion-600"
               >
-                {trustInfo.email}
+                {settings.email}
               </a>
-              <a
-                href={trustInfo.facebook}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-leaf-700 hover:underline"
-              >
-                <FacebookIcon className="size-4" /> Facebook
-              </a>
+              {settings.socials.facebook && (
+                <a
+                  href={settings.socials.facebook}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-vermilion-700 hover:underline"
+                >
+                  <FacebookIcon className="size-4" /> Facebook
+                </a>
+              )}
             </InfoCard>
 
             <InfoCard icon={User} title={t('contact.presidentTitle')}>
@@ -70,17 +73,17 @@ export default function Contact() {
             </InfoCard>
 
             {/* Bank / donate */}
-            <div className="rounded-3xl bg-gradient-to-br from-saffron-600 to-leaf-600 p-6 text-white shadow-lg">
+            <div className="rounded-3xl bg-gradient-to-br from-vermilion-600 to-marigold-500 p-6 text-white shadow-lg">
               <div className="mb-4 flex items-center gap-3">
                 <span className="grid size-11 place-items-center rounded-2xl bg-white/20">
                   <Landmark className="size-6" />
                 </span>
-                <h3 className="font-display text-lg font-bold">{t('contact.bankTitle')}</h3>
+                <h3 className="font-display text-xl font-normal">{t('contact.bankTitle')}</h3>
               </div>
               <dl className="grid gap-3 sm:grid-cols-3">
-                <BankItem label={t('contact.pan')} value={trustInfo.bank.pan} />
-                <BankItem label={t('contact.account')} value={trustInfo.bank.account} />
-                <BankItem label={t('contact.ifsc')} value={trustInfo.bank.ifsc} />
+                <BankItem label={t('contact.pan')} value={settings.bank.pan} />
+                <BankItem label={t('contact.account')} value={settings.bank.account} />
+                <BankItem label={t('contact.ifsc')} value={settings.bank.ifsc} />
               </dl>
             </div>
           </div>

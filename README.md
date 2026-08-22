@@ -11,9 +11,20 @@ A bold, bilingual (Hindi-default / English-switchable) website for **Devarpan Tr
 - **Bold Indian theme:** saffron + leaf-green gradients, Devanagari-first typography, smooth animations (Framer Motion).
 - Fully responsive, mobile-friendly navigation.
 
+## 🔐 Admin Panel
+
+A password-protected admin panel at **`/admin`** (powered by Supabase) lets the trust manage all content without touching code:
+- 🖼️ Gallery photos (upload / edit / delete)
+- 👥 Members (add / edit / remove, photo upload, ordering)
+- 📝 Blogs (write / publish / delete)
+- 🎯 Objectives (add / edit / reorder / remove)
+- 📞 Contact info, bank details & social media links
+
+The public site reads live from Supabase, and falls back to built-in sample content until the Supabase keys are configured. **Setup guide:** [`supabase/SETUP.md`](supabase/SETUP.md).
+
 ## 🛠 Tech Stack
 
-Vite • React + TypeScript • Tailwind CSS v4 • React Router • react-i18next • Framer Motion • lucide-react
+Vite • React + TypeScript • Tailwind CSS v4 • React Router • react-i18next • Framer Motion • lucide-react • Supabase (database, auth, storage)
 
 ## 🚀 Getting Started
 

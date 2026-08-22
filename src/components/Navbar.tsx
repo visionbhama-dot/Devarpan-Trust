@@ -11,6 +11,7 @@ const links = [
   { to: '/objectives', key: 'nav.objectives' },
   { to: '/members', key: 'nav.members' },
   { to: '/gallery', key: 'nav.gallery' },
+  { to: '/blog', key: 'nav.blog' },
   { to: '/contact', key: 'nav.contact' },
 ]
 

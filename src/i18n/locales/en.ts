@@ -6,6 +6,7 @@ const en = {
     objectives: 'Our Objectives',
     members: 'Our Members',
     gallery: 'Gallery',
+    blog: 'Blog',
     contact: 'Contact',
     donate: 'Donate',
   },
@@ -101,6 +102,15 @@ const en = {
     intro: 'Glimpses of our Yajnas, yoga camps, ceremonies and social programs.',
     note: 'More photos will be added soon.',
     all: 'All',
+  },
+  blog: {
+    kicker: 'Blog',
+    title: 'Blog & Updates',
+    intro: 'Latest updates about our events, Yajnas and social work.',
+    readMore: 'Read More',
+    empty: 'Blog posts will be published soon.',
+    back: 'All Posts',
+    notFound: 'Post not found.',
   },
   contact: {
     kicker: 'Contact',

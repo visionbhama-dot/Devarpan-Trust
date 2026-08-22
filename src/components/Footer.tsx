@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { MapPin, Phone, Mail, Heart } from 'lucide-react'
-import { FacebookIcon } from './icons'
+import { FacebookIcon, InstagramIcon, YouTubeIcon, TwitterIcon } from './icons'
 import OmLogo from './OmLogo'
 import { useLang } from '../lib/useLang'
-import { trustInfo } from '../data/trust'
+import { useSettings } from '../lib/SettingsContext'
 
 const links = [
   { to: '/', key: 'nav.home' },
@@ -12,16 +12,25 @@ const links = [
   { to: '/objectives', key: 'nav.objectives' },
   { to: '/members', key: 'nav.members' },
   { to: '/gallery', key: 'nav.gallery' },
+  { to: '/blog', key: 'nav.blog' },
   { to: '/contact', key: 'nav.contact' },
 ]
 
 export default function Footer() {
   const { t } = useTranslation()
   const { pick } = useLang()
+  const settings = useSettings()
+  const { socials } = settings
+
+  const socialLinks = [
+    { url: socials.facebook, Icon: FacebookIcon, label: 'Facebook' },
+    { url: socials.instagram, Icon: InstagramIcon, label: 'Instagram' },
+    { url: socials.youtube, Icon: YouTubeIcon, label: 'YouTube' },
+    { url: socials.twitter, Icon: TwitterIcon, label: 'X' },
+  ].filter((s) => s.url)
 
   return (
     <footer className="relative isolate overflow-hidden bg-vermilion-900 text-marigold-50/85">
-      {/* festive top accent */}
       <div className="h-1.5 w-full bg-gradient-to-r from-marigold-400 via-vermilion-500 to-marigold-400" />
       <div className="absolute inset-0 -z-10 bg-mandana-overlay opacity-20" aria-hidden />
 
@@ -36,6 +45,24 @@ export default function Footer() {
             </div>
           </div>
           <p className="mt-4 text-sm leading-relaxed text-marigold-50/70">{t('footer.about')}</p>
+
+          {/* Social media */}
+          {socialLinks.length > 0 && (
+            <div className="mt-5 flex gap-2.5">
+              {socialLinks.map(({ url, Icon, label }) => (
+                <a
+                  key={label}
+                  href={url}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={label}
+                  className="grid size-9 place-items-center rounded-full bg-white/10 text-marigold-100 ring-1 ring-white/15 transition-colors hover:bg-marigold-400 hover:text-vermilion-900"
+                >
+                  <Icon className="size-4" />
+                </a>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Quick links */}
@@ -65,12 +92,12 @@ export default function Footer() {
           <ul className="space-y-3 text-sm text-marigold-50/80">
             <li className="flex gap-2.5">
               <MapPin className="mt-0.5 size-4 shrink-0 text-marigold-400" />
-              <span>{pick(trustInfo.address)}</span>
+              <span>{pick(settings.address)}</span>
             </li>
             <li className="flex gap-2.5">
               <Phone className="mt-0.5 size-4 shrink-0 text-marigold-400" />
               <span className="flex flex-col">
-                {trustInfo.phones.map((p) => (
+                {settings.phones.map((p) => (
                   <a key={p} href={`tel:+91${p}`} className="hover:text-marigold-300">
                     +91 {p}
                   </a>
@@ -79,19 +106,8 @@ export default function Footer() {
             </li>
             <li className="flex gap-2.5">
               <Mail className="mt-0.5 size-4 shrink-0 text-marigold-400" />
-              <a href={`mailto:${trustInfo.email}`} className="break-all hover:text-marigold-300">
-                {trustInfo.email}
-              </a>
-            </li>
-            <li className="flex gap-2.5">
-              <FacebookIcon className="mt-0.5 size-4 shrink-0 text-marigold-400" />
-              <a
-                href={trustInfo.facebook}
-                target="_blank"
-                rel="noreferrer"
-                className="hover:text-marigold-300"
-              >
-                Facebook
+              <a href={`mailto:${settings.email}`} className="break-all hover:text-marigold-300">
+                {settings.email}
               </a>
             </li>
           </ul>
@@ -105,15 +121,15 @@ export default function Footer() {
           <dl className="space-y-2 text-sm">
             <div>
               <dt className="text-marigold-50/60">{t('contact.pan')}</dt>
-              <dd className="font-mono font-semibold text-white">{trustInfo.bank.pan}</dd>
+              <dd className="font-mono font-semibold text-white">{settings.bank.pan}</dd>
             </div>
             <div>
               <dt className="text-marigold-50/60">{t('contact.account')}</dt>
-              <dd className="font-mono font-semibold text-white">{trustInfo.bank.account}</dd>
+              <dd className="font-mono font-semibold text-white">{settings.bank.account}</dd>
             </div>
             <div>
               <dt className="text-marigold-50/60">{t('contact.ifsc')}</dt>
-              <dd className="font-mono font-semibold text-white">{trustInfo.bank.ifsc}</dd>
+              <dd className="font-mono font-semibold text-white">{settings.bank.ifsc}</dd>
             </div>
           </dl>
         </div>

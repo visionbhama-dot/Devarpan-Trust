@@ -1,41 +1,24 @@
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Flame, Activity, GraduationCap, HandHeart, CalendarDays, X, ImageIcon } from 'lucide-react'
+import { X, ImageIcon } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import { useLang } from '../lib/useLang'
-import {
-  galleryCategories,
-  galleryItems,
-  type GalleryCategory,
-  type GalleryItem,
-} from '../data/gallery'
-
-const catIcons: Record<GalleryCategory, typeof Flame> = {
-  yajna: Flame,
-  yoga: Activity,
-  education: GraduationCap,
-  women: HandHeart,
-  events: CalendarDays,
-}
-
-const catGradients: Record<GalleryCategory, string> = {
-  yajna: 'from-orange-500 to-red-600',
-  yoga: 'from-leaf-500 to-emerald-700',
-  education: 'from-sky-500 to-indigo-600',
-  women: 'from-pink-500 to-rose-600',
-  events: 'from-amber-500 to-saffron-700',
-}
+import { galleryCategories, type GalleryCategory } from '../data/gallery'
+import { getGallery, type GalleryItem } from '../lib/api'
+import { useAsync } from '../lib/useAsync'
 
 export default function Gallery() {
   const { t } = useTranslation()
   const { pick } = useLang()
   const [active, setActive] = useState<GalleryCategory | 'all'>('all')
   const [lightbox, setLightbox] = useState<GalleryItem | null>(null)
+  const { data, loading } = useAsync<GalleryItem[]>(() => getGallery(), [])
+  const items = data ?? []
 
   const filtered = useMemo(
-    () => (active === 'all' ? galleryItems : galleryItems.filter((g) => g.category === active)),
-    [active],
+    () => (active === 'all' ? items : items.filter((g) => g.category === active)),
+    [active, items],
   )
 
   return (
@@ -60,12 +43,16 @@ export default function Gallery() {
           ))}
         </div>
 
-        {/* Grid */}
-        <motion.div layout className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          <AnimatePresence mode="popLayout">
-            {filtered.map((item) => {
-              const Icon = catIcons[item.category]
-              return (
+        {loading ? (
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="aspect-[4/3] animate-pulse rounded-2xl bg-marigold-100/60" />
+            ))}
+          </div>
+        ) : (
+          <motion.div layout className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <AnimatePresence mode="popLayout">
+              {filtered.map((item) => (
                 <motion.button
                   key={item.id}
                   layout
@@ -76,33 +63,28 @@ export default function Gallery() {
                   onClick={() => setLightbox(item)}
                   className="group relative aspect-[4/3] overflow-hidden rounded-2xl text-left shadow-md ring-1 ring-black/5"
                 >
-                  {item.src ? (
-                    <img
-                      src={item.src}
-                      alt={pick(item.caption)}
-                      className="size-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                  ) : (
-                    <div
-                      className={`grid size-full place-items-center bg-gradient-to-br ${
-                        catGradients[item.category]
-                      } transition-transform duration-500 group-hover:scale-110`}
-                    >
-                      <Icon className="size-16 text-white/85" />
-                    </div>
-                  )}
+                  <img
+                    src={item.image_url}
+                    alt={pick(item.caption)}
+                    loading="lazy"
+                    className="size-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0" />
                   <div className="absolute inset-x-0 bottom-0 p-4">
                     <span className="mb-1 inline-block rounded-full bg-white/20 px-2.5 py-0.5 text-[11px] font-semibold text-white backdrop-blur">
-                      {pick(galleryCategories.find((c) => c.key === item.category)!)}
+                      {pick(galleryCategories.find((c) => c.key === item.category) ?? { hi: '', en: '' })}
                     </span>
                     <p className="font-semibold text-white drop-shadow">{pick(item.caption)}</p>
                   </div>
                 </motion.button>
-              )
-            })}
-          </AnimatePresence>
-        </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        )}
+
+        {!loading && filtered.length === 0 && (
+          <p className="py-10 text-center text-ink-700">{t('gallery.note')}</p>
+        )}
 
         <p className="mt-10 flex items-center justify-center gap-2 text-center text-sm text-ink-700/70">
           <ImageIcon className="size-4" /> {t('gallery.note')}
@@ -133,22 +115,13 @@ export default function Gallery() {
               className="w-full max-w-3xl overflow-hidden rounded-2xl bg-white shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
-              {lightbox.src ? (
-                <img src={lightbox.src} alt={pick(lightbox.caption)} className="max-h-[70vh] w-full object-contain" />
-              ) : (
-                <div
-                  className={`grid aspect-video w-full place-items-center bg-gradient-to-br ${
-                    catGradients[lightbox.category]
-                  }`}
-                >
-                  {(() => {
-                    const Icon = catIcons[lightbox.category]
-                    return <Icon className="size-24 text-white/85" />
-                  })()}
-                </div>
-              )}
+              <img
+                src={lightbox.image_url}
+                alt={pick(lightbox.caption)}
+                className="max-h-[70vh] w-full object-contain"
+              />
               <div className="p-5 text-center">
-                <p className="font-display text-lg font-bold text-ink-900">{pick(lightbox.caption)}</p>
+                <p className="font-display text-lg font-normal text-ink-900">{pick(lightbox.caption)}</p>
               </div>
             </motion.div>
           </motion.div>
@@ -172,8 +145,8 @@ function FilterButton({
       onClick={onClick}
       className={`rounded-full px-5 py-2 text-sm font-semibold transition-colors ${
         active
-          ? 'bg-gradient-to-r from-saffron-600 to-leaf-600 text-white shadow-md'
-          : 'bg-white text-ink-700 ring-1 ring-saffron-200 hover:bg-saffron-50'
+          ? 'bg-gradient-to-r from-vermilion-600 to-marigold-500 text-white shadow-md'
+          : 'bg-white text-ink-700 ring-1 ring-marigold-200 hover:bg-marigold-50'
       }`}
     >
       {children}

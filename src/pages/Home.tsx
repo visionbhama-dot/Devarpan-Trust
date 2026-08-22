@@ -16,9 +16,11 @@ import {
 } from 'lucide-react'
 import { WhatsAppIcon } from '../components/icons'
 import { useLang } from '../lib/useLang'
-import { vedas, trustInfo } from '../data/trust'
+import { vedas } from '../data/trust'
 import { galleryItems } from '../data/gallery'
-import { members } from '../data/members'
+import { getGallery, getMembers, type GalleryItem, type Member } from '../lib/api'
+import { useAsync } from '../lib/useAsync'
+import { useSettings } from '../lib/SettingsContext'
 
 const focusIcons = {
   yajna: Flame,
@@ -40,14 +42,18 @@ const collage = [...galleryItems.map((g) => g.src!), galleryItems[0].src!]
 export default function Home() {
   const { t } = useTranslation()
   const { pick } = useLang()
-  const previewItems = galleryItems.slice(0, 6)
-  const previewMembers = members.slice(0, 3)
+  const settings = useSettings()
+  const { data: galleryData } = useAsync<GalleryItem[]>(() => getGallery(), [])
+  const { data: membersData } = useAsync<Member[]>(() => getMembers(), [])
+  const previewItems = (galleryData ?? []).slice(0, 6)
+  const previewMembers = (membersData ?? []).slice(0, 3)
   const memberGradients = [
     'from-vermilion-500 to-vermilion-700',
     'from-marigold-400 to-marigold-600',
     'from-vermilion-600 to-marigold-500',
   ]
-  const waHref = `https://wa.me/91${trustInfo.phones[0]}?text=${encodeURIComponent(
+  const waRaw = settings.socials.whatsapp || settings.phones[0] || ''
+  const waHref = `https://wa.me/${waRaw.startsWith('91') ? waRaw : `91${waRaw}`}?text=${encodeURIComponent(
     t('whatsapp.prefill'),
   )}`
 
@@ -278,8 +284,8 @@ export default function Home() {
                     </span>
                   )}
                   <div className="relative h-52 w-full overflow-hidden">
-                    {m.photo ? (
-                      <img src={m.photo} alt={pick(m.name)} className="size-full object-cover" />
+                    {m.photo_url ? (
+                      <img src={m.photo_url} alt={pick(m.name)} className="size-full object-cover" />
                     ) : (
                       <div
                         className={`grid size-full place-items-center bg-gradient-to-br ${
@@ -338,7 +344,7 @@ export default function Home() {
                 className="group relative aspect-[4/3] overflow-hidden rounded-2xl shadow-md ring-1 ring-black/5"
               >
                 <img
-                  src={item.src}
+                  src={item.image_url}
                   alt={pick(item.caption)}
                   loading="lazy"
                   className="size-full object-cover transition-transform duration-500 group-hover:scale-110"
@@ -385,20 +391,20 @@ export default function Home() {
           {/* detail cards */}
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             <DetailCard icon={MapPin} title={t('contact.officeTitle')}>
-              {pick(trustInfo.address)}
+              {pick(settings.address)}
             </DetailCard>
             <DetailCard icon={Phone} title={t('contact.phoneTitle')}>
               <div className="flex flex-col gap-0.5">
-                {trustInfo.phones.map((p) => (
-                  <a key={p} href={`tel:+91${p}`} className="hover:text-saffron-300">
+                {settings.phones.map((p) => (
+                  <a key={p} href={`tel:+91${p}`} className="hover:text-marigold-300">
                     +91 {p}
                   </a>
                 ))}
               </div>
             </DetailCard>
             <DetailCard icon={Mail} title={t('contact.emailTitle')}>
-              <a href={`mailto:${trustInfo.email}`} className="break-all hover:text-saffron-300">
-                {trustInfo.email}
+              <a href={`mailto:${settings.email}`} className="break-all hover:text-marigold-300">
+                {settings.email}
               </a>
             </DetailCard>
             <DetailCard icon={User} title={t('contact.presidentTitle')}>
@@ -416,9 +422,9 @@ export default function Home() {
                 <h3 className="font-display text-xl font-extrabold">{t('contact.bankTitle')}</h3>
               </div>
               <dl className="grid gap-3 sm:grid-cols-3">
-                <BankItem label={t('contact.pan')} value={trustInfo.bank.pan} />
-                <BankItem label={t('contact.account')} value={trustInfo.bank.account} />
-                <BankItem label={t('contact.ifsc')} value={trustInfo.bank.ifsc} />
+                <BankItem label={t('contact.pan')} value={settings.bank.pan} />
+                <BankItem label={t('contact.account')} value={settings.bank.account} />
+                <BankItem label={t('contact.ifsc')} value={settings.bank.ifsc} />
               </dl>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
