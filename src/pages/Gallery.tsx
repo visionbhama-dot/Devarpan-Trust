@@ -40,7 +40,12 @@ export default function Gallery() {
 
   return (
     <>
-      <PageHeader kicker={t('gallery.kicker')} title={t('gallery.title')} intro={t('gallery.intro')} />
+      <PageHeader
+        kicker={t('gallery.kicker')}
+        title={t('gallery.title')}
+        intro={t('gallery.intro')}
+        image="/gallery/g08-satsang-yajna.jpg"
+      />
 
       <section className="mx-auto max-w-7xl px-6 py-14 md:py-16">
         {/* Filters */}

@@ -21,7 +21,12 @@ export default function Contact() {
 
   return (
     <>
-      <PageHeader kicker={t('contact.kicker')} title={t('contact.title')} intro={t('contact.intro')} />
+      <PageHeader
+        kicker={t('contact.kicker')}
+        title={t('contact.title')}
+        intro={t('contact.intro')}
+        image="/gallery/g04-yajna.jpg"
+      />
 
       <section className="mx-auto max-w-7xl px-6 py-16 md:py-20">
         <div className="grid gap-10 lg:grid-cols-2">

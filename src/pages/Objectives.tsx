@@ -11,7 +11,12 @@ export default function Objectives() {
 
   return (
     <>
-      <PageHeader kicker={t('objectives.kicker')} title={t('objectives.title')} intro={t('objectives.intro')} />
+      <PageHeader
+        kicker={t('objectives.kicker')}
+        title={t('objectives.title')}
+        intro={t('objectives.intro')}
+        image="/gallery/g06-yajna-bal.jpg"
+      />
 
       <section className="mx-auto max-w-4xl px-6 py-16 md:py-20">
         <ul className="space-y-5">

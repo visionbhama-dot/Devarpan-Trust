@@ -22,7 +22,12 @@ export default function Members() {
 
   return (
     <>
-      <PageHeader kicker={t('members.kicker')} title={t('members.title')} intro={t('members.intro')} />
+      <PageHeader
+        kicker={t('members.kicker')}
+        title={t('members.title')}
+        intro={t('members.intro')}
+        image="/gallery/g09-varishthjan-samman.jpg"
+      />
 
       <section className="mx-auto max-w-7xl px-6 py-16 md:py-20">
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
