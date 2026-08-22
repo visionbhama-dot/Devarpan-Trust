@@ -52,7 +52,7 @@ export default function Contact() {
             <InfoCard icon={Mail} title={t('contact.emailTitle')}>
               <a
                 href={`mailto:${settings.email}`}
-                className="break-all font-medium text-ink-800 hover:text-vermilion-600"
+                className="block break-all font-medium text-ink-800 hover:text-vermilion-600"
               >
                 {settings.email}
               </a>
@@ -61,9 +61,9 @@ export default function Contact() {
                   href={settings.socials.facebook}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-vermilion-700 hover:underline"
+                  className="mt-2 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-vermilion-700 hover:underline"
                 >
-                  <FacebookIcon className="size-4" /> Facebook
+                  <FacebookIcon className="size-4 shrink-0" /> Facebook
                 </a>
               )}
             </InfoCard>
