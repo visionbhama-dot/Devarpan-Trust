@@ -158,7 +158,7 @@ insert into public.members (name_hi, name_en, role_hi, role_en, photo_url, sort)
 ('श्री धनंजय','Shri Dhananjay','फर्स्ट ट्रस्टी और प्रस्तोता','First Trustee & Proposer','/members/dhananjay.jpg',4),
 ('श्री देवेन्द्र कुमार','Shri Devendra Kumar','फर्स्ट ट्रस्टी','First Trustee','/members/devendra.jpg',5),
 ('श्री रामेश्वर दयाल गुप्ता','Shri Rameshwar Dayal Gupta','फर्स्ट ट्रस्टी','First Trustee','/members/rameshwar.jpg',6),
-('श्री अर्जुन कुमार','Shri Arjun Kumar','फर्स्ट ट्रस्टी','First Trustee',null,7)
+('श्री अर्जुन कुमार','Shri Arjun Kumar','फर्स्ट ट्रस्टी','First Trustee','/members/arjun.jpg',7)
 on conflict do nothing;
 
 -- Gallery (existing photos served from the site’s /gallery folder)

@@ -48,6 +48,6 @@ export const members: Member[] = [
     id: 7,
     name: { hi: 'श्री अर्जुन कुमार', en: 'Shri Arjun Kumar' },
     role: { hi: 'फर्स्ट ट्रस्टी', en: 'First Trustee' },
-    photo: undefined,
+    photo: '/members/arjun.jpg',
   },
 ]
