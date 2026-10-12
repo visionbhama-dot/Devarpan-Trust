@@ -52,6 +52,27 @@ create table if not exists public.blogs (
   created_at timestamptz not null default now()
 );
 
+create table if not exists public.programs (
+  id uuid primary key default gen_random_uuid(),
+  title_hi text not null,
+  title_en text not null default '',
+  description_hi text default '',
+  description_en text default '',
+  location_hi text default '',
+  location_en text default '',
+  event_date date,
+  image_url text,
+  images jsonb not null default '[]'::jsonb,  -- extra photo URLs: ["url1","url2"]
+  videos jsonb not null default '[]'::jsonb,  -- [{ "kind": "link"|"file", "url": "..." }]
+  status text not null default 'upcoming',  -- 'upcoming' | 'completed'
+  sort int not null default 0,
+  created_at timestamptz not null default now()
+);
+
+-- Add the photo/video columns to any existing programs table (safe to re-run)
+alter table public.programs add column if not exists images jsonb not null default '[]'::jsonb;
+alter table public.programs add column if not exists videos jsonb not null default '[]'::jsonb;
+
 create table if not exists public.settings (
   id text primary key default 'site',
   phones jsonb not null default '[]'::jsonb,
@@ -68,16 +89,19 @@ alter table public.gallery    enable row level security;
 alter table public.members    enable row level security;
 alter table public.objectives enable row level security;
 alter table public.blogs      enable row level security;
+alter table public.programs   enable row level security;
 alter table public.settings   enable row level security;
 
 -- Public (anon) can READ everything except unpublished blogs
 drop policy if exists "read gallery"    on public.gallery;
 drop policy if exists "read members"    on public.members;
 drop policy if exists "read objectives" on public.objectives;
+drop policy if exists "read programs"   on public.programs;
 drop policy if exists "read settings"   on public.settings;
 create policy "read gallery"    on public.gallery    for select using (true);
 create policy "read members"    on public.members    for select using (true);
 create policy "read objectives" on public.objectives for select using (true);
+create policy "read programs"   on public.programs   for select using (true);
 create policy "read settings"   on public.settings   for select using (true);
 
 drop policy if exists "read published blogs" on public.blogs;
@@ -90,19 +114,22 @@ drop policy if exists "write gallery"    on public.gallery;
 drop policy if exists "write members"    on public.members;
 drop policy if exists "write objectives" on public.objectives;
 drop policy if exists "write blogs"      on public.blogs;
+drop policy if exists "write programs"   on public.programs;
 drop policy if exists "write settings"   on public.settings;
 create policy "write gallery"    on public.gallery    for all to authenticated using (true) with check (true);
 create policy "write members"    on public.members    for all to authenticated using (true) with check (true);
 create policy "write objectives" on public.objectives for all to authenticated using (true) with check (true);
 create policy "write blogs"      on public.blogs      for all to authenticated using (true) with check (true);
+create policy "write programs"   on public.programs   for all to authenticated using (true) with check (true);
 create policy "write settings"   on public.settings   for all to authenticated using (true) with check (true);
 
 -- ---------- STORAGE BUCKETS ----------
 
 insert into storage.buckets (id, name, public) values
-  ('gallery', 'gallery', true),
-  ('members', 'members', true),
-  ('blogs',   'blogs',   true)
+  ('gallery',  'gallery',  true),
+  ('members',  'members',  true),
+  ('blogs',    'blogs',    true),
+  ('programs', 'programs', true)
 on conflict (id) do nothing;
 
 drop policy if exists "public read media"  on storage.objects;
@@ -110,13 +137,13 @@ drop policy if exists "auth upload media"  on storage.objects;
 drop policy if exists "auth update media"  on storage.objects;
 drop policy if exists "auth delete media"  on storage.objects;
 create policy "public read media" on storage.objects for select
-  using (bucket_id in ('gallery','members','blogs'));
+  using (bucket_id in ('gallery','members','blogs','programs'));
 create policy "auth upload media" on storage.objects for insert to authenticated
-  with check (bucket_id in ('gallery','members','blogs'));
+  with check (bucket_id in ('gallery','members','blogs','programs'));
 create policy "auth update media" on storage.objects for update to authenticated
-  using (bucket_id in ('gallery','members','blogs'));
+  using (bucket_id in ('gallery','members','blogs','programs'));
 create policy "auth delete media" on storage.objects for delete to authenticated
-  using (bucket_id in ('gallery','members','blogs'));
+  using (bucket_id in ('gallery','members','blogs','programs'));
 
 -- ============================================================
 --  SEED DATA (current website content) — run once
@@ -189,3 +216,31 @@ values (
   true,
   now()
 ) on conflict (slug) do nothing;
+
+-- Programs / Events (sample)
+insert into public.programs (title_hi, title_en, description_hi, description_en, location_hi, location_en, event_date, image_url, status, sort) values
+(
+  'अन्तर्राष्ट्रीय योग दिवस शिविर',
+  'International Yoga Day Camp',
+  'सभी आयु वर्ग के लिए निःशुल्क योग एवं ध्यान शिविर। पंजीकरण हेतु संपर्क करें।',
+  'A free yoga and meditation camp for all age groups. Contact us to register.',
+  'जीवन पार्क, उत्तम नगर, नई दिल्ली',
+  'Jeevan Park, Uttam Nagar, New Delhi',
+  '2026-06-21',
+  '/gallery/g01-bal-yoga.jpg',
+  'upcoming',
+  1
+),
+(
+  'मेधावी छात्र सम्मान समारोह',
+  'Meritorious Student Felicitation',
+  'क्षेत्र के मेधावी एवं निर्धन विद्यार्थियों को प्रोत्साहन एवं शिक्षण सामग्री वितरण।',
+  'Encouragement and distribution of study material to meritorious and needy students of the area.',
+  'उत्तम नगर, नई दिल्ली',
+  'Uttam Nagar, New Delhi',
+  '2025-11-14',
+  '/gallery/g07-medhavi-chatra.jpg',
+  'completed',
+  2
+)
+on conflict do nothing;
