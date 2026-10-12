@@ -180,8 +180,9 @@ values (
 )
 on conflict (id) do nothing;
 
--- Objectives
-insert into public.objectives (num, text_hi, text_en, sort) values
+-- Objectives (only seeded when the table is empty — safe to re-run)
+insert into public.objectives (num, text_hi, text_en, sort)
+select * from (values
 ('i','यज्ञ, योग एवं संस्कार के लिए प्रयत्नशील रहना इसका मुख्य उद्देश्य है।','To remain devoted to Yajna, Yoga and Sanskar (values) is its principal objective.',1),
 ('ii','यज्ञों की वैज्ञानिकता को समाज के सामने प्रतिष्ठित करना तथा इसके निमित्त विभिन्न आयोजन आयोजित करना।','To establish the scientific basis of Yajnas before society and to organise various events towards this purpose.',2),
 ('iii','मानव-मात्र को भौतिक वातावरण में प्रदूषित जीवनशैली से उत्पन्न अवसादों से बचाने, बाल एवं युवा पीढ़ी को संस्कारों के महत्व से अवगत कराने के लिए प्रयत्नशील रहना तथा इससे सम्बन्धित शिविरों व विभिन्न कार्यक्रमों का आयोजन करना एवं करवाना।','To strive to protect humankind from the depressions caused by a polluted lifestyle, to make the young generation aware of the importance of values, and to organise related camps and programs.',3),
@@ -193,10 +194,12 @@ insert into public.objectives (num, text_hi, text_en, sort) values
 ('ix','ट्रस्ट के उद्देश्यों की पूर्ति के लिए दान, अनुदान, केन्द्र सरकार, राज्य-सरकार, संस्था/संस्थाओं, व्यक्ति/व्यक्तियों आदि से सहयोग प्राप्त करना।','To obtain support through donations and grants from the Central Government, State Government, institutions and individuals.',9),
 ('x','सार्वजनिक हित के लिए संपत्ति अर्जित करना जैसे क्लिनिक, डायग्नोस्टिक सेंटर, केमिस्ट स्टोर, फिजियोथेरेपी सेंटर इत्यादि और इसे प्रशिक्षण सत्रों, सेमिनारों और अन्य सार्वजनिक कार्यों के लिए जनता के लिए उपलब्ध कराना।','To acquire property for public welfare such as a clinic, diagnostic centre, chemist store or physiotherapy centre, and make it available to the public.',10),
 ('xi','समाज के उत्थान और बेहतरी में शामिल अन्य संगठनों को सहायता/दान देना, जिसमें कोई भी एनजीओ शामिल है जो ऊपर उल्लिखित उद्देश्यों को पूरा कर रहा है।','To give assistance or donations to other organisations, including any NGO fulfilling the aforementioned objectives.',11)
-on conflict do nothing;
+) as v(num, text_hi, text_en, sort)
+where not exists (select 1 from public.objectives);
 
--- Members
-insert into public.members (name_hi, name_en, role_hi, role_en, photo_url, sort) values
+-- Members (only seeded when the table is empty — safe to re-run)
+insert into public.members (name_hi, name_en, role_hi, role_en, photo_url, sort)
+select * from (values
 ('श्री ओमपाल सिंह आर्य','Shri Ompal Singh Arya','अध्यक्ष','President','/members/ompal.jpg',1),
 ('श्री रमेशचंद्र आर्य','Shri Rameshchandra Arya','महासचिव','General Secretary','/members/ramesh.jpg',2),
 ('श्रीमती नीरज कुमारी','Smt. Neeraj Kumari','कोषाध्यक्ष','Treasurer','/members/neeraj.jpg',3),
@@ -204,10 +207,12 @@ insert into public.members (name_hi, name_en, role_hi, role_en, photo_url, sort)
 ('श्री देवेन्द्र कुमार','Shri Devendra Kumar','ट्रस्टी','Trustee','/members/devendra.jpg',5),
 ('श्री रामेश्वर दयाल गुप्ता','Shri Rameshwar Dayal Gupta','ट्रस्टी','Trustee','/members/rameshwar.jpg',6),
 ('श्री अर्जुन कुमार','Shri Arjun Kumar','ट्रस्टी','Trustee','/members/arjun.jpg',7)
-on conflict do nothing;
+) as v(name_hi, name_en, role_hi, role_en, photo_url, sort)
+where not exists (select 1 from public.members);
 
 -- Gallery (existing photos served from the site’s /gallery folder)
-insert into public.gallery (category, caption_hi, caption_en, image_url, sort) values
+insert into public.gallery (category, caption_hi, caption_en, image_url, sort)
+select * from (values
 ('yajna','सामूहिक यज्ञ (हवन)','Community Yajna (Havan)','/gallery/g04-yajna.jpg',1),
 ('yajna','यज्ञ एवं बाल अभिनन्दन','Yajna & Children’s Felicitation','/gallery/g06-yajna-bal.jpg',2),
 ('yajna','सत्संग एवं यज्ञ सभा','Satsang & Yajna Gathering','/gallery/g08-satsang-yajna.jpg',3),
@@ -219,7 +224,8 @@ insert into public.gallery (category, caption_hi, caption_en, image_url, sort) v
 ('events','वरिष्ठजन सम्मान','Honouring of Elders','/gallery/g09-varishthjan-samman.jpg',9),
 ('events','सम्मान एवं सहयोग समारोह','Felicitation & Support Ceremony','/gallery/g10-samman-samaroh.jpg',10),
 ('women','महिला सम्मान समारोह','Women’s Felicitation Ceremony','/gallery/g11-mahila-samman.jpg',11)
-on conflict do nothing;
+) as v(category, caption_hi, caption_en, image_url, sort)
+where not exists (select 1 from public.gallery);
 
 -- Sample blog post
 insert into public.blogs (slug, title_hi, title_en, excerpt_hi, excerpt_en, content_hi, content_en, published, published_at)
@@ -235,8 +241,9 @@ values (
   now()
 ) on conflict (slug) do nothing;
 
--- Programs / Events (sample)
-insert into public.programs (title_hi, title_en, description_hi, description_en, location_hi, location_en, event_date, image_url, status, sort) values
+-- Programs / Events (only seeded when the table is empty — safe to re-run)
+insert into public.programs (title_hi, title_en, description_hi, description_en, location_hi, location_en, event_date, image_url, status, sort)
+select * from (values
 (
   'अन्तर्राष्ट्रीय योग दिवस शिविर',
   'International Yoga Day Camp',
@@ -244,7 +251,7 @@ insert into public.programs (title_hi, title_en, description_hi, description_en,
   'A free yoga and meditation camp for all age groups. Contact us to register.',
   'जीवन पार्क, उत्तम नगर, नई दिल्ली',
   'Jeevan Park, Uttam Nagar, New Delhi',
-  '2026-06-21',
+  '2026-06-21'::date,
   '/gallery/g01-bal-yoga.jpg',
   'upcoming',
   1
@@ -256,16 +263,19 @@ insert into public.programs (title_hi, title_en, description_hi, description_en,
   'Encouragement and distribution of study material to meritorious and needy students of the area.',
   'उत्तम नगर, नई दिल्ली',
   'Uttam Nagar, New Delhi',
-  '2025-11-14',
+  '2025-11-14'::date,
   '/gallery/g07-medhavi-chatra.jpg',
   'completed',
   2
 )
-on conflict do nothing;
+) as v(title_hi, title_en, description_hi, description_en, location_hi, location_en, event_date, image_url, status, sort)
+where not exists (select 1 from public.programs);
 
--- Recent activities (sample ticker / popup items)
-insert into public.activities (text_hi, text_en, date, image_url, link, active, sort) values
-('उत्तम नगर में सामूहिक यज्ञ का सफल आयोजन सम्पन्न हुआ।', 'A community Yajna was successfully held at Uttam Nagar.', '2025-10-05', '/gallery/g04-yajna.jpg', '/programs', true, 1),
-('50 निर्धन विद्यार्थियों को शिक्षण सामग्री वितरित की गई।', 'Study material was distributed to 50 needy students.', '2025-09-20', '/gallery/g02-shiksha-vitran.jpg', '/gallery', true, 2),
-('अन्तर्राष्ट्रीय योग दिवस शिविर हेतु पंजीकरण प्रारम्भ।', 'Registration has opened for the International Yoga Day camp.', '2026-05-15', '/gallery/g01-bal-yoga.jpg', '/programs', true, 3)
-on conflict do nothing;
+-- Recent activities (only seeded when the table is empty — safe to re-run)
+insert into public.activities (text_hi, text_en, date, image_url, link, active, sort)
+select * from (values
+('उत्तम नगर में सामूहिक यज्ञ का सफल आयोजन सम्पन्न हुआ।', 'A community Yajna was successfully held at Uttam Nagar.', '2025-10-05'::date, '/gallery/g04-yajna.jpg', '/programs', true, 1),
+('50 निर्धन विद्यार्थियों को शिक्षण सामग्री वितरित की गई।', 'Study material was distributed to 50 needy students.', '2025-09-20'::date, '/gallery/g02-shiksha-vitran.jpg', '/gallery', true, 2),
+('अन्तर्राष्ट्रीय योग दिवस शिविर हेतु पंजीकरण प्रारम्भ।', 'Registration has opened for the International Yoga Day camp.', '2026-05-15'::date, '/gallery/g01-bal-yoga.jpg', '/programs', true, 3)
+) as v(text_hi, text_en, date, image_url, link, active, sort)
+where not exists (select 1 from public.activities);
