@@ -41,5 +41,12 @@ If you upload video **files**, raise Supabase's upload size limit so larger file
 
 ---
 
+### ⚠️ Seeing duplicate content (members/photos/events listed 2–3 times)?
+This happened if an older `schema.sql` was run more than once. Fix it in one step:
+1. Open **SQL Editor → New query**.
+2. Paste all of **`supabase/cleanup-duplicates.sql`** and click **Run**.
+
+It keeps one copy of each identical entry and removes the extras. The current `schema.sql` is now safe to re-run — the seed data only loads when a table is empty, so it will never duplicate again.
+
 ### For developers (local run)
 Copy `.env.example` to `.env` and fill in the two values, then `npm install && npm run dev`.
