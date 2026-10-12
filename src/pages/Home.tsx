@@ -13,12 +13,13 @@ import {
   Landmark,
   User,
   Crown,
+  CalendarDays,
 } from 'lucide-react'
 import { WhatsAppIcon } from '../components/icons'
 import { useLang } from '../lib/useLang'
 import { vedas } from '../data/trust'
 import { galleryItems } from '../data/gallery'
-import { getGallery, getMembers, type GalleryItem, type Member } from '../lib/api'
+import { getGallery, getMembers, getPrograms, type GalleryItem, type Member, type Program } from '../lib/api'
 import { useAsync } from '../lib/useAsync'
 import { useSettings } from '../lib/SettingsContext'
 
@@ -41,12 +42,28 @@ const collage = [...galleryItems.map((g) => g.src!), galleryItems[0].src!]
 
 export default function Home() {
   const { t } = useTranslation()
-  const { pick } = useLang()
+  const { pick, lang } = useLang()
   const settings = useSettings()
   const { data: galleryData } = useAsync<GalleryItem[]>(() => getGallery(), [])
   const { data: membersData } = useAsync<Member[]>(() => getMembers(), [])
+  const { data: programsData } = useAsync<Program[]>(() => getPrograms('upcoming'), [])
   const previewItems = (galleryData ?? []).slice(0, 6)
   const previewMembers = (membersData ?? []).slice(0, 3)
+  const upcomingPrograms = [...(programsData ?? [])]
+    .sort((a, b) => {
+      const da = a.event_date ? new Date(a.event_date).getTime() : Infinity
+      const db = b.event_date ? new Date(b.event_date).getTime() : Infinity
+      return da - db
+    })
+    .slice(0, 2)
+  const formatProgramDate = (iso: string | null) =>
+    iso
+      ? new Date(iso).toLocaleDateString(lang === 'hi' ? 'hi-IN' : 'en-IN', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })
+      : t('programs.dateTba')
   const memberGradients = [
     'from-vermilion-500 to-vermilion-700',
     'from-marigold-400 to-marigold-600',
@@ -317,6 +334,88 @@ export default function Home() {
               className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-vermilion-600 to-marigold-500 px-8 py-3.5 font-bold text-white shadow-lg transition-transform hover:scale-105"
             >
               {t('home.membersViewAll')} <ArrowRight className="size-5" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ============ UPCOMING PROGRAMS PREVIEW ============ */}
+      <section className="bg-stone py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="mb-10 text-center">
+            <p className="mb-2 font-bold uppercase tracking-[0.2em] text-vermilion-600">
+              {t('home.programsKicker')}
+            </p>
+            <h2 className="font-display text-4xl font-normal text-ink-900 md:text-5xl">
+              {t('home.programsTitle')}
+            </h2>
+            <div className="mx-auto mt-4 flex items-center justify-center gap-2">
+              <span className="h-1 w-12 rounded-full bg-vermilion-500" />
+              <span className="size-2.5 rotate-45 bg-marigold-400" />
+              <span className="h-1 w-12 rounded-full bg-vermilion-500" />
+            </div>
+            <p className="mx-auto mt-4 max-w-2xl text-ink-700">{t('home.programsText')}</p>
+          </div>
+
+          {upcomingPrograms.length === 0 ? (
+            <p className="mx-auto max-w-xl rounded-3xl border border-dashed border-marigold-300 bg-white p-8 text-center text-ink-700">
+              {t('home.programsEmpty')}
+            </p>
+          ) : (
+            <div className="grid gap-8 md:grid-cols-2">
+              {upcomingPrograms.map((p, i) => (
+                <motion.article
+                  key={p.id}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
+                  className="group flex flex-col overflow-hidden rounded-3xl bg-white shadow-md ring-1 ring-marigold-200 transition-all hover:-translate-y-1.5 hover:shadow-2xl sm:flex-row"
+                >
+                  <div className="relative shrink-0 overflow-hidden sm:w-48">
+                    {p.image_url ? (
+                      <img
+                        src={p.image_url}
+                        alt={pick(p.title)}
+                        loading="lazy"
+                        className="h-44 w-full object-cover transition-transform duration-500 group-hover:scale-110 sm:h-full"
+                      />
+                    ) : (
+                      <div className="grid h-44 w-full place-items-center bg-gradient-to-br from-vermilion-600 to-marigold-500 sm:h-full">
+                        <CalendarDays className="size-12 text-white/80" />
+                      </div>
+                    )}
+                    <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-green-600 px-3 py-1 text-xs font-bold text-white shadow">
+                      {t('programs.upcoming')}
+                    </span>
+                  </div>
+                  <div className="flex flex-1 flex-col p-5">
+                    <p className="inline-flex items-center gap-1.5 text-xs font-semibold text-vermilion-600">
+                      <CalendarDays className="size-3.5" /> {formatProgramDate(p.event_date)}
+                    </p>
+                    <h3 className="mt-1.5 font-display text-xl font-normal leading-snug text-ink-900">
+                      {pick(p.title)}
+                    </h3>
+                    {pick(p.location) && (
+                      <p className="mt-1 inline-flex items-center gap-1.5 text-sm font-medium text-ink-700">
+                        <MapPin className="size-3.5 text-vermilion-500" /> {pick(p.location)}
+                      </p>
+                    )}
+                    <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-ink-700">
+                      {pick(p.description)}
+                    </p>
+                  </div>
+                </motion.article>
+              ))}
+            </div>
+          )}
+
+          <div className="mt-10 text-center">
+            <Link
+              to="/programs"
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-vermilion-600 to-marigold-500 px-8 py-3.5 font-bold text-white shadow-lg transition-transform hover:scale-105"
+            >
+              {t('home.programsViewAll')} <ArrowRight className="size-5" />
             </Link>
           </div>
         </div>

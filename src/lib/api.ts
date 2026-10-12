@@ -3,6 +3,9 @@ import { galleryItems as staticGallery, type GalleryCategory } from '../data/gal
 import { members as staticMembers } from '../data/members'
 import { objectives as staticObjectives } from '../data/objectives'
 import { trustInfo } from '../data/trust'
+import { type ProgramStatus } from '../data/programs'
+
+export { type ProgramStatus } from '../data/programs'
 
 // ---------- Unified types used across the app ----------
 export interface Bilingual {
@@ -38,6 +41,17 @@ export interface Blog {
   cover_url: string | null
   published: boolean
   published_at: string | null
+  created_at: string
+}
+export interface Program {
+  id: string
+  title: Bilingual
+  description: Bilingual
+  location: Bilingual
+  event_date: string | null
+  image_url: string | null
+  status: ProgramStatus
+  sort: number
   created_at: string
 }
 export interface Settings {
@@ -111,6 +125,43 @@ const fallbackBlogs: Blog[] = [
   },
 ]
 
+const fallbackPrograms: Program[] = [
+  {
+    id: 'yoga-diwas',
+    title: {
+      hi: 'अन्तर्राष्ट्रीय योग दिवस शिविर',
+      en: 'International Yoga Day Camp',
+    },
+    description: {
+      hi: 'सभी आयु वर्ग के लिए निःशुल्क योग एवं ध्यान शिविर। पंजीकरण हेतु संपर्क करें।',
+      en: 'A free yoga and meditation camp for all age groups. Contact us to register.',
+    },
+    location: { hi: 'जीवन पार्क, उत्तम नगर, नई दिल्ली', en: 'Jeevan Park, Uttam Nagar, New Delhi' },
+    event_date: '2026-06-21',
+    image_url: '/gallery/g01-bal-yoga.jpg',
+    status: 'upcoming',
+    sort: 1,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 'medhavi-samman',
+    title: {
+      hi: 'मेधावी छात्र सम्मान समारोह',
+      en: 'Meritorious Student Felicitation',
+    },
+    description: {
+      hi: 'क्षेत्र के मेधावी एवं निर्धन विद्यार्थियों को प्रोत्साहन एवं शिक्षण सामग्री वितरण।',
+      en: 'Encouragement and distribution of study material to meritorious and needy students of the area.',
+    },
+    location: { hi: 'उत्तम नगर, नई दिल्ली', en: 'Uttam Nagar, New Delhi' },
+    event_date: '2025-11-14',
+    image_url: '/gallery/g07-medhavi-chatra.jpg',
+    status: 'completed',
+    sort: 2,
+    created_at: new Date().toISOString(),
+  },
+]
+
 // ---------- Row mappers ----------
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const toGallery = (r: any): GalleryItem => ({
@@ -142,6 +193,17 @@ const toBlog = (r: any): Blog => ({
   cover_url: r.cover_url,
   published: r.published,
   published_at: r.published_at,
+  created_at: r.created_at,
+})
+const toProgram = (r: any): Program => ({
+  id: r.id,
+  title: { hi: r.title_hi, en: r.title_en },
+  description: { hi: r.description_hi ?? '', en: r.description_en ?? '' },
+  location: { hi: r.location_hi ?? '', en: r.location_en ?? '' },
+  event_date: r.event_date,
+  image_url: r.image_url,
+  status: r.status,
+  sort: r.sort,
   created_at: r.created_at,
 })
 /* eslint-enable @typescript-eslint/no-explicit-any */
@@ -184,6 +246,20 @@ export async function getBlogBySlug(slug: string): Promise<Blog | null> {
   const { data, error } = await supabase.from('blogs').select('*').eq('slug', slug).maybeSingle()
   if (error || !data) return null
   return toBlog(data)
+}
+
+export async function getPrograms(status?: ProgramStatus): Promise<Program[]> {
+  const fallback = status ? fallbackPrograms.filter((p) => p.status === status) : fallbackPrograms
+  if (!supabase) return fallback
+  let q = supabase
+    .from('programs')
+    .select('*')
+    .order('event_date', { ascending: false, nullsFirst: false })
+    .order('sort')
+  if (status) q = q.eq('status', status)
+  const { data, error } = await q
+  if (error || !data) return fallback
+  return data.map(toProgram)
 }
 
 export async function getSettings(): Promise<Settings> {
@@ -336,6 +412,48 @@ export async function updateBlog(id: string, b: Partial<Blog>) {
 }
 export async function deleteBlog(id: string) {
   const { error } = await requireDb().from('blogs').delete().eq('id', id)
+  if (error) throw error
+}
+
+// Programs
+export async function createProgram(p: Omit<Program, 'id' | 'created_at'>) {
+  const { error } = await requireDb().from('programs').insert({
+    title_hi: p.title.hi,
+    title_en: p.title.en,
+    description_hi: p.description.hi,
+    description_en: p.description.en,
+    location_hi: p.location.hi,
+    location_en: p.location.en,
+    event_date: p.event_date || null,
+    image_url: p.image_url,
+    status: p.status,
+    sort: p.sort,
+  })
+  if (error) throw error
+}
+export async function updateProgram(id: string, p: Partial<Program>) {
+  const patch: Record<string, unknown> = {}
+  if (p.title) {
+    patch.title_hi = p.title.hi
+    patch.title_en = p.title.en
+  }
+  if (p.description) {
+    patch.description_hi = p.description.hi
+    patch.description_en = p.description.en
+  }
+  if (p.location) {
+    patch.location_hi = p.location.hi
+    patch.location_en = p.location.en
+  }
+  if (p.event_date !== undefined) patch.event_date = p.event_date || null
+  if (p.image_url !== undefined) patch.image_url = p.image_url
+  if (p.status !== undefined) patch.status = p.status
+  if (p.sort !== undefined) patch.sort = p.sort
+  const { error } = await requireDb().from('programs').update(patch).eq('id', id)
+  if (error) throw error
+}
+export async function deleteProgram(id: string) {
+  const { error } = await requireDb().from('programs').delete().eq('id', id)
   if (error) throw error
 }
 

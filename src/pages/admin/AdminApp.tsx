@@ -6,6 +6,7 @@ import Login from './Login'
 import Dashboard from './Dashboard'
 import GalleryAdmin from './GalleryAdmin'
 import MembersAdmin from './MembersAdmin'
+import ProgramsAdmin from './ProgramsAdmin'
 import BlogsAdmin from './BlogsAdmin'
 import ObjectivesAdmin from './ObjectivesAdmin'
 import SettingsAdmin from './SettingsAdmin'
@@ -20,6 +21,7 @@ export default function AdminApp() {
             <Route index element={<Dashboard />} />
             <Route path="gallery" element={<GalleryAdmin />} />
             <Route path="members" element={<MembersAdmin />} />
+            <Route path="programs" element={<ProgramsAdmin />} />
             <Route path="blogs" element={<BlogsAdmin />} />
             <Route path="objectives" element={<ObjectivesAdmin />} />
             <Route path="settings" element={<SettingsAdmin />} />
