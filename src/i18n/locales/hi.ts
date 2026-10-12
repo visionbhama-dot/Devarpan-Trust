@@ -128,6 +128,12 @@ const hi = {
     upcomingEmpty: 'अभी कोई आगामी कार्यक्रम नहीं है। कृपया शीघ्र पुनः देखें।',
     completedEmpty: 'दिखाने के लिए अभी कोई सम्पन्न कार्यक्रम नहीं है।',
     dateTba: 'तिथि शीघ्र घोषित की जाएगी',
+    viewDetails: 'विवरण देखें',
+    back: 'सभी कार्यक्रम',
+    photosTitle: 'चित्र',
+    videosTitle: 'वीडियो',
+    watchVideo: 'वीडियो देखें',
+    notFound: 'कार्यक्रम नहीं मिला।',
   },
   contact: {
     kicker: 'संपर्क',

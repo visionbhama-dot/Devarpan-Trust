@@ -139,6 +139,120 @@ export function ImageUpload({
 }
 
 
+/** Upload several images to a bucket; manages an array of public URLs. */
+export function MultiImageUpload({
+  value,
+  onChange,
+  bucket,
+  label = 'Photos',
+}: {
+  value: string[]
+  onChange: (urls: string[]) => void
+  bucket: keyof typeof BUCKETS
+  label?: string
+}) {
+  const [busy, setBusy] = useState(false)
+  const [err, setErr] = useState<string | null>(null)
+
+  const handle = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files ?? [])
+    if (!files.length) return
+    setBusy(true)
+    setErr(null)
+    try {
+      const uploaded: string[] = []
+      for (const file of files) uploaded.push(await uploadPublicFile(bucket, file))
+      onChange([...value, ...uploaded])
+    } catch (e2) {
+      setErr(e2 instanceof Error ? e2.message : 'Upload failed')
+    } finally {
+      setBusy(false)
+      e.target.value = ''
+    }
+  }
+
+  return (
+    <div>
+      <span className="mb-1.5 block text-sm font-semibold text-ink-800">{label}</span>
+      {value.length > 0 && (
+        <div className="mb-3 grid grid-cols-3 gap-2.5 sm:grid-cols-4">
+          {value.map((url, i) => (
+            <div
+              key={`${url}-${i}`}
+              className="group relative aspect-square overflow-hidden rounded-xl ring-1 ring-marigold-200"
+            >
+              <img src={url} alt="" className="size-full object-cover" />
+              <button
+                type="button"
+                onClick={() => onChange(value.filter((_, idx) => idx !== i))}
+                aria-label="Remove photo"
+                className="absolute right-1.5 top-1.5 grid size-7 place-items-center rounded-full bg-black/60 text-white opacity-0 transition-opacity group-hover:opacity-100"
+              >
+                <X className="size-4" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+      <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-ink-800 ring-1 ring-marigold-300 hover:bg-marigold-50">
+        {busy ? <Loader2 className="size-4 animate-spin" /> : <Upload className="size-4" />}
+        {busy ? 'Uploading…' : 'Add photos'}
+        <input
+          type="file"
+          accept="image/*"
+          multiple
+          className="hidden"
+          onChange={handle}
+          disabled={busy}
+        />
+      </label>
+      {err && <p className="mt-1 text-xs text-red-600">{err}</p>}
+    </div>
+  )
+}
+
+/** A single file upload button that returns the uploaded public URL. */
+export function FileUploadButton({
+  bucket,
+  accept = '*/*',
+  label = 'Upload file',
+  onUploaded,
+}: {
+  bucket: keyof typeof BUCKETS
+  accept?: string
+  label?: string
+  onUploaded: (url: string) => void
+}) {
+  const [busy, setBusy] = useState(false)
+  const [err, setErr] = useState<string | null>(null)
+
+  const handle = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setBusy(true)
+    setErr(null)
+    try {
+      onUploaded(await uploadPublicFile(bucket, file))
+    } catch (e2) {
+      setErr(e2 instanceof Error ? e2.message : 'Upload failed')
+    } finally {
+      setBusy(false)
+      e.target.value = ''
+    }
+  }
+
+  return (
+    <span className="inline-flex flex-col">
+      <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-ink-800 ring-1 ring-marigold-300 hover:bg-marigold-50">
+        {busy ? <Loader2 className="size-4 animate-spin" /> : <Upload className="size-4" />}
+        {busy ? 'Uploading…' : label}
+        <input type="file" accept={accept} className="hidden" onChange={handle} disabled={busy} />
+      </label>
+      {err && <p className="mt-1 text-xs text-red-600">{err}</p>}
+    </span>
+  )
+}
+
 export function Modal({
   open,
   onClose,

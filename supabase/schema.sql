@@ -62,10 +62,16 @@ create table if not exists public.programs (
   location_en text default '',
   event_date date,
   image_url text,
+  images jsonb not null default '[]'::jsonb,  -- extra photo URLs: ["url1","url2"]
+  videos jsonb not null default '[]'::jsonb,  -- [{ "kind": "link"|"file", "url": "..." }]
   status text not null default 'upcoming',  -- 'upcoming' | 'completed'
   sort int not null default 0,
   created_at timestamptz not null default now()
 );
+
+-- Add the photo/video columns to any existing programs table (safe to re-run)
+alter table public.programs add column if not exists images jsonb not null default '[]'::jsonb;
+alter table public.programs add column if not exists videos jsonb not null default '[]'::jsonb;
 
 create table if not exists public.settings (
   id text primary key default 'site',

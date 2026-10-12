@@ -372,7 +372,7 @@ export default function Home() {
                   transition={{ delay: i * 0.08 }}
                   className="group flex flex-col overflow-hidden rounded-3xl bg-white shadow-md ring-1 ring-marigold-200 transition-all hover:-translate-y-1.5 hover:shadow-2xl sm:flex-row"
                 >
-                  <div className="relative shrink-0 overflow-hidden sm:w-48">
+                  <Link to={`/programs/${p.id}`} className="relative shrink-0 overflow-hidden sm:w-48">
                     {p.image_url ? (
                       <img
                         src={p.image_url}
@@ -388,13 +388,15 @@ export default function Home() {
                     <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-green-600 px-3 py-1 text-xs font-bold text-white shadow">
                       {t('programs.upcoming')}
                     </span>
-                  </div>
+                  </Link>
                   <div className="flex flex-1 flex-col p-5">
                     <p className="inline-flex items-center gap-1.5 text-xs font-semibold text-vermilion-600">
                       <CalendarDays className="size-3.5" /> {formatProgramDate(p.event_date)}
                     </p>
                     <h3 className="mt-1.5 font-display text-xl font-normal leading-snug text-ink-900">
-                      {pick(p.title)}
+                      <Link to={`/programs/${p.id}`} className="hover:text-vermilion-700">
+                        {pick(p.title)}
+                      </Link>
                     </h3>
                     {pick(p.location) && (
                       <p className="mt-1 inline-flex items-center gap-1.5 text-sm font-medium text-ink-700">

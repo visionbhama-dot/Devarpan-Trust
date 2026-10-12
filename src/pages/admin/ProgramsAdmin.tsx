@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { Plus, Pencil, Trash2, CalendarClock, CheckCircle2 } from 'lucide-react'
+import { Plus, Pencil, Trash2, CalendarClock, CheckCircle2, Video, Link2, X, Images } from 'lucide-react'
 import {
   getPrograms,
   createProgram,
   updateProgram,
   deleteProgram,
   type Program,
+  type ProgramVideo,
 } from '../../lib/api'
 import { useAsync } from '../../lib/useAsync'
 import { programStatuses, type ProgramStatus } from '../../data/programs'
@@ -19,6 +20,8 @@ import {
   Notice,
   PageTitle,
   ImageUpload,
+  MultiImageUpload,
+  FileUploadButton,
 } from '../../components/admin/ui'
 
 type Draft = {
@@ -31,6 +34,8 @@ type Draft = {
   location_en: string
   event_date: string
   image_url: string | null
+  images: string[]
+  videos: ProgramVideo[]
   status: ProgramStatus
   sort: number
 }
@@ -44,6 +49,8 @@ const emptyDraft = (sort: number): Draft => ({
   location_en: '',
   event_date: '',
   image_url: null,
+  images: [],
+  videos: [],
   status: 'upcoming',
   sort,
 })
@@ -72,6 +79,8 @@ export default function ProgramsAdmin() {
       location_en: p.location.en,
       event_date: p.event_date ?? '',
       image_url: p.image_url,
+      images: p.images ?? [],
+      videos: p.videos ?? [],
       status: p.status,
       sort: p.sort,
     })
@@ -87,6 +96,8 @@ export default function ProgramsAdmin() {
         location: { hi: draft.location_hi, en: draft.location_en },
         event_date: draft.event_date || null,
         image_url: draft.image_url,
+        images: draft.images,
+        videos: draft.videos.filter((v) => v.url.trim()),
         status: draft.status,
         sort: Number(draft.sort) || 0,
       }
@@ -129,7 +140,7 @@ export default function ProgramsAdmin() {
     <div>
       <PageTitle
         title="Programs"
-        subtitle="Add events, set their date & image, and mark them completed when done."
+        subtitle="Add events with date, venue, photos & videos. Mark them completed when done."
         action={
           <AdminButton onClick={openNew}>
             <Plus className="size-4" /> New program
@@ -173,6 +184,20 @@ export default function ProgramsAdmin() {
                     {formatDate(p.event_date)}
                     {p.location.hi ? ` • ${p.location.hi}` : ''}
                   </p>
+                  {(p.images.length > 0 || p.videos.length > 0) && (
+                    <p className="mt-0.5 flex items-center gap-3 text-xs text-ink-600">
+                      {p.images.length > 0 && (
+                        <span className="inline-flex items-center gap-1">
+                          <Images className="size-3.5" /> {p.images.length}
+                        </span>
+                      )}
+                      {p.videos.length > 0 && (
+                        <span className="inline-flex items-center gap-1">
+                          <Video className="size-3.5" /> {p.videos.length}
+                        </span>
+                      )}
+                    </p>
+                  )}
                 </div>
                 <span
                   className={`hidden items-center gap-1 rounded-full px-2.5 py-1 text-xs font-bold sm:inline-flex ${
@@ -253,16 +278,18 @@ export default function ProgramsAdmin() {
               </Field>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Location (Hindi)">
+              <Field label="Venue (Hindi)">
                 <Input
                   value={draft.location_hi}
                   onChange={(e) => setDraft({ ...draft, location_hi: e.target.value })}
+                  placeholder="जीवन पार्क, उत्तम नगर"
                 />
               </Field>
-              <Field label="Location (English)">
+              <Field label="Venue (English)">
                 <Input
                   value={draft.location_en}
                   onChange={(e) => setDraft({ ...draft, location_en: e.target.value })}
+                  placeholder="Jeevan Park, Uttam Nagar"
                 />
               </Field>
             </div>
@@ -280,6 +307,104 @@ export default function ProgramsAdmin() {
                 onChange={(e) => setDraft({ ...draft, description_en: e.target.value })}
               />
             </Field>
+
+            {/* Event photo gallery */}
+            <div className="rounded-2xl border border-marigold-200 bg-marigold-50/40 p-4">
+              <MultiImageUpload
+                bucket="programs"
+                label="Event photos (gallery)"
+                value={draft.images}
+                onChange={(images) => setDraft({ ...draft, images })}
+              />
+            </div>
+
+            {/* Event videos */}
+            <div className="rounded-2xl border border-marigold-200 bg-marigold-50/40 p-4">
+              <span className="mb-1.5 block text-sm font-semibold text-ink-800">Videos</span>
+              <p className="mb-3 text-xs text-ink-600">
+                Paste a YouTube/Facebook link or upload a video file. Add as many as you like.
+              </p>
+              <div className="space-y-3">
+                {draft.videos.map((v, i) => (
+                  <div
+                    key={i}
+                    className="flex flex-wrap items-center gap-2 rounded-xl bg-white p-2.5 ring-1 ring-marigold-200"
+                  >
+                    <Select
+                      value={v.kind}
+                      className="w-28"
+                      onChange={(e) => {
+                        const videos = [...draft.videos]
+                        videos[i] = { kind: e.target.value as ProgramVideo['kind'], url: '' }
+                        setDraft({ ...draft, videos })
+                      }}
+                    >
+                      <option value="link">Link</option>
+                      <option value="file">Upload</option>
+                    </Select>
+                    {v.kind === 'link' ? (
+                      <Input
+                        value={v.url}
+                        placeholder="https://youtube.com/watch?v=…"
+                        className="min-w-0 flex-1"
+                        onChange={(e) => {
+                          const videos = [...draft.videos]
+                          videos[i] = { ...videos[i], url: e.target.value }
+                          setDraft({ ...draft, videos })
+                        }}
+                      />
+                    ) : v.url ? (
+                      <span className="flex min-w-0 flex-1 items-center gap-2 text-sm text-ink-700">
+                        <Video className="size-4 shrink-0 text-vermilion-500" />
+                        <span className="truncate">{v.url.split('/').pop()}</span>
+                      </span>
+                    ) : (
+                      <FileUploadButton
+                        bucket="programs"
+                        accept="video/*"
+                        label="Upload video"
+                        onUploaded={(url) => {
+                          const videos = [...draft.videos]
+                          videos[i] = { ...videos[i], url }
+                          setDraft({ ...draft, videos })
+                        }}
+                      />
+                    )}
+                    <button
+                      type="button"
+                      aria-label="Remove video"
+                      onClick={() =>
+                        setDraft({ ...draft, videos: draft.videos.filter((_, idx) => idx !== i) })
+                      }
+                      className="grid size-9 place-items-center rounded-lg text-red-600 ring-1 ring-red-200 hover:bg-red-50"
+                    >
+                      <X className="size-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <AdminButton
+                  type="button"
+                  variant="ghost"
+                  onClick={() =>
+                    setDraft({ ...draft, videos: [...draft.videos, { kind: 'link', url: '' }] })
+                  }
+                >
+                  <Link2 className="size-4" /> Add video link
+                </AdminButton>
+                <AdminButton
+                  type="button"
+                  variant="ghost"
+                  onClick={() =>
+                    setDraft({ ...draft, videos: [...draft.videos, { kind: 'file', url: '' }] })
+                  }
+                >
+                  <Video className="size-4" /> Add video upload
+                </AdminButton>
+              </div>
+            </div>
+
             <Field label="Sort order">
               <Input
                 type="number"

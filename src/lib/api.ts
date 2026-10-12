@@ -43,6 +43,10 @@ export interface Blog {
   published_at: string | null
   created_at: string
 }
+export interface ProgramVideo {
+  kind: 'link' | 'file'
+  url: string
+}
 export interface Program {
   id: string
   title: Bilingual
@@ -50,6 +54,8 @@ export interface Program {
   location: Bilingual
   event_date: string | null
   image_url: string | null
+  images: string[]
+  videos: ProgramVideo[]
   status: ProgramStatus
   sort: number
   created_at: string
@@ -139,6 +145,8 @@ const fallbackPrograms: Program[] = [
     location: { hi: 'जीवन पार्क, उत्तम नगर, नई दिल्ली', en: 'Jeevan Park, Uttam Nagar, New Delhi' },
     event_date: '2026-06-21',
     image_url: '/gallery/g01-bal-yoga.jpg',
+    images: ['/gallery/g03-yoga-sanskar.jpg'],
+    videos: [],
     status: 'upcoming',
     sort: 1,
     created_at: new Date().toISOString(),
@@ -156,6 +164,8 @@ const fallbackPrograms: Program[] = [
     location: { hi: 'उत्तम नगर, नई दिल्ली', en: 'Uttam Nagar, New Delhi' },
     event_date: '2025-11-14',
     image_url: '/gallery/g07-medhavi-chatra.jpg',
+    images: ['/gallery/g05-vidyarthi-abhinandan.jpg', '/gallery/g10-samman-samaroh.jpg'],
+    videos: [],
     status: 'completed',
     sort: 2,
     created_at: new Date().toISOString(),
@@ -202,6 +212,8 @@ const toProgram = (r: any): Program => ({
   location: { hi: r.location_hi ?? '', en: r.location_en ?? '' },
   event_date: r.event_date,
   image_url: r.image_url,
+  images: Array.isArray(r.images) ? r.images : [],
+  videos: Array.isArray(r.videos) ? r.videos : [],
   status: r.status,
   sort: r.sort,
   created_at: r.created_at,
@@ -260,6 +272,13 @@ export async function getPrograms(status?: ProgramStatus): Promise<Program[]> {
   const { data, error } = await q
   if (error || !data) return fallback
   return data.map(toProgram)
+}
+
+export async function getProgramById(id: string): Promise<Program | null> {
+  if (!supabase) return fallbackPrograms.find((p) => p.id === id) ?? null
+  const { data, error } = await supabase.from('programs').select('*').eq('id', id).maybeSingle()
+  if (error || !data) return null
+  return toProgram(data)
 }
 
 export async function getSettings(): Promise<Settings> {
@@ -426,6 +445,8 @@ export async function createProgram(p: Omit<Program, 'id' | 'created_at'>) {
     location_en: p.location.en,
     event_date: p.event_date || null,
     image_url: p.image_url,
+    images: p.images ?? [],
+    videos: p.videos ?? [],
     status: p.status,
     sort: p.sort,
   })
@@ -447,6 +468,8 @@ export async function updateProgram(id: string, p: Partial<Program>) {
   }
   if (p.event_date !== undefined) patch.event_date = p.event_date || null
   if (p.image_url !== undefined) patch.image_url = p.image_url
+  if (p.images !== undefined) patch.images = p.images
+  if (p.videos !== undefined) patch.videos = p.videos
   if (p.status !== undefined) patch.status = p.status
   if (p.sort !== undefined) patch.sort = p.sort
   const { error } = await requireDb().from('programs').update(patch).eq('id', id)

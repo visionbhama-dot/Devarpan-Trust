@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { AnimatePresence, motion } from 'framer-motion'
-import { CalendarDays, MapPin, CalendarClock } from 'lucide-react'
+import { CalendarDays, MapPin, CalendarClock, ArrowRight, Images, Video } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import { useLang } from '../lib/useLang'
 import { getPrograms, type Program } from '../lib/api'
@@ -109,6 +110,7 @@ function ProgramCard({
 }) {
   const date = formatDate(p.event_date, lang)
   const location = pick(p.location)
+  const photoCount = p.images.length + (p.image_url ? 1 : 0)
   return (
     <motion.article
       layout
@@ -118,36 +120,60 @@ function ProgramCard({
       transition={{ delay: Math.min(index * 0.06, 0.3) }}
       className="group flex flex-col overflow-hidden rounded-3xl bg-white shadow-md ring-1 ring-marigold-200 transition-all hover:-translate-y-1.5 hover:shadow-2xl"
     >
-      <div className="relative overflow-hidden">
-        {p.image_url ? (
-          <img
-            src={p.image_url}
-            alt={pick(p.title)}
-            loading="lazy"
-            className="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-110"
-          />
-        ) : (
-          <div className="grid aspect-[16/10] w-full place-items-center bg-gradient-to-br from-vermilion-600 to-marigold-500">
-            <CalendarDays className="size-14 text-white/80" />
-          </div>
-        )}
-        <StatusBadge status={p.status} t={t} />
-      </div>
+      <Link to={`/programs/${p.id}`} className="block overflow-hidden">
+        <div className="relative overflow-hidden">
+          {p.image_url ? (
+            <img
+              src={p.image_url}
+              alt={pick(p.title)}
+              loading="lazy"
+              className="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-110"
+            />
+          ) : (
+            <div className="grid aspect-[16/10] w-full place-items-center bg-gradient-to-br from-vermilion-600 to-marigold-500">
+              <CalendarDays className="size-14 text-white/80" />
+            </div>
+          )}
+          <StatusBadge status={p.status} t={t} />
+          {(photoCount > 1 || p.videos.length > 0) && (
+            <div className="absolute bottom-3 right-3 flex items-center gap-2">
+              {photoCount > 1 && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-black/60 px-2.5 py-1 text-xs font-bold text-white backdrop-blur">
+                  <Images className="size-3.5" /> {photoCount}
+                </span>
+              )}
+              {p.videos.length > 0 && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-black/60 px-2.5 py-1 text-xs font-bold text-white backdrop-blur">
+                  <Video className="size-3.5" /> {p.videos.length}
+                </span>
+              )}
+            </div>
+          )}
+        </div>
+      </Link>
       <div className="flex flex-1 flex-col p-6">
         <p className="mb-2 inline-flex items-center gap-1.5 text-xs font-semibold text-vermilion-600">
           <CalendarDays className="size-3.5" /> {date || t('programs.dateTba')}
         </p>
         <h3 className="font-display text-xl font-normal leading-snug text-ink-900">
-          {pick(p.title)}
+          <Link to={`/programs/${p.id}`} className="hover:text-vermilion-700">
+            {pick(p.title)}
+          </Link>
         </h3>
         {location && (
           <p className="mt-1.5 inline-flex items-center gap-1.5 text-sm font-medium text-ink-700">
             <MapPin className="size-3.5 text-vermilion-500" /> {location}
           </p>
         )}
-        <p className="mt-3 line-clamp-4 flex-1 text-sm leading-relaxed text-ink-700">
+        <p className="mt-3 line-clamp-3 flex-1 text-sm leading-relaxed text-ink-700">
           {pick(p.description)}
         </p>
+        <Link
+          to={`/programs/${p.id}`}
+          className="mt-4 inline-flex items-center gap-1.5 font-bold text-vermilion-600 hover:gap-2.5"
+        >
+          {t('programs.viewDetails')} <ArrowRight className="size-4" />
+        </Link>
       </div>
     </motion.article>
   )

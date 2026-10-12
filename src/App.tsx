@@ -6,6 +6,7 @@ import Home from './pages/Home'
 import Objectives from './pages/Objectives'
 import Members from './pages/Members'
 import Programs from './pages/Programs'
+import ProgramDetail from './pages/ProgramDetail'
 import Gallery from './pages/Gallery'
 import Blog from './pages/Blog'
 import BlogPost from './pages/BlogPost'
@@ -33,6 +34,7 @@ export default function App() {
             <Route path="/objectives" element={<Objectives />} />
             <Route path="/members" element={<Members />} />
             <Route path="/programs" element={<Programs />} />
+            <Route path="/programs/:id" element={<ProgramDetail />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />

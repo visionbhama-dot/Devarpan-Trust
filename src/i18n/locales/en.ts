@@ -129,6 +129,12 @@ const en = {
     upcomingEmpty: 'No upcoming programs at the moment. Please check back soon.',
     completedEmpty: 'No completed programs to show yet.',
     dateTba: 'Date to be announced',
+    viewDetails: 'View Details',
+    back: 'All Programs',
+    photosTitle: 'Photos',
+    videosTitle: 'Videos',
+    watchVideo: 'Watch video',
+    notFound: 'Program not found.',
   },
   contact: {
     kicker: 'Contact',

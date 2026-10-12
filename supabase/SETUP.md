@@ -25,11 +25,18 @@ Follow these one-time steps to power the admin panel. It's all free.
 Once the keys are in, visit **/admin** on the website, log in, and you can manage:
 - 🖼️ Gallery photos
 - 👥 Members
+- 📅 Programs / Events (date, venue, photos, videos & status)
 - 📝 Blogs
 - 🎯 Objectives
 - 📞 Contact info, bank details & social media links
 
 Content changes appear on the live site instantly.
+
+### 📹 About event videos
+For each event you can either **paste a video link** (YouTube/Facebook — recommended, free and fast) **or upload a video file**.
+
+If you upload video **files**, raise Supabase's upload size limit so larger files are accepted:
+**Storage → Settings → "Upload file size limit"** → set it to e.g. `200 MB` and save. (The free plan allows up to ~1 GB of total storage, so prefer YouTube links for long videos.)
 
 ---
 
