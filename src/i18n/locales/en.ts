@@ -9,7 +9,7 @@ const en = {
     gallery: 'Gallery',
     blog: 'Blog',
     contact: 'Contact',
-    donate: 'Donate',
+    donate: 'Support Us',
   },
   brand: {
     name: 'Devarpan Trust',
@@ -57,6 +57,8 @@ const en = {
     programsText: 'Join us at our upcoming Yajnas, yoga camps and social events.',
     programsViewAll: 'View All Programs',
     programsEmpty: 'No upcoming programs right now. Please check back soon.',
+    activitiesKicker: 'Latest Updates',
+    activitiesTitle: 'Recent Activities',
     galleryKicker: 'Gallery',
     galleryTitle: 'Glimpses of Our Programs',
     galleryText: 'A few moments from our Yajnas, yoga camps, education drives and felicitation ceremonies.',
@@ -135,6 +137,14 @@ const en = {
     videosTitle: 'Videos',
     watchVideo: 'Watch video',
     notFound: 'Program not found.',
+  },
+  activities: {
+    label: 'Recent Activities',
+    empty: 'Recent activities will appear here soon.',
+    popupTitle: 'See Our Recent Activities',
+    popupText: "Here's a quick look at what we've been doing lately.",
+    viewAll: 'View Activities',
+    close: 'Close',
   },
   contact: {
     kicker: 'Contact',

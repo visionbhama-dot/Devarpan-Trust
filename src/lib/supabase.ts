@@ -27,6 +27,7 @@ export const BUCKETS = {
   members: 'members',
   blogs: 'blogs',
   programs: 'programs',
+  activities: 'activities',
 } as const
 
 /**

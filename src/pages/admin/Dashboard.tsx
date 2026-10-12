@@ -1,6 +1,14 @@
 import { Link } from 'react-router-dom'
-import { Images, Users, CalendarDays, Newspaper, Target, Settings as SettingsIcon, ArrowRight } from 'lucide-react'
-import { getGallery, getMembers, getObjectives, getBlogs, getPrograms, isSupabaseConfigured } from '../../lib/api'
+import { Images, Users, CalendarDays, Bell, Newspaper, Target, Settings as SettingsIcon, ArrowRight } from 'lucide-react'
+import {
+  getGallery,
+  getMembers,
+  getObjectives,
+  getBlogs,
+  getPrograms,
+  getActivities,
+  isSupabaseConfigured,
+} from '../../lib/api'
 import { useAsync } from '../../lib/useAsync'
 import { Notice } from '../../components/admin/ui'
 
@@ -10,11 +18,13 @@ export default function Dashboard() {
   const { data: objectives } = useAsync(() => getObjectives(), [])
   const { data: blogs } = useAsync(() => getBlogs(false), [])
   const { data: programs } = useAsync(() => getPrograms(), [])
+  const { data: activities } = useAsync(() => getActivities(false), [])
 
   const cards = [
     { to: '/admin/gallery', label: 'Gallery Photos', count: gallery?.length, icon: Images },
     { to: '/admin/members', label: 'Members', count: members?.length, icon: Users },
     { to: '/admin/programs', label: 'Programs', count: programs?.length, icon: CalendarDays },
+    { to: '/admin/activities', label: 'Activities', count: activities?.length, icon: Bell },
     { to: '/admin/blogs', label: 'Blog Posts', count: blogs?.length, icon: Newspaper },
     { to: '/admin/objectives', label: 'Objectives', count: objectives?.length, icon: Target },
   ]
@@ -33,7 +43,7 @@ export default function Dashboard() {
         </div>
       )}
 
-      <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+      <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map((c) => (
           <Link
             key={c.to}
