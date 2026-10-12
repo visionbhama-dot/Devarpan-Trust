@@ -60,6 +60,16 @@ export interface Program {
   sort: number
   created_at: string
 }
+export interface Activity {
+  id: string
+  text: Bilingual
+  date: string | null
+  image_url: string | null
+  link: string | null
+  active: boolean
+  sort: number
+  created_at: string
+}
 export interface Settings {
   phones: string[]
   email: string
@@ -172,6 +182,48 @@ const fallbackPrograms: Program[] = [
   },
 ]
 
+const fallbackActivities: Activity[] = [
+  {
+    id: 'act-1',
+    text: {
+      hi: 'उत्तम नगर में सामूहिक यज्ञ का सफल आयोजन सम्पन्न हुआ।',
+      en: 'A community Yajna was successfully held at Uttam Nagar.',
+    },
+    date: '2025-10-05',
+    image_url: '/gallery/g04-yajna.jpg',
+    link: '/programs',
+    active: true,
+    sort: 1,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 'act-2',
+    text: {
+      hi: '50 निर्धन विद्यार्थियों को शिक्षण सामग्री वितरित की गई।',
+      en: 'Study material was distributed to 50 needy students.',
+    },
+    date: '2025-09-20',
+    image_url: '/gallery/g02-shiksha-vitran.jpg',
+    link: '/gallery',
+    active: true,
+    sort: 2,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 'act-3',
+    text: {
+      hi: 'अन्तर्राष्ट्रीय योग दिवस शिविर हेतु पंजीकरण प्रारम्भ।',
+      en: 'Registration has opened for the International Yoga Day camp.',
+    },
+    date: '2026-05-15',
+    image_url: '/gallery/g01-bal-yoga.jpg',
+    link: '/programs',
+    active: true,
+    sort: 3,
+    created_at: new Date().toISOString(),
+  },
+]
+
 // ---------- Row mappers ----------
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const toGallery = (r: any): GalleryItem => ({
@@ -215,6 +267,16 @@ const toProgram = (r: any): Program => ({
   images: Array.isArray(r.images) ? r.images : [],
   videos: Array.isArray(r.videos) ? r.videos : [],
   status: r.status,
+  sort: r.sort,
+  created_at: r.created_at,
+})
+const toActivity = (r: any): Activity => ({
+  id: r.id,
+  text: { hi: r.text_hi, en: r.text_en ?? '' },
+  date: r.date,
+  image_url: r.image_url,
+  link: r.link,
+  active: r.active,
   sort: r.sort,
   created_at: r.created_at,
 })
@@ -279,6 +341,16 @@ export async function getProgramById(id: string): Promise<Program | null> {
   const { data, error } = await supabase.from('programs').select('*').eq('id', id).maybeSingle()
   if (error || !data) return null
   return toProgram(data)
+}
+
+export async function getActivities(activeOnly = true): Promise<Activity[]> {
+  const fallback = activeOnly ? fallbackActivities.filter((a) => a.active) : fallbackActivities
+  if (!supabase) return fallback
+  let q = supabase.from('activities').select('*').order('sort')
+  if (activeOnly) q = q.eq('active', true)
+  const { data, error } = await q
+  if (error || !data) return fallback
+  return data.map(toActivity)
 }
 
 export async function getSettings(): Promise<Settings> {
@@ -477,6 +549,38 @@ export async function updateProgram(id: string, p: Partial<Program>) {
 }
 export async function deleteProgram(id: string) {
   const { error } = await requireDb().from('programs').delete().eq('id', id)
+  if (error) throw error
+}
+
+// Activities
+export async function createActivity(a: Omit<Activity, 'id' | 'created_at'>) {
+  const { error } = await requireDb().from('activities').insert({
+    text_hi: a.text.hi,
+    text_en: a.text.en,
+    date: a.date || null,
+    image_url: a.image_url,
+    link: a.link || null,
+    active: a.active,
+    sort: a.sort,
+  })
+  if (error) throw error
+}
+export async function updateActivity(id: string, a: Partial<Activity>) {
+  const patch: Record<string, unknown> = {}
+  if (a.text) {
+    patch.text_hi = a.text.hi
+    patch.text_en = a.text.en
+  }
+  if (a.date !== undefined) patch.date = a.date || null
+  if (a.image_url !== undefined) patch.image_url = a.image_url
+  if (a.link !== undefined) patch.link = a.link || null
+  if (a.active !== undefined) patch.active = a.active
+  if (a.sort !== undefined) patch.sort = a.sort
+  const { error } = await requireDb().from('activities').update(patch).eq('id', id)
+  if (error) throw error
+}
+export async function deleteActivity(id: string) {
+  const { error } = await requireDb().from('activities').delete().eq('id', id)
   if (error) throw error
 }
 

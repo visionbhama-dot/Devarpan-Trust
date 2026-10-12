@@ -16,10 +16,20 @@ import {
   CalendarDays,
 } from 'lucide-react'
 import { WhatsAppIcon } from '../components/icons'
+import { ActivitiesTicker, ActivitiesPopup } from '../components/RecentActivities'
 import { useLang } from '../lib/useLang'
 import { vedas } from '../data/trust'
 import { galleryItems } from '../data/gallery'
-import { getGallery, getMembers, getPrograms, type GalleryItem, type Member, type Program } from '../lib/api'
+import {
+  getGallery,
+  getMembers,
+  getPrograms,
+  getActivities,
+  type GalleryItem,
+  type Member,
+  type Program,
+  type Activity as ActivityItem,
+} from '../lib/api'
 import { useAsync } from '../lib/useAsync'
 import { useSettings } from '../lib/SettingsContext'
 
@@ -47,6 +57,8 @@ export default function Home() {
   const { data: galleryData } = useAsync<GalleryItem[]>(() => getGallery(), [])
   const { data: membersData } = useAsync<Member[]>(() => getMembers(), [])
   const { data: programsData } = useAsync<Program[]>(() => getPrograms('upcoming'), [])
+  const { data: activitiesData } = useAsync<ActivityItem[]>(() => getActivities(true), [])
+  const activities = activitiesData ?? []
   const previewItems = (galleryData ?? []).slice(0, 6)
   const previewMembers = (membersData ?? []).slice(0, 3)
   const upcomingPrograms = [...(programsData ?? [])]
@@ -158,6 +170,9 @@ export default function Home() {
 
         <div className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-vermilion-600 via-marigold-400 to-vermilion-600" />
       </section>
+
+      {/* ============ RECENT ACTIVITIES TICKER ============ */}
+      <ActivitiesTicker items={activities} />
 
       {/* ============ ABOUT — text left, image right ============ */}
       <section className="bg-mandana py-16 md:py-20">
@@ -561,6 +576,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* 10-second popup inviting visitors to see recent activities */}
+      <ActivitiesPopup items={activities} />
     </>
   )
 }
