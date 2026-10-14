@@ -142,14 +142,7 @@ const en = {
     watchVideo: 'Watch video',
     notFound: 'Program not found.',
   },
-  activities: {
-    label: 'Recent Activities',
-    empty: 'Recent activities will appear here soon.',
-    popupTitle: 'See Our Recent Activities',
-    popupText: "Here's a quick look at what we've been doing lately.",
-    viewAll: 'View Activities',
-    close: 'Close',
-  },
+
   contact: {
     kicker: 'Contact',
     title: 'Contact Us',

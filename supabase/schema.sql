@@ -359,10 +359,31 @@ select
   '2026-10-19'::date,
   'सांयं 4:00 से 5:15 तक',
   'Evening 4:00 PM to 5:15 PM',
-  '/gallery/g04-yajna.jpg',
+  '/posters/gayatri-yajna-2026.jpg',
   'upcoming',
   true,
   0
 where not exists (
   select 1 from public.programs where title_hi = 'शारदीय नवरात्रि में गायत्री यज्ञ'
+);
+
+-- If the event was seeded earlier with a placeholder photo, point it at the
+-- real poster. Only replaces the placeholder — never an image you uploaded.
+update public.programs
+   set image_url = '/posters/gayatri-yajna-2026.jpg'
+ where title_hi = 'शारदीय नवरात्रि में गायत्री यज्ञ'
+   and coalesce(image_url, '') in ('', '/gallery/g04-yajna.jpg');
+
+-- Show the poster as the first home-page banner slide.
+-- 'contain' displays the whole poster so none of its text is cropped.
+insert into public.banners (image_url, title_hi, title_en, subtitle_hi, subtitle_en, link, fit, active, sort)
+select
+  '/posters/gayatri-yajna-2026.jpg',
+  '', '', '', '',
+  '/programs',
+  'contain',
+  true,
+  0
+where not exists (
+  select 1 from public.banners where image_url = '/posters/gayatri-yajna-2026.jpg'
 );

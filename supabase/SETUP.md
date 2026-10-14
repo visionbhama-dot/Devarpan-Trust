@@ -27,7 +27,6 @@ Once the keys are in, visit **/admin** on the website, log in, and you can manag
 - 🖼️ Gallery photos
 - 👥 Members
 - 📅 Programs / Events (date, venue, photos, videos & status)
-- 🔔 Recent Activities (the sliding bar + welcome popup on the home page)
 - 📝 Blogs
 - 🎯 Objectives
 - 📞 Contact info, bank details & social media links

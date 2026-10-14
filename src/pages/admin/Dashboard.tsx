@@ -4,7 +4,6 @@ import {
   GalleryHorizontal,
   Users,
   CalendarDays,
-  Bell,
   Newspaper,
   Target,
   Settings as SettingsIcon,
@@ -16,7 +15,6 @@ import {
   getObjectives,
   getBlogs,
   getPrograms,
-  getActivities,
   getBanners,
   isSupabaseConfigured,
 } from '../../lib/api'
@@ -29,7 +27,6 @@ export default function Dashboard() {
   const { data: objectives } = useAsync(() => getObjectives(), [])
   const { data: blogs } = useAsync(() => getBlogs(false), [])
   const { data: programs } = useAsync(() => getPrograms(), [])
-  const { data: activities } = useAsync(() => getActivities(false), [])
   const { data: banners } = useAsync(() => getBanners(false), [])
 
   const cards = [
@@ -37,7 +34,6 @@ export default function Dashboard() {
     { to: '/admin/gallery', label: 'Gallery Photos', count: gallery?.length, icon: Images },
     { to: '/admin/members', label: 'Members', count: members?.length, icon: Users },
     { to: '/admin/programs', label: 'Programs', count: programs?.length, icon: CalendarDays },
-    { to: '/admin/activities', label: 'Activities', count: activities?.length, icon: Bell },
     { to: '/admin/blogs', label: 'Blog Posts', count: blogs?.length, icon: Newspaper },
     { to: '/admin/objectives', label: 'Objectives', count: objectives?.length, icon: Target },
   ]
