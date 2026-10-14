@@ -1,5 +1,15 @@
 import { Link } from 'react-router-dom'
-import { Images, Users, CalendarDays, Bell, Newspaper, Target, Settings as SettingsIcon, ArrowRight } from 'lucide-react'
+import {
+  Images,
+  GalleryHorizontal,
+  Users,
+  CalendarDays,
+  Bell,
+  Newspaper,
+  Target,
+  Settings as SettingsIcon,
+  ArrowRight,
+} from 'lucide-react'
 import {
   getGallery,
   getMembers,
@@ -7,6 +17,7 @@ import {
   getBlogs,
   getPrograms,
   getActivities,
+  getBanners,
   isSupabaseConfigured,
 } from '../../lib/api'
 import { useAsync } from '../../lib/useAsync'
@@ -19,8 +30,10 @@ export default function Dashboard() {
   const { data: blogs } = useAsync(() => getBlogs(false), [])
   const { data: programs } = useAsync(() => getPrograms(), [])
   const { data: activities } = useAsync(() => getActivities(false), [])
+  const { data: banners } = useAsync(() => getBanners(false), [])
 
   const cards = [
+    { to: '/admin/banners', label: 'Home Banners', count: banners?.length, icon: GalleryHorizontal },
     { to: '/admin/gallery', label: 'Gallery Photos', count: gallery?.length, icon: Images },
     { to: '/admin/members', label: 'Members', count: members?.length, icon: Users },
     { to: '/admin/programs', label: 'Programs', count: programs?.length, icon: CalendarDays },

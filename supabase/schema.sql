@@ -73,6 +73,27 @@ create table if not exists public.programs (
 alter table public.programs add column if not exists images jsonb not null default '[]'::jsonb;
 alter table public.programs add column if not exists videos jsonb not null default '[]'::jsonb;
 
+-- Extra program fields: featured flag, end date and a free-text timing
+alter table public.programs add column if not exists featured boolean not null default false;
+alter table public.programs add column if not exists end_date date;
+alter table public.programs add column if not exists time_text_hi text default '';
+alter table public.programs add column if not exists time_text_en text default '';
+
+-- Rotating hero banners for the home page
+create table if not exists public.banners (
+  id uuid primary key default gen_random_uuid(),
+  image_url text not null,
+  title_hi text default '',
+  title_en text default '',
+  subtitle_hi text default '',
+  subtitle_en text default '',
+  link text,
+  fit text not null default 'cover',   -- 'cover' (photo) | 'contain' (full poster)
+  active boolean not null default true,
+  sort int not null default 0,
+  created_at timestamptz not null default now()
+);
+
 create table if not exists public.activities (
   id uuid primary key default gen_random_uuid(),
   text_hi text not null,
@@ -103,6 +124,7 @@ alter table public.objectives enable row level security;
 alter table public.blogs      enable row level security;
 alter table public.programs   enable row level security;
 alter table public.activities enable row level security;
+alter table public.banners    enable row level security;
 alter table public.settings   enable row level security;
 
 -- Public (anon) can READ everything except unpublished blogs
@@ -111,12 +133,14 @@ drop policy if exists "read members"    on public.members;
 drop policy if exists "read objectives" on public.objectives;
 drop policy if exists "read programs"   on public.programs;
 drop policy if exists "read activities" on public.activities;
+drop policy if exists "read banners"    on public.banners;
 drop policy if exists "read settings"   on public.settings;
 create policy "read gallery"    on public.gallery    for select using (true);
 create policy "read members"    on public.members    for select using (true);
 create policy "read objectives" on public.objectives for select using (true);
 create policy "read programs"   on public.programs   for select using (true);
 create policy "read activities" on public.activities for select using (true);
+create policy "read banners"    on public.banners    for select using (true);
 create policy "read settings"   on public.settings   for select using (true);
 
 drop policy if exists "read published blogs" on public.blogs;
@@ -131,6 +155,7 @@ drop policy if exists "write objectives" on public.objectives;
 drop policy if exists "write blogs"      on public.blogs;
 drop policy if exists "write programs"   on public.programs;
 drop policy if exists "write activities" on public.activities;
+drop policy if exists "write banners"    on public.banners;
 drop policy if exists "write settings"   on public.settings;
 create policy "write gallery"    on public.gallery    for all to authenticated using (true) with check (true);
 create policy "write members"    on public.members    for all to authenticated using (true) with check (true);
@@ -138,6 +163,7 @@ create policy "write objectives" on public.objectives for all to authenticated u
 create policy "write blogs"      on public.blogs      for all to authenticated using (true) with check (true);
 create policy "write programs"   on public.programs   for all to authenticated using (true) with check (true);
 create policy "write activities" on public.activities for all to authenticated using (true) with check (true);
+create policy "write banners"    on public.banners    for all to authenticated using (true) with check (true);
 create policy "write settings"   on public.settings   for all to authenticated using (true) with check (true);
 
 -- ---------- STORAGE BUCKETS ----------
@@ -147,7 +173,8 @@ insert into storage.buckets (id, name, public) values
   ('members',    'members',    true),
   ('blogs',      'blogs',      true),
   ('programs',   'programs',   true),
-  ('activities', 'activities', true)
+  ('activities', 'activities', true),
+  ('banners',    'banners',    true)
 on conflict (id) do nothing;
 
 drop policy if exists "public read media"  on storage.objects;
@@ -155,13 +182,13 @@ drop policy if exists "auth upload media"  on storage.objects;
 drop policy if exists "auth update media"  on storage.objects;
 drop policy if exists "auth delete media"  on storage.objects;
 create policy "public read media" on storage.objects for select
-  using (bucket_id in ('gallery','members','blogs','programs','activities'));
+  using (bucket_id in ('gallery','members','blogs','programs','activities','banners'));
 create policy "auth upload media" on storage.objects for insert to authenticated
-  with check (bucket_id in ('gallery','members','blogs','programs','activities'));
+  with check (bucket_id in ('gallery','members','blogs','programs','activities','banners'));
 create policy "auth update media" on storage.objects for update to authenticated
-  using (bucket_id in ('gallery','members','blogs','programs','activities'));
+  using (bucket_id in ('gallery','members','blogs','programs','activities','banners'));
 create policy "auth delete media" on storage.objects for delete to authenticated
-  using (bucket_id in ('gallery','members','blogs','programs','activities'));
+  using (bucket_id in ('gallery','members','blogs','programs','activities','banners'));
 
 -- ============================================================
 --  SEED DATA (current website content) — run once
@@ -279,3 +306,63 @@ select * from (values
 ('अन्तर्राष्ट्रीय योग दिवस शिविर हेतु पंजीकरण प्रारम्भ।', 'Registration has opened for the International Yoga Day camp.', '2026-05-15'::date, '/gallery/g01-bal-yoga.jpg', '/programs', true, 3)
 ) as v(text_hi, text_en, date, image_url, link, active, sort)
 where not exists (select 1 from public.activities);
+
+-- Home page hero banners (only seeded when the table is empty — safe to re-run)
+insert into public.banners (image_url, title_hi, title_en, subtitle_hi, subtitle_en, link, fit, active, sort)
+select * from (values
+(
+  '/gallery/g04-yajna.jpg',
+  'यज्ञ, योग एवं संस्कार',
+  'Yajna, Yoga & Sanskar',
+  'श्रद्धा से प्रज्वलित संकल्प — देवार्पण ट्रस्ट',
+  'A resolve kindled by devotion — Devarpan Trust',
+  '/objectives', 'cover', true, 1
+),
+(
+  '/gallery/g01-bal-yoga.jpg',
+  'बाल योग एवं ध्यान शिविर',
+  'Children''s Yoga & Meditation Camps',
+  'स्वस्थ शरीर, एकाग्र मन एवं संस्कारित जीवन की ओर',
+  'Towards a healthy body, focused mind and a life of values',
+  '/programs', 'cover', true, 2
+),
+(
+  '/gallery/g10-samman-samaroh.jpg',
+  'सम्मान एवं सहयोग समारोह',
+  'Felicitation & Support Ceremonies',
+  'शिक्षा, स्वास्थ्य एवं महिला सशक्तिकरण हेतु निरंतर प्रयास',
+  'Continuous efforts for education, health and women empowerment',
+  '/gallery', 'cover', true, 3
+)
+) as v(image_url, title_hi, title_en, subtitle_hi, subtitle_en, link, fit, active, sort)
+where not exists (select 1 from public.banners);
+
+-- ============================================================
+--  तृतीय गायत्री यज्ञ (शारदीय नवरात्रि) — featured event
+--  Inserted only if this event is not already present, so it is
+--  added even when the programs table already has other rows.
+--  👉 Upload the real poster via Admin → Programs → Edit → image.
+-- ============================================================
+insert into public.programs (
+  title_hi, title_en, description_hi, description_en,
+  location_hi, location_en, event_date, end_date,
+  time_text_hi, time_text_en, image_url, status, featured, sort
+)
+select
+  'शारदीय नवरात्रि में गायत्री यज्ञ',
+  'Gayatri Yajna during Shardiya Navratri',
+  E'आप सभी सादर आमंत्रित हैं अपने इस तृतीय गायत्री यज्ञ में। परिवार सहित बच्चों को साथ लेकर पधारें।\n\nवेद बचेंगे तो संस्कार बचेंगे, संस्कार बचेंगे तो संस्कृति बचेगी।\n\n11 अक्टूबर 2026 से ये कार्यक्रम प्रारम्भ हो रहा है तथा रामनवमी पर पूर्णाहुति होगी।\n\nअनेक विद्वानों का मार्गदर्शन प्राप्त होगा। यज्ञ में पवित्र आहुति प्रदान कर अपने जीवन को सफल बनाएं।\n\nअध्यक्ष — ओमपाल सिंह आर्य',
+  E'You are all cordially invited to our third Gayatri Yajna. Please come along with your family and children.\n\nIf the Vedas are preserved, values will be preserved; if values are preserved, our culture will endure.\n\nThe program begins on 11 October 2026 and the concluding offering (Purnahuti) will be held on Ram Navami.\n\nGuidance from many learned scholars will be received. Make your life fulfilling by offering a sacred oblation in the Yajna.\n\nPresident — Ompal Singh Arya',
+  'जन्मेजय पार्क, सोम बाजार रोड (समीप पावर हाउस)',
+  'Janmejay Park, Som Bazar Road (near Power House)',
+  '2026-10-11'::date,
+  '2026-10-19'::date,
+  'सांयं 4:00 से 5:15 तक',
+  'Evening 4:00 PM to 5:15 PM',
+  '/gallery/g04-yajna.jpg',
+  'upcoming',
+  true,
+  0
+where not exists (
+  select 1 from public.programs where title_hi = 'शारदीय नवरात्रि में गायत्री यज्ञ'
+);

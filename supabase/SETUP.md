@@ -23,6 +23,7 @@ Follow these one-time steps to power the admin panel. It's all free.
 
 ## 5. Done!
 Once the keys are in, visit **/admin** on the website, log in, and you can manage:
+- 🎞️ Home Banners (the rotating banner at the top of the home page)
 - 🖼️ Gallery photos
 - 👥 Members
 - 📅 Programs / Events (date, venue, photos, videos & status)

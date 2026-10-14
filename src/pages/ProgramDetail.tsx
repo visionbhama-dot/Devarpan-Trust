@@ -2,7 +2,16 @@ import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowLeft, CalendarDays, MapPin, X, Images as ImagesIcon, Video, ExternalLink } from 'lucide-react'
+import {
+  ArrowLeft,
+  CalendarDays,
+  MapPin,
+  Clock,
+  X,
+  Images as ImagesIcon,
+  Video,
+  ExternalLink,
+} from 'lucide-react'
 import { useLang } from '../lib/useLang'
 import { getProgramById, type Program } from '../lib/api'
 import { resolveVideo } from '../lib/video'
@@ -48,7 +57,10 @@ export default function ProgramDetail() {
   }
 
   const upcoming = program.status === 'upcoming'
-  const date = formatDate(program.event_date, lang)
+  const start = formatDate(program.event_date, lang)
+  const end = formatDate(program.end_date, lang)
+  const date = start && end && end !== start ? `${start} – ${end}` : start
+  const timing = pick(program.time_text)
   const venue = pick(program.location)
   const photos = program.images
   const paragraphs = pick(program.description)
@@ -85,6 +97,11 @@ export default function ProgramDetail() {
             <span className="inline-flex items-center gap-1.5">
               <CalendarDays className="size-4" /> {date || t('programs.dateTba')}
             </span>
+            {timing && (
+              <span className="inline-flex items-center gap-1.5">
+                <Clock className="size-4" /> {timing}
+              </span>
+            )}
             {venue && (
               <span className="inline-flex items-center gap-1.5">
                 <MapPin className="size-4" /> {venue}
