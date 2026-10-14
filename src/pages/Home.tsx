@@ -16,7 +16,6 @@ import {
   CalendarDays,
 } from 'lucide-react'
 import { WhatsAppIcon } from '../components/icons'
-import HeroCarousel from '../components/HeroCarousel'
 import FeaturedEventBanner from '../components/FeaturedEventBanner'
 import { useLang } from '../lib/useLang'
 import { vedas } from '../data/trust'
@@ -25,11 +24,9 @@ import {
   getGallery,
   getMembers,
   getPrograms,
-  getBanners,
   type GalleryItem,
   type Member,
   type Program,
-  type Banner,
 } from '../lib/api'
 import { useAsync } from '../lib/useAsync'
 import { useSettings } from '../lib/SettingsContext'
@@ -58,8 +55,6 @@ export default function Home() {
   const { data: galleryData } = useAsync<GalleryItem[]>(() => getGallery(), [])
   const { data: membersData } = useAsync<Member[]>(() => getMembers(), [])
   const { data: programsData } = useAsync<Program[]>(() => getPrograms('upcoming'), [])
-  const { data: bannersData } = useAsync<Banner[]>(() => getBanners(true), [])
-  const banners = bannersData ?? []
   const previewItems = (galleryData ?? []).slice(0, 6)
   const previewMembers = (membersData ?? []).slice(0, 3)
   const sortedUpcoming = [...(programsData ?? [])].sort((a, b) => {
@@ -90,11 +85,7 @@ export default function Home() {
 
   return (
     <>
-      {/* ============ HERO — admin-managed rotating banner ============ */}
-      {banners.length > 0 && <HeroCarousel banners={banners} />}
-
-      {/* Fallback hero (shown only when no banners exist in the admin panel) */}
-      {banners.length === 0 && (
+      {/* ============ HERO — full photo collage with bold text ============ */}
       <section className="relative isolate flex min-h-[88vh] items-center overflow-hidden text-white">
         {/* collage background */}
         <div className="absolute inset-0 -z-20 overflow-hidden">
@@ -111,9 +102,9 @@ export default function Home() {
             ))}
           </div>
         </div>
-        {/* soft dark overlay for readability */}
-        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-vermilion-900/92 via-ink-900/88 to-vermilion-900/92" />
-        <div className="absolute inset-0 -z-10 bg-mandana-overlay opacity-40" aria-hidden />
+        {/* lighter overlay so the background photos stay visible */}
+        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-vermilion-900/70 via-ink-900/60 to-vermilion-900/70" />
+        <div className="absolute inset-0 -z-10 bg-mandana-overlay opacity-25" aria-hidden />
 
         <div className="relative mx-auto w-full max-w-5xl px-6 py-20 text-center">
           <motion.div
@@ -176,7 +167,6 @@ export default function Home() {
 
         <div className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-vermilion-600 via-marigold-400 to-vermilion-600" />
       </section>
-      )}
 
       {/* ============ FEATURED UPCOMING EVENT BANNER ============ */}
       <FeaturedEventBanner program={featuredEvent} />

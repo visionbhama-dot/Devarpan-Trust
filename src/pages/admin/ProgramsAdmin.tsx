@@ -376,9 +376,10 @@ export default function ProgramsAdmin() {
 
             {/* Event videos */}
             <div className="rounded-2xl border border-marigold-200 bg-marigold-50/40 p-4">
-              <span className="mb-1.5 block text-sm font-semibold text-ink-800">Videos</span>
+              <span className="mb-1.5 block text-sm font-semibold text-ink-800">Videos & Reels</span>
               <p className="mb-3 text-xs text-ink-600">
-                Paste a YouTube/Facebook link or upload a video file. Add as many as you like.
+                Paste a link (YouTube, YouTube Shorts, Instagram Reel, Facebook Reel/video) or upload a
+                video file. Reels show in a tall phone-style frame. Add as many as you like.
               </p>
               <div className="space-y-3">
                 {draft.videos.map((v, i) => (
@@ -401,7 +402,7 @@ export default function ProgramsAdmin() {
                     {v.kind === 'link' ? (
                       <Input
                         value={v.url}
-                        placeholder="https://youtube.com/watch?v=…"
+                        placeholder="YouTube / Instagram Reel / Facebook link…"
                         className="min-w-0 flex-1"
                         onChange={(e) => {
                           const videos = [...draft.videos]

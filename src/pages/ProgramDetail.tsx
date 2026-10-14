@@ -152,19 +152,30 @@ export default function ProgramDetail() {
             <h2 className="mb-5 inline-flex items-center gap-2 font-display text-2xl font-normal text-ink-900">
               <Video className="size-6 text-vermilion-600" /> {t('programs.videosTitle')}
             </h2>
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {program.videos.map((v, i) => {
                 const embed = resolveVideo(v)
-                if (embed.type === 'youtube' || embed.type === 'vimeo') {
+                // Reels / shorts are portrait; everything else is 16:9
+                const frame = embed.portrait
+                  ? 'aspect-[9/16] mx-auto w-full max-w-[320px]'
+                  : 'aspect-video w-full'
+
+                if (
+                  embed.type === 'youtube' ||
+                  embed.type === 'vimeo' ||
+                  embed.type === 'instagram' ||
+                  embed.type === 'facebook'
+                ) {
                   return (
                     <div
                       key={i}
-                      className="aspect-video overflow-hidden rounded-2xl shadow-md ring-1 ring-marigold-200"
+                      className={`${frame} overflow-hidden rounded-2xl bg-black shadow-md ring-1 ring-marigold-200`}
                     >
                       <iframe
                         src={embed.src}
                         title={`video-${i}`}
                         className="size-full"
+                        loading="lazy"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
                       />
@@ -177,7 +188,7 @@ export default function ProgramDetail() {
                       key={i}
                       src={embed.src}
                       controls
-                      className="aspect-video w-full rounded-2xl bg-black shadow-md ring-1 ring-marigold-200"
+                      className={`${frame} rounded-2xl bg-black shadow-md ring-1 ring-marigold-200`}
                     />
                   )
                 }
@@ -187,7 +198,7 @@ export default function ProgramDetail() {
                     href={embed.src}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex aspect-video items-center justify-center gap-2 rounded-2xl bg-gradient-to-br from-vermilion-600 to-marigold-500 font-bold text-white shadow-md transition-transform hover:scale-[1.02]"
+                    className="flex aspect-video w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-br from-vermilion-600 to-marigold-500 font-bold text-white shadow-md transition-transform hover:scale-[1.02]"
                   >
                     <ExternalLink className="size-5" /> {t('programs.watchVideo')}
                   </a>
