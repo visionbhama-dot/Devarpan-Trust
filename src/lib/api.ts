@@ -52,11 +52,28 @@ export interface Program {
   title: Bilingual
   description: Bilingual
   location: Bilingual
+  /** Free-text timing, e.g. "सांयं 4:00 से 5:15 तक" */
+  time_text: Bilingual
   event_date: string | null
+  end_date: string | null
   image_url: string | null
   images: string[]
   videos: ProgramVideo[]
   status: ProgramStatus
+  /** When true, this event is highlighted in the home page banner. */
+  featured: boolean
+  sort: number
+  created_at: string
+}
+export interface Banner {
+  id: string
+  image_url: string
+  title: Bilingual
+  subtitle: Bilingual
+  link: string | null
+  /** 'cover' crops to fill (photos); 'contain' shows the whole image (posters). */
+  fit: 'cover' | 'contain'
+  active: boolean
   sort: number
   created_at: string
 }
@@ -143,6 +160,31 @@ const fallbackBlogs: Blog[] = [
 
 const fallbackPrograms: Program[] = [
   {
+    id: 'gayatri-yajna',
+    title: {
+      hi: 'शारदीय नवरात्रि में गायत्री यज्ञ',
+      en: 'Gayatri Yajna during Shardiya Navratri',
+    },
+    description: {
+      hi: 'आप सभी सादर आमंत्रित हैं अपने इस तृतीय गायत्री यज्ञ में। परिवार सहित बच्चों को साथ लेकर पधारें।\n\nवेद बचेंगे तो संस्कार बचेंगे, संस्कार बचेंगे तो संस्कृति बचेगी।\n\nअनेक विद्वानों का मार्गदर्शन प्राप्त होगा। यज्ञ में पवित्र आहुति प्रदान कर अपने जीवन को सफल बनाएं।',
+      en: 'You are all cordially invited to our third Gayatri Yajna. Please come along with your family and children.\n\nIf the Vedas are preserved, values will be preserved; if values are preserved, our culture will endure.\n\nGuidance from many learned scholars will be received.',
+    },
+    location: {
+      hi: 'जन्मेजय पार्क, सोम बाजार रोड (समीप पावर हाउस)',
+      en: 'Janmejay Park, Som Bazar Road (near Power House)',
+    },
+    time_text: { hi: 'सांयं 4:00 से 5:15 तक', en: 'Evening 4:00 PM to 5:15 PM' },
+    event_date: '2026-10-11',
+    end_date: '2026-10-19',
+    image_url: '/gallery/g04-yajna.jpg',
+    images: [],
+    videos: [],
+    status: 'upcoming',
+    featured: true,
+    sort: 0,
+    created_at: new Date().toISOString(),
+  },
+  {
     id: 'yoga-diwas',
     title: {
       hi: 'अन्तर्राष्ट्रीय योग दिवस शिविर',
@@ -153,11 +195,14 @@ const fallbackPrograms: Program[] = [
       en: 'A free yoga and meditation camp for all age groups. Contact us to register.',
     },
     location: { hi: 'जीवन पार्क, उत्तम नगर, नई दिल्ली', en: 'Jeevan Park, Uttam Nagar, New Delhi' },
+    time_text: { hi: '', en: '' },
     event_date: '2026-06-21',
+    end_date: null,
     image_url: '/gallery/g01-bal-yoga.jpg',
     images: ['/gallery/g03-yoga-sanskar.jpg'],
     videos: [],
     status: 'upcoming',
+    featured: false,
     sort: 1,
     created_at: new Date().toISOString(),
   },
@@ -172,12 +217,60 @@ const fallbackPrograms: Program[] = [
       en: 'Encouragement and distribution of study material to meritorious and needy students of the area.',
     },
     location: { hi: 'उत्तम नगर, नई दिल्ली', en: 'Uttam Nagar, New Delhi' },
+    time_text: { hi: '', en: '' },
     event_date: '2025-11-14',
+    end_date: null,
     image_url: '/gallery/g07-medhavi-chatra.jpg',
     images: ['/gallery/g05-vidyarthi-abhinandan.jpg', '/gallery/g10-samman-samaroh.jpg'],
     videos: [],
     status: 'completed',
+    featured: false,
     sort: 2,
+    created_at: new Date().toISOString(),
+  },
+]
+
+const fallbackBanners: Banner[] = [
+  {
+    id: 'b1',
+    image_url: '/gallery/g04-yajna.jpg',
+    title: { hi: 'यज्ञ, योग एवं संस्कार', en: 'Yajna, Yoga & Sanskar' },
+    subtitle: {
+      hi: 'श्रद्धा से प्रज्वलित संकल्प — देवार्पण ट्रस्ट',
+      en: 'A resolve kindled by devotion — Devarpan Trust',
+    },
+    link: '/objectives',
+    fit: 'cover',
+    active: true,
+    sort: 1,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 'b2',
+    image_url: '/gallery/g01-bal-yoga.jpg',
+    title: { hi: 'बाल योग एवं ध्यान शिविर', en: "Children's Yoga & Meditation Camps" },
+    subtitle: {
+      hi: 'स्वस्थ शरीर, एकाग्र मन एवं संस्कारित जीवन की ओर',
+      en: 'Towards a healthy body, focused mind and a life of values',
+    },
+    link: '/programs',
+    fit: 'cover',
+    active: true,
+    sort: 2,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 'b3',
+    image_url: '/gallery/g10-samman-samaroh.jpg',
+    title: { hi: 'सम्मान एवं सहयोग समारोह', en: 'Felicitation & Support Ceremonies' },
+    subtitle: {
+      hi: 'शिक्षा, स्वास्थ्य एवं महिला सशक्तिकरण हेतु निरंतर प्रयास',
+      en: 'Continuous efforts for education, health and women empowerment',
+    },
+    link: '/gallery',
+    fit: 'cover',
+    active: true,
+    sort: 3,
     created_at: new Date().toISOString(),
   },
 ]
@@ -262,11 +355,25 @@ const toProgram = (r: any): Program => ({
   title: { hi: r.title_hi, en: r.title_en },
   description: { hi: r.description_hi ?? '', en: r.description_en ?? '' },
   location: { hi: r.location_hi ?? '', en: r.location_en ?? '' },
+  time_text: { hi: r.time_text_hi ?? '', en: r.time_text_en ?? '' },
   event_date: r.event_date,
+  end_date: r.end_date ?? null,
   image_url: r.image_url,
   images: Array.isArray(r.images) ? r.images : [],
   videos: Array.isArray(r.videos) ? r.videos : [],
   status: r.status,
+  featured: Boolean(r.featured),
+  sort: r.sort,
+  created_at: r.created_at,
+})
+const toBanner = (r: any): Banner => ({
+  id: r.id,
+  image_url: r.image_url,
+  title: { hi: r.title_hi ?? '', en: r.title_en ?? '' },
+  subtitle: { hi: r.subtitle_hi ?? '', en: r.subtitle_en ?? '' },
+  link: r.link,
+  fit: r.fit === 'contain' ? 'contain' : 'cover',
+  active: r.active,
   sort: r.sort,
   created_at: r.created_at,
 })
@@ -341,6 +448,16 @@ export async function getProgramById(id: string): Promise<Program | null> {
   const { data, error } = await supabase.from('programs').select('*').eq('id', id).maybeSingle()
   if (error || !data) return null
   return toProgram(data)
+}
+
+export async function getBanners(activeOnly = true): Promise<Banner[]> {
+  const fallback = activeOnly ? fallbackBanners.filter((b) => b.active) : fallbackBanners
+  if (!supabase) return fallback
+  let q = supabase.from('banners').select('*').order('sort')
+  if (activeOnly) q = q.eq('active', true)
+  const { data, error } = await q
+  if (error || !data) return fallback
+  return data.map(toBanner)
 }
 
 export async function getActivities(activeOnly = true): Promise<Activity[]> {
@@ -515,11 +632,15 @@ export async function createProgram(p: Omit<Program, 'id' | 'created_at'>) {
     description_en: p.description.en,
     location_hi: p.location.hi,
     location_en: p.location.en,
+    time_text_hi: p.time_text?.hi ?? '',
+    time_text_en: p.time_text?.en ?? '',
     event_date: p.event_date || null,
+    end_date: p.end_date || null,
     image_url: p.image_url,
     images: p.images ?? [],
     videos: p.videos ?? [],
     status: p.status,
+    featured: p.featured ?? false,
     sort: p.sort,
   })
   if (error) throw error
@@ -538,11 +659,17 @@ export async function updateProgram(id: string, p: Partial<Program>) {
     patch.location_hi = p.location.hi
     patch.location_en = p.location.en
   }
+  if (p.time_text) {
+    patch.time_text_hi = p.time_text.hi
+    patch.time_text_en = p.time_text.en
+  }
   if (p.event_date !== undefined) patch.event_date = p.event_date || null
+  if (p.end_date !== undefined) patch.end_date = p.end_date || null
   if (p.image_url !== undefined) patch.image_url = p.image_url
   if (p.images !== undefined) patch.images = p.images
   if (p.videos !== undefined) patch.videos = p.videos
   if (p.status !== undefined) patch.status = p.status
+  if (p.featured !== undefined) patch.featured = p.featured
   if (p.sort !== undefined) patch.sort = p.sort
   const { error } = await requireDb().from('programs').update(patch).eq('id', id)
   if (error) throw error
@@ -581,6 +708,44 @@ export async function updateActivity(id: string, a: Partial<Activity>) {
 }
 export async function deleteActivity(id: string) {
   const { error } = await requireDb().from('activities').delete().eq('id', id)
+  if (error) throw error
+}
+
+// Banners
+export async function createBanner(b: Omit<Banner, 'id' | 'created_at'>) {
+  const { error } = await requireDb().from('banners').insert({
+    image_url: b.image_url,
+    title_hi: b.title.hi,
+    title_en: b.title.en,
+    subtitle_hi: b.subtitle.hi,
+    subtitle_en: b.subtitle.en,
+    link: b.link || null,
+    fit: b.fit,
+    active: b.active,
+    sort: b.sort,
+  })
+  if (error) throw error
+}
+export async function updateBanner(id: string, b: Partial<Banner>) {
+  const patch: Record<string, unknown> = {}
+  if (b.image_url !== undefined) patch.image_url = b.image_url
+  if (b.title) {
+    patch.title_hi = b.title.hi
+    patch.title_en = b.title.en
+  }
+  if (b.subtitle) {
+    patch.subtitle_hi = b.subtitle.hi
+    patch.subtitle_en = b.subtitle.en
+  }
+  if (b.link !== undefined) patch.link = b.link || null
+  if (b.fit !== undefined) patch.fit = b.fit
+  if (b.active !== undefined) patch.active = b.active
+  if (b.sort !== undefined) patch.sort = b.sort
+  const { error } = await requireDb().from('banners').update(patch).eq('id', id)
+  if (error) throw error
+}
+export async function deleteBanner(id: string) {
+  const { error } = await requireDb().from('banners').delete().eq('id', id)
   if (error) throw error
 }
 

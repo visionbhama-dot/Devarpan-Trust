@@ -1,5 +1,16 @@
 import { useState } from 'react'
-import { Plus, Pencil, Trash2, CalendarClock, CheckCircle2, Video, Link2, X, Images } from 'lucide-react'
+import {
+  Plus,
+  Pencil,
+  Trash2,
+  CalendarClock,
+  CheckCircle2,
+  Video,
+  Link2,
+  X,
+  Images,
+  Sparkles,
+} from 'lucide-react'
 import {
   getPrograms,
   createProgram,
@@ -32,11 +43,15 @@ type Draft = {
   description_en: string
   location_hi: string
   location_en: string
+  time_text_hi: string
+  time_text_en: string
   event_date: string
+  end_date: string
   image_url: string | null
   images: string[]
   videos: ProgramVideo[]
   status: ProgramStatus
+  featured: boolean
   sort: number
 }
 
@@ -47,11 +62,15 @@ const emptyDraft = (sort: number): Draft => ({
   description_en: '',
   location_hi: '',
   location_en: '',
+  time_text_hi: '',
+  time_text_en: '',
   event_date: '',
+  end_date: '',
   image_url: null,
   images: [],
   videos: [],
   status: 'upcoming',
+  featured: false,
   sort,
 })
 
@@ -77,11 +96,15 @@ export default function ProgramsAdmin() {
       description_en: p.description.en,
       location_hi: p.location.hi,
       location_en: p.location.en,
+      time_text_hi: p.time_text?.hi ?? '',
+      time_text_en: p.time_text?.en ?? '',
       event_date: p.event_date ?? '',
+      end_date: p.end_date ?? '',
       image_url: p.image_url,
       images: p.images ?? [],
       videos: p.videos ?? [],
       status: p.status,
+      featured: p.featured ?? false,
       sort: p.sort,
     })
 
@@ -94,11 +117,14 @@ export default function ProgramsAdmin() {
         title: { hi: draft.title_hi, en: draft.title_en },
         description: { hi: draft.description_hi, en: draft.description_en },
         location: { hi: draft.location_hi, en: draft.location_en },
+        time_text: { hi: draft.time_text_hi, en: draft.time_text_en },
         event_date: draft.event_date || null,
+        end_date: draft.end_date || null,
         image_url: draft.image_url,
         images: draft.images,
         videos: draft.videos.filter((v) => v.url.trim()),
         status: draft.status,
+        featured: draft.featured,
         sort: Number(draft.sort) || 0,
       }
       if (draft.id) await updateProgram(draft.id, payload)
@@ -179,7 +205,14 @@ export default function ProgramsAdmin() {
                   )}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate font-bold text-ink-900">{p.title.hi}</p>
+                  <p className="flex items-center gap-2 truncate font-bold text-ink-900">
+                    <span className="truncate">{p.title.hi}</span>
+                    {p.featured && (
+                      <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-vermilion-600 px-2 py-0.5 text-[10px] font-bold text-white">
+                        <Sparkles className="size-3" /> Home banner
+                      </span>
+                    )}
+                  </p>
                   <p className="truncate text-sm text-ink-700">
                     {formatDate(p.event_date)}
                     {p.location.hi ? ` • ${p.location.hi}` : ''}
@@ -256,12 +289,19 @@ export default function ProgramsAdmin() {
                 />
               </Field>
             </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Date">
+            <div className="grid gap-4 sm:grid-cols-3">
+              <Field label="Start date">
                 <Input
                   type="date"
                   value={draft.event_date}
                   onChange={(e) => setDraft({ ...draft, event_date: e.target.value })}
+                />
+              </Field>
+              <Field label="End date (optional)">
+                <Input
+                  type="date"
+                  value={draft.end_date}
+                  onChange={(e) => setDraft({ ...draft, end_date: e.target.value })}
                 />
               </Field>
               <Field label="Status">
@@ -275,6 +315,22 @@ export default function ProgramsAdmin() {
                     </option>
                   ))}
                 </Select>
+              </Field>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field label="Timing (Hindi)">
+                <Input
+                  value={draft.time_text_hi}
+                  placeholder="सांयं 4:00 से 5:15 तक"
+                  onChange={(e) => setDraft({ ...draft, time_text_hi: e.target.value })}
+                />
+              </Field>
+              <Field label="Timing (English)">
+                <Input
+                  value={draft.time_text_en}
+                  placeholder="Evening 4:00 PM to 5:15 PM"
+                  onChange={(e) => setDraft({ ...draft, time_text_en: e.target.value })}
+                />
               </Field>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -412,6 +468,20 @@ export default function ProgramsAdmin() {
                 onChange={(e) => setDraft({ ...draft, sort: Number(e.target.value) })}
               />
             </Field>
+            <label className="flex items-start gap-2 rounded-xl bg-marigold-50/60 p-3 text-sm font-semibold text-ink-800 ring-1 ring-marigold-200">
+              <input
+                type="checkbox"
+                checked={draft.featured}
+                onChange={(e) => setDraft({ ...draft, featured: e.target.checked })}
+                className="mt-0.5 size-4 accent-vermilion-600"
+              />
+              <span>
+                Show as the highlighted event banner on the home page
+                <span className="mt-0.5 block text-xs font-normal text-ink-600">
+                  Only one event is shown. If several are ticked, the one with the nearest date wins.
+                </span>
+              </span>
+            </label>
             <div className="flex justify-end gap-3 pt-2">
               <AdminButton type="button" variant="ghost" onClick={() => setDraft(null)}>
                 Cancel

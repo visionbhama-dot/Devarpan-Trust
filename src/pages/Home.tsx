@@ -16,7 +16,9 @@ import {
   CalendarDays,
 } from 'lucide-react'
 import { WhatsAppIcon } from '../components/icons'
-import { ActivitiesTicker, ActivitiesPopup } from '../components/RecentActivities'
+import { ActivitiesPopup } from '../components/RecentActivities'
+import HeroCarousel from '../components/HeroCarousel'
+import FeaturedEventBanner from '../components/FeaturedEventBanner'
 import { useLang } from '../lib/useLang'
 import { vedas } from '../data/trust'
 import { galleryItems } from '../data/gallery'
@@ -25,9 +27,11 @@ import {
   getMembers,
   getPrograms,
   getActivities,
+  getBanners,
   type GalleryItem,
   type Member,
   type Program,
+  type Banner,
   type Activity as ActivityItem,
 } from '../lib/api'
 import { useAsync } from '../lib/useAsync'
@@ -58,16 +62,19 @@ export default function Home() {
   const { data: membersData } = useAsync<Member[]>(() => getMembers(), [])
   const { data: programsData } = useAsync<Program[]>(() => getPrograms('upcoming'), [])
   const { data: activitiesData } = useAsync<ActivityItem[]>(() => getActivities(true), [])
+  const { data: bannersData } = useAsync<Banner[]>(() => getBanners(true), [])
   const activities = activitiesData ?? []
+  const banners = bannersData ?? []
   const previewItems = (galleryData ?? []).slice(0, 6)
   const previewMembers = (membersData ?? []).slice(0, 3)
-  const upcomingPrograms = [...(programsData ?? [])]
-    .sort((a, b) => {
-      const da = a.event_date ? new Date(a.event_date).getTime() : Infinity
-      const db = b.event_date ? new Date(b.event_date).getTime() : Infinity
-      return da - db
-    })
-    .slice(0, 2)
+  const sortedUpcoming = [...(programsData ?? [])].sort((a, b) => {
+    const da = a.event_date ? new Date(a.event_date).getTime() : Infinity
+    const db = b.event_date ? new Date(b.event_date).getTime() : Infinity
+    return da - db
+  })
+  // The banner shows the admin-chosen featured event, else the soonest upcoming one
+  const featuredEvent = sortedUpcoming.find((p) => p.featured) ?? sortedUpcoming[0] ?? null
+  const upcomingPrograms = sortedUpcoming.slice(0, 2)
   const formatProgramDate = (iso: string | null) =>
     iso
       ? new Date(iso).toLocaleDateString(lang === 'hi' ? 'hi-IN' : 'en-IN', {
@@ -88,7 +95,11 @@ export default function Home() {
 
   return (
     <>
-      {/* ============ HERO — full photo collage with bold text ============ */}
+      {/* ============ HERO — admin-managed rotating banner ============ */}
+      {banners.length > 0 && <HeroCarousel banners={banners} />}
+
+      {/* Fallback hero (shown only when no banners exist in the admin panel) */}
+      {banners.length === 0 && (
       <section className="relative isolate flex min-h-[88vh] items-center overflow-hidden text-white">
         {/* collage background */}
         <div className="absolute inset-0 -z-20 overflow-hidden">
@@ -170,9 +181,10 @@ export default function Home() {
 
         <div className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-vermilion-600 via-marigold-400 to-vermilion-600" />
       </section>
+      )}
 
-      {/* ============ RECENT ACTIVITIES TICKER ============ */}
-      <ActivitiesTicker items={activities} />
+      {/* ============ FEATURED UPCOMING EVENT BANNER ============ */}
+      <FeaturedEventBanner program={featuredEvent} />
 
       {/* ============ ABOUT — text left, image right ============ */}
       <section className="bg-mandana py-16 md:py-20">

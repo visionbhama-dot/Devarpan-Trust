@@ -28,6 +28,7 @@ export const BUCKETS = {
   blogs: 'blogs',
   programs: 'programs',
   activities: 'activities',
+  banners: 'banners',
 } as const
 
 /**

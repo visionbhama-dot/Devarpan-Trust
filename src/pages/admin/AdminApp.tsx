@@ -4,6 +4,7 @@ import AdminLayout from '../../components/admin/AdminLayout'
 import RequireAuth from './RequireAuth'
 import Login from './Login'
 import Dashboard from './Dashboard'
+import BannersAdmin from './BannersAdmin'
 import GalleryAdmin from './GalleryAdmin'
 import MembersAdmin from './MembersAdmin'
 import ProgramsAdmin from './ProgramsAdmin'
@@ -20,6 +21,7 @@ export default function AdminApp() {
         <Route element={<RequireAuth />}>
           <Route element={<AdminLayout />}>
             <Route index element={<Dashboard />} />
+            <Route path="banners" element={<BannersAdmin />} />
             <Route path="gallery" element={<GalleryAdmin />} />
             <Route path="members" element={<MembersAdmin />} />
             <Route path="programs" element={<ProgramsAdmin />} />

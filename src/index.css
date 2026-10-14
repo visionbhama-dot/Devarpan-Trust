@@ -114,27 +114,6 @@ h3 {
   background-size: 120px 120px;
 }
 
-/* Sliding "recent activities" ticker */
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-.animate-marquee {
-  animation: marquee var(--marquee-duration, 40s) linear infinite;
-}
-.marquee-track:hover .animate-marquee {
-  animation-play-state: paused;
-}
-@media (prefers-reduced-motion: reduce) {
-  .animate-marquee {
-    animation: none;
-  }
-}
-
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 10px;

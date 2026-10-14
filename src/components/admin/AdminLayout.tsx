@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard,
+  GalleryHorizontal,
   Images,
   Users,
   CalendarDays,
@@ -19,6 +20,7 @@ import OmLogo from '../OmLogo'
 
 const nav = [
   { to: '/admin', end: true, label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/admin/banners', label: 'Home Banners', icon: GalleryHorizontal },
   { to: '/admin/gallery', label: 'Gallery', icon: Images },
   { to: '/admin/members', label: 'Members', icon: Users },
   { to: '/admin/programs', label: 'Programs', icon: CalendarDays },

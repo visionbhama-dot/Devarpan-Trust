@@ -16,70 +16,6 @@ function shortDate(iso: string | null, lang: string) {
   })
 }
 
-/** A sliding marquee bar of recent activities for the home page. */
-export function ActivitiesTicker({ items }: { items: Activity[] }) {
-  const { t } = useTranslation()
-  const { pick, lang } = useLang()
-  if (!items.length) return null
-
-  const loop = [...items, ...items]
-  const duration = Math.max(24, items.length * 9)
-
-  const Item = ({ a }: { a: Activity }) => {
-    const inner = (
-      <span className="inline-flex items-center gap-2 whitespace-nowrap text-sm font-medium text-white/90">
-        {a.image_url && (
-          <img src={a.image_url} alt="" className="size-7 shrink-0 rounded-full object-cover ring-2 ring-white/30" />
-        )}
-        {a.date && (
-          <span className="inline-flex items-center gap-1 text-marigold-300">
-            <CalendarDays className="size-3.5" />
-            {shortDate(a.date, lang)}
-          </span>
-        )}
-        <span>{pick(a.text)}</span>
-        <span className="px-1 text-marigold-400">◆</span>
-      </span>
-    )
-    return a.link ? (
-      <Link to={a.link} className="transition-opacity hover:opacity-80">
-        {inner}
-      </Link>
-    ) : (
-      inner
-    )
-  }
-
-  return (
-    <section
-      id="recent-activities"
-      className="relative z-10 border-y-2 border-marigold-400/50 bg-vermilion-900 text-white"
-    >
-      <div className="mx-auto flex max-w-[1600px] items-stretch">
-        <div className="z-10 flex shrink-0 items-center gap-2 bg-marigold-400 px-4 py-2.5 font-bold text-ink-900 shadow-md md:px-5">
-          <Bell className="size-4 animate-pulse md:size-5" />
-          <span className="hidden text-sm uppercase tracking-wide sm:inline md:text-base">
-            {t('activities.label')}
-          </span>
-        </div>
-        <div className="marquee-track relative flex-1 overflow-hidden">
-          <div
-            className="animate-marquee flex w-max items-center gap-8 py-2.5"
-            style={{ ['--marquee-duration' as string]: `${duration}s` }}
-          >
-            {loop.map((a, i) => (
-              <Item key={`${a.id}-${i}`} a={a} />
-            ))}
-          </div>
-          {/* soft fade edges */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-vermilion-900 to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-vermilion-900 to-transparent" />
-        </div>
-      </div>
-    </section>
-  )
-}
-
 /** A one-time popup (after 10s) inviting visitors to see recent activities. */
 export function ActivitiesPopup({ items }: { items: Activity[] }) {
   const { t } = useTranslation()
@@ -100,11 +36,6 @@ export function ActivitiesPopup({ items }: { items: Activity[] }) {
     } catch {
       /* ignore */
     }
-  }
-
-  const viewAll = () => {
-    close()
-    document.getElementById('recent-activities')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
 
   const preview = items.slice(0, 3)
@@ -189,12 +120,13 @@ export function ActivitiesPopup({ items }: { items: Activity[] }) {
               >
                 {t('activities.close')}
               </button>
-              <button
-                onClick={viewAll}
+              <Link
+                to="/programs"
+                onClick={close}
                 className="inline-flex items-center gap-1.5 rounded-xl bg-vermilion-600 px-4 py-2.5 text-sm font-bold text-white shadow hover:bg-vermilion-700"
               >
                 {t('activities.viewAll')} <ArrowRight className="size-4" />
-              </button>
+              </Link>
             </div>
           </motion.div>
         </motion.div>
