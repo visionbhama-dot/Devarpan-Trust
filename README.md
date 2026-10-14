@@ -9,7 +9,7 @@ A bold, bilingual (Hindi-default / English-switchable) website for **Devarpan Tr
 - **द्विभाषी (Bilingual):** Hindi is the default language with a one-click English toggle (react-i18next). Choice is remembered in the browser.
 - **Pages:** मुखपृष्ठ (Home), हमारा उद्देश्य (Objectives — all 11 objectives), हमारे सदस्य (Members), गैलरी (Gallery with filters + lightbox), संपर्क (Contact + donation details).
 - **Bold Indian theme:** saffron + leaf-green gradients, Devanagari-first typography, smooth animations (Framer Motion).
-- Fully responsive, mobile-friendly navigation.
+- Fully responsive, mobile-friendly navigation. 
 
 ## 🔐 Admin Panel
 
