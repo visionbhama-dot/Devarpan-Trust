@@ -176,7 +176,7 @@ const fallbackPrograms: Program[] = [
     time_text: { hi: 'सांयं 4:00 से 5:15 तक', en: 'Evening 4:00 PM to 5:15 PM' },
     event_date: '2026-10-11',
     end_date: '2026-10-19',
-    image_url: '/gallery/g04-yajna.jpg',
+    image_url: '/posters/gayatri-yajna-2026.jpg',
     images: [],
     videos: [],
     status: 'upcoming',
@@ -231,6 +231,17 @@ const fallbackPrograms: Program[] = [
 ]
 
 const fallbackBanners: Banner[] = [
+  {
+    id: 'b0',
+    image_url: '/posters/gayatri-yajna-2026.jpg',
+    title: { hi: '', en: '' },
+    subtitle: { hi: '', en: '' },
+    link: '/programs',
+    fit: 'contain',
+    active: true,
+    sort: 0,
+    created_at: new Date().toISOString(),
+  },
   {
     id: 'b1',
     image_url: '/gallery/g04-yajna.jpg',
@@ -680,6 +691,9 @@ export async function deleteProgram(id: string) {
 }
 
 // Activities
+// NOTE: the home-page ticker and popup that displayed these were removed on
+// request, so nothing renders activities right now. The table and these
+// helpers are kept so the feature can be re-enabled without a migration.
 export async function createActivity(a: Omit<Activity, 'id' | 'created_at'>) {
   const { error } = await requireDb().from('activities').insert({
     text_hi: a.text.hi,

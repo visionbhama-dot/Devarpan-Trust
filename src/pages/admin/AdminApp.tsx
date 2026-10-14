@@ -8,7 +8,6 @@ import BannersAdmin from './BannersAdmin'
 import GalleryAdmin from './GalleryAdmin'
 import MembersAdmin from './MembersAdmin'
 import ProgramsAdmin from './ProgramsAdmin'
-import ActivitiesAdmin from './ActivitiesAdmin'
 import BlogsAdmin from './BlogsAdmin'
 import ObjectivesAdmin from './ObjectivesAdmin'
 import SettingsAdmin from './SettingsAdmin'
@@ -25,7 +24,6 @@ export default function AdminApp() {
             <Route path="gallery" element={<GalleryAdmin />} />
             <Route path="members" element={<MembersAdmin />} />
             <Route path="programs" element={<ProgramsAdmin />} />
-            <Route path="activities" element={<ActivitiesAdmin />} />
             <Route path="blogs" element={<BlogsAdmin />} />
             <Route path="objectives" element={<ObjectivesAdmin />} />
             <Route path="settings" element={<SettingsAdmin />} />

@@ -16,7 +16,6 @@ import {
   CalendarDays,
 } from 'lucide-react'
 import { WhatsAppIcon } from '../components/icons'
-import { ActivitiesPopup } from '../components/RecentActivities'
 import HeroCarousel from '../components/HeroCarousel'
 import FeaturedEventBanner from '../components/FeaturedEventBanner'
 import { useLang } from '../lib/useLang'
@@ -26,13 +25,11 @@ import {
   getGallery,
   getMembers,
   getPrograms,
-  getActivities,
   getBanners,
   type GalleryItem,
   type Member,
   type Program,
   type Banner,
-  type Activity as ActivityItem,
 } from '../lib/api'
 import { useAsync } from '../lib/useAsync'
 import { useSettings } from '../lib/SettingsContext'
@@ -61,9 +58,7 @@ export default function Home() {
   const { data: galleryData } = useAsync<GalleryItem[]>(() => getGallery(), [])
   const { data: membersData } = useAsync<Member[]>(() => getMembers(), [])
   const { data: programsData } = useAsync<Program[]>(() => getPrograms('upcoming'), [])
-  const { data: activitiesData } = useAsync<ActivityItem[]>(() => getActivities(true), [])
   const { data: bannersData } = useAsync<Banner[]>(() => getBanners(true), [])
-  const activities = activitiesData ?? []
   const banners = bannersData ?? []
   const previewItems = (galleryData ?? []).slice(0, 6)
   const previewMembers = (membersData ?? []).slice(0, 3)
@@ -589,8 +584,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 10-second popup inviting visitors to see recent activities */}
-      <ActivitiesPopup items={activities} />
     </>
   )
 }
