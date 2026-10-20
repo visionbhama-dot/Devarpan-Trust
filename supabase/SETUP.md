@@ -27,6 +27,7 @@ Once the keys are in, visit **/admin** on the website, log in, and you can manag
 - 🖼️ Gallery photos
 - 👥 Members
 - 📅 Programs / Events (date, venue, photos, videos & status)
+- 🗓️ Bookings (mark dates booked/red, and manage booking requests)
 - 📝 Blogs
 - 🎯 Objectives
 - 📞 Contact info, bank details & social media links
@@ -47,6 +48,26 @@ This happened if an older `schema.sql` was run more than once. Fix it in one ste
 2. Paste all of **`supabase/cleanup-duplicates.sql`** and click **Run**.
 
 It keeps one copy of each identical entry and removes the extras. The current `schema.sql` is now safe to re-run — the seed data only loads when a table is empty, so it will never duplicate again.
+
+### 📅 How the booking calendar works
+- On **/booking**, every future date is shown **green (available)** by default.
+- In **Admin → Bookings**, add a date under *"Blocked / booked dates"* to make it **red (not available)** on the public calendar — e.g. mark a date as booked for a Hawan.
+- When a visitor submits the form, it appears under *"Booking requests"* with their phone, email and address. Click **Confirm & block date** to accept (this also turns that date red automatically), or **Cancel**.
+- Booking submissions are private: only the logged-in admin can read them.
+
+### ✉️ Booking emails (optional)
+The website itself cannot send email (it has no server), so by default you just see new bookings in the admin panel and contact the person. To also send **automatic emails** (a notification to the Trust + a confirmation to the visitor), deploy the included function:
+
+1. Create a free account at **https://resend.com** and copy an **API key**. (To send from your own address, verify your domain in Resend; otherwise it uses `onboarding@resend.dev`.)
+2. In Supabase → **Edge Functions**, deploy the function in `supabase/functions/booking-notify/` (via the Supabase CLI `supabase functions deploy booking-notify`, or paste it into a new function in the dashboard).
+3. In Supabase → **Edge Functions → booking-notify → Settings → Secrets**, add:
+   - `RESEND_API_KEY` = your Resend key
+   - `TRUST_EMAIL` = the inbox that should receive bookings (e.g. `devarpan.trust@gmail.com`)
+   - `FROM_EMAIL` = e.g. `Devarpan Trust <onboarding@resend.dev>` (or your verified domain address)
+
+That's it — the booking form already calls this function automatically. If it isn't deployed, the form still works; it just skips the email step.
+
+**Keep it safe:** deploy with JWT verification **on** (the default — don't pass `--no-verify-jwt`), so only callers with your project's key reach it. For an extra layer, set a `BOOKING_SECRET` secret on the function *and* a matching `VITE_BOOKING_SECRET` env var on Vercel — the site will send it as a header and the function will reject anyone else. All submitted text is HTML-escaped before it goes into the email.
 
 ### For developers (local run)
 Copy `.env.example` to `.env` and fill in the two values, then `npm install && npm run dev`.
