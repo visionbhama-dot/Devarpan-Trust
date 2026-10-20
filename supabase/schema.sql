@@ -106,6 +106,31 @@ create table if not exists public.activities (
   created_at timestamptz not null default now()
 );
 
+-- Dates the admin has marked unavailable (shown RED on the booking calendar).
+-- Any future date NOT listed here is treated as available (green).
+create table if not exists public.booking_dates (
+  id uuid primary key default gen_random_uuid(),
+  date date not null unique,
+  status text not null default 'booked',  -- 'booked' | 'blocked'
+  title_hi text default '',                -- e.g. "हवन" / what it is booked for
+  title_en text default '',
+  created_at timestamptz not null default now()
+);
+
+-- Public booking form submissions (name, occasion, address, phone, email, date)
+create table if not exists public.booking_requests (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  occasion text not null default '',
+  address text not null default '',
+  phone text not null default '',
+  email text default '',
+  date date,
+  message text default '',
+  status text not null default 'pending',  -- 'pending' | 'confirmed' | 'cancelled'
+  created_at timestamptz not null default now()
+);
+
 create table if not exists public.settings (
   id text primary key default 'site',
   phones jsonb not null default '[]'::jsonb,
@@ -125,6 +150,8 @@ alter table public.blogs      enable row level security;
 alter table public.programs   enable row level security;
 alter table public.activities enable row level security;
 alter table public.banners    enable row level security;
+alter table public.booking_dates    enable row level security;
+alter table public.booking_requests enable row level security;
 alter table public.settings   enable row level security;
 
 -- Public (anon) can READ everything except unpublished blogs
@@ -142,6 +169,17 @@ create policy "read programs"   on public.programs   for select using (true);
 create policy "read activities" on public.activities for select using (true);
 create policy "read banners"    on public.banners    for select using (true);
 create policy "read settings"   on public.settings   for select using (true);
+
+-- Booking calendar availability is public (so the calendar can show red dates)
+drop policy if exists "read booking_dates" on public.booking_dates;
+create policy "read booking_dates" on public.booking_dates for select using (true);
+
+-- Anyone may SUBMIT a booking request, but only logged-in admins may READ them
+-- (submissions contain personal details: name, phone, address, email).
+drop policy if exists "insert booking_requests"   on public.booking_requests;
+drop policy if exists "admin read booking_requests" on public.booking_requests;
+create policy "insert booking_requests"    on public.booking_requests for insert with check (true);
+create policy "admin read booking_requests" on public.booking_requests for select to authenticated using (true);
 
 drop policy if exists "read published blogs" on public.blogs;
 drop policy if exists "auth read all blogs"  on public.blogs;
@@ -165,6 +203,12 @@ create policy "write programs"   on public.programs   for all to authenticated u
 create policy "write activities" on public.activities for all to authenticated using (true) with check (true);
 create policy "write banners"    on public.banners    for all to authenticated using (true) with check (true);
 create policy "write settings"   on public.settings   for all to authenticated using (true) with check (true);
+
+-- Admins manage availability and update/delete booking requests
+drop policy if exists "write booking_dates"       on public.booking_dates;
+drop policy if exists "admin manage booking_requests" on public.booking_requests;
+create policy "write booking_dates"       on public.booking_dates    for all to authenticated using (true) with check (true);
+create policy "admin manage booking_requests" on public.booking_requests for all to authenticated using (true) with check (true);
 
 -- ---------- STORAGE BUCKETS ----------
 

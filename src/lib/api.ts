@@ -87,6 +87,27 @@ export interface Activity {
   sort: number
   created_at: string
 }
+export type BookingDateStatus = 'booked' | 'blocked'
+export interface BookingDate {
+  id: string
+  date: string // 'YYYY-MM-DD'
+  status: BookingDateStatus
+  title: Bilingual
+  created_at: string
+}
+export type BookingRequestStatus = 'pending' | 'confirmed' | 'cancelled'
+export interface BookingRequest {
+  id: string
+  name: string
+  occasion: string
+  address: string
+  phone: string
+  email: string
+  date: string | null
+  message: string
+  status: BookingRequestStatus
+  created_at: string
+}
 export interface Settings {
   phones: string[]
   email: string
@@ -481,6 +502,45 @@ export async function getActivities(activeOnly = true): Promise<Activity[]> {
   return data.map(toActivity)
 }
 
+export async function getBookingDates(): Promise<BookingDate[]> {
+  if (!supabase) return []
+  const { data, error } = await supabase.from('booking_dates').select('*').order('date')
+  if (error || !data) return []
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  return data.map((r: any) => ({
+    id: r.id,
+    date: r.date,
+    status: r.status,
+    title: { hi: r.title_hi ?? '', en: r.title_en ?? '' },
+    created_at: r.created_at,
+  }))
+  /* eslint-enable @typescript-eslint/no-explicit-any */
+}
+
+/** Admin only — the public cannot read other people's submissions (RLS). */
+export async function getBookingRequests(): Promise<BookingRequest[]> {
+  if (!supabase) return []
+  const { data, error } = await supabase
+    .from('booking_requests')
+    .select('*')
+    .order('created_at', { ascending: false })
+  if (error || !data) return []
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  return data.map((r: any) => ({
+    id: r.id,
+    name: r.name ?? '',
+    occasion: r.occasion ?? '',
+    address: r.address ?? '',
+    phone: r.phone ?? '',
+    email: r.email ?? '',
+    date: r.date,
+    message: r.message ?? '',
+    status: r.status,
+    created_at: r.created_at,
+  }))
+  /* eslint-enable @typescript-eslint/no-explicit-any */
+}
+
 export async function getSettings(): Promise<Settings> {
   if (!supabase) return fallbackSettings
   const { data, error } = await supabase.from('settings').select('*').eq('id', 'site').maybeSingle()
@@ -760,6 +820,74 @@ export async function updateBanner(id: string, b: Partial<Banner>) {
 }
 export async function deleteBanner(id: string) {
   const { error } = await requireDb().from('banners').delete().eq('id', id)
+  if (error) throw error
+}
+
+// Bookings — public submit (allowed for everyone by RLS)
+export async function createBookingRequest(
+  b: Omit<BookingRequest, 'id' | 'created_at' | 'status'>,
+) {
+  if (!supabase) throw new Error('Supabase is not configured')
+  const { error } = await supabase.from('booking_requests').insert({
+    name: b.name,
+    occasion: b.occasion,
+    address: b.address,
+    phone: b.phone,
+    email: b.email,
+    date: b.date || null,
+    message: b.message,
+    status: 'pending',
+  })
+  if (error) throw error
+
+  // Best-effort email notification. Does nothing if the edge function is not
+  // deployed — the booking is already safely saved above.
+  try {
+    const secret = import.meta.env.VITE_BOOKING_SECRET as string | undefined
+    await supabase.functions.invoke('booking-notify', {
+      body: {
+        name: b.name,
+        occasion: b.occasion,
+        address: b.address,
+        phone: b.phone,
+        email: b.email,
+        date: b.date,
+        message: b.message,
+      },
+      headers: secret ? { 'x-booking-secret': secret } : undefined,
+    })
+  } catch {
+    /* ignore — email is optional */
+  }
+}
+
+// Bookings — admin management
+export async function updateBookingRequest(id: string, status: BookingRequestStatus) {
+  const { error } = await requireDb().from('booking_requests').update({ status }).eq('id', id)
+  if (error) throw error
+}
+export async function deleteBookingRequest(id: string) {
+  const { error } = await requireDb().from('booking_requests').delete().eq('id', id)
+  if (error) throw error
+}
+
+// Booking date availability (the red dates on the public calendar)
+export async function createBookingDate(d: Omit<BookingDate, 'id' | 'created_at'>) {
+  const { error } = await requireDb()
+    .from('booking_dates')
+    .upsert(
+      {
+        date: d.date,
+        status: d.status,
+        title_hi: d.title.hi,
+        title_en: d.title.en,
+      },
+      { onConflict: 'date' },
+    )
+  if (error) throw error
+}
+export async function deleteBookingDate(id: string) {
+  const { error } = await requireDb().from('booking_dates').delete().eq('id', id)
   if (error) throw error
 }
 
