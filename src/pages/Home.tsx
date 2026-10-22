@@ -14,6 +14,7 @@ import {
   User,
   Crown,
   CalendarDays,
+  CalendarCheck,
 } from 'lucide-react'
 import { WhatsAppIcon } from '../components/icons'
 import FeaturedEventBanner from '../components/FeaturedEventBanner'
@@ -170,6 +171,38 @@ export default function Home() {
 
       {/* ============ FEATURED UPCOMING EVENT BANNER ============ */}
       <FeaturedEventBanner program={featuredEvent} />
+
+      {/* ============ BOOKING CTA (prominent, mobile-friendly) ============ */}
+      <section className="bg-white py-12 md:py-16">
+        <div className="mx-auto max-w-7xl px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="relative isolate overflow-hidden rounded-3xl bg-gradient-to-br from-vermilion-700 via-vermilion-800 to-vermilion-900 p-7 text-center text-white shadow-2xl md:p-12"
+          >
+            <div className="absolute inset-0 -z-10 bg-mandana-overlay opacity-20" aria-hidden />
+            <div className="mx-auto grid size-16 place-items-center rounded-2xl bg-white/15 ring-2 ring-white/30 md:size-20">
+              <CalendarCheck className="size-8 md:size-10" />
+            </div>
+            <p className="mt-5 font-bold uppercase tracking-[0.2em] text-marigold-300">
+              {t('home.bookingKicker')}
+            </p>
+            <h2 className="mt-2 font-display text-3xl font-normal leading-tight drop-shadow md:text-5xl">
+              {t('home.bookingTitle')}
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-white/90 md:text-lg">
+              {t('home.bookingText')}
+            </p>
+            <Link
+              to="/booking"
+              className="mt-7 inline-flex items-center gap-2 rounded-full bg-marigold-400 px-8 py-4 text-base font-bold text-ink-900 shadow-2xl transition-transform hover:scale-105 hover:bg-marigold-300 md:text-lg"
+            >
+              <CalendarCheck className="size-5" /> {t('home.bookingCta')} <ArrowRight className="size-5" />
+            </Link>
+          </motion.div>
+        </div>
+      </section>
 
       {/* ============ ABOUT — text left, image right ============ */}
       <section className="bg-mandana py-16 md:py-20">

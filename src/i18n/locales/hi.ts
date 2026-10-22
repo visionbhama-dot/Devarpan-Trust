@@ -84,6 +84,11 @@ const hi = {
     programsEmpty: 'अभी कोई आगामी कार्यक्रम नहीं है। कृपया शीघ्र पुनः देखें।',
     activitiesKicker: 'नवीनतम अपडेट',
     activitiesTitle: 'हाल की गतिविधियाँ',
+    bookingKicker: 'हमारे साथ बुक करें',
+    bookingTitle: 'हवन या आयोजन बुक करें',
+    bookingText:
+      'हवन, गृह प्रवेश, विवाह या कोई भी शुभ अवसर? उपलब्ध तिथियाँ देखें और एक मिनट में ऑनलाइन बुकिंग का अनुरोध करें।',
+    bookingCta: 'तिथि देखें एवं बुक करें',
     bannerCta: 'अधिक जानें',
     featuredEventBadge: 'आगामी',
     featuredEventKicker: 'आगामी कार्यक्रम',

@@ -85,6 +85,11 @@ const en = {
     programsEmpty: 'No upcoming programs right now. Please check back soon.',
     activitiesKicker: 'Latest Updates',
     activitiesTitle: 'Recent Activities',
+    bookingKicker: 'Book With Us',
+    bookingTitle: 'Book a Hawan or Event',
+    bookingText:
+      'Planning a Hawan, Griha Pravesh, wedding or any auspicious occasion? Check available dates and request your booking online in a minute.',
+    bookingCta: 'Check Dates & Book',
     bannerCta: 'Know More',
     featuredEventBadge: 'Upcoming',
     featuredEventKicker: 'Upcoming Event',
